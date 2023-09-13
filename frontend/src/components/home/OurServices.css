@@ -1,0 +1,49 @@
+h2 {
+  padding-bottom: 15px;
+}
+.cdGroup {
+  padding-bottom: 10px;
+  border-width: 0px;
+}
+.card {
+  margin-left: 10px !important;
+  margin-right: 10px;
+  border-width: 0px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px !important;
+  border-radius: 20px !important;
+  background-color: #188fff13 !important;
+}
+.card:hover {
+  transform: scale(1.05);
+
+  transition-duration: 0.5s;
+  background-color: #188fff28 !important;
+}
+.card-text {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  position: relative;
+}
+.cardText {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+}
+.card-body {
+  padding: 10px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+section {
+  padding-top: 25px;
+}
+img {
+  max-width: 100%;
+}

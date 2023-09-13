@@ -1,0 +1,27 @@
+.register__vehicle__container {
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  margin-top: 15px;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.register__vehicle__form {
+  /* top: -9%;
+  left: 50%; */
+  /* transform: translate(-5%, 5%); */
+  margin: 5%;
+}
+
+.register__vehicle__griditem {
+  margin-bottom: 10px;
+}
+
+.register__vehicle__img {
+  margin-top: 5%;
+}
+
+.register__vehicle__submitbtn {
+  display: flex;
+  justify-content: center;
+}
