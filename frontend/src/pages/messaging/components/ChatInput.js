@@ -25,9 +25,9 @@ export default function ChatInput({ handleSendMsg }) {
     }
   };
 
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [msg]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [msg]);
 
   return (
     <Container>
