@@ -81,7 +81,7 @@ function ChatRegister() {
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="brand">
             <img src={Logo} alt="Logo" />
-            <h1>ChatBot</h1>
+            <h1>Messaging App</h1>
           </div>
 
           <input
@@ -149,6 +149,20 @@ const FormContainer = styled.div`
     h1 {
       color: Black;
       text-transform: uppercase;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem; /* Adjust the font size for smaller screens */
+      padding: 1rem; /* Adjust the padding for smaller screens */
+      display: flex;
+      align-items: center;
+      background-color: transparent; /* Remove the background color */
+    }
+
+    img {
+      height: 2rem;
+      width: 8rem; /* Adjust the image size for smaller screens */
     }
   }
 

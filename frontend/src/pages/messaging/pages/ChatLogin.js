@@ -129,6 +129,20 @@ const FormContainer = styled.div`
     }
   }
 
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem; /* Adjust the font size for smaller screens */
+      padding: 1rem; /* Adjust the padding for smaller screens */
+      display: flex;
+      align-items: center;
+      background-color: transparent; /* Remove the background color */
+    }
+
+    img {
+      height: 2rem;
+      width: 8rem; /* Adjust the image size for smaller screens */
+    }
+  }
   form {
     display: flex;
     flex-direction: column;
