@@ -22,12 +22,14 @@ import SetAvatar from "./pages/messaging/pages/SetAvatar";
 import ChatLogin from "./pages/messaging/pages/ChatLogin";
 import ChatRegister from "./pages/messaging/pages/ChatRegister";
 
+
 library.add(faEnvelope, faKey);
 
 function App() {
   return (
     <Router>
-      <div className="App">
+
+      <div className='App'>
         <MaybeShowNavbarComp>
           <NavbarComp />
         </MaybeShowNavbarComp>
@@ -52,6 +54,7 @@ function App() {
           <Route path="/setAvatar" element={<SetAvatar />} />
 
           <Route path="*" element={<PageNotFound />} />
+
         </Routes>
 
         <MaybeShowFooter>
