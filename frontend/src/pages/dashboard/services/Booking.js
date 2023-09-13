@@ -132,7 +132,6 @@ const Booking = () => {
   return (
     <section>
       <>
-      
         <Modal show={show} onHide={handleClose} centered>
           <Modal.Body className='text-center mb-4 mt-4 '>
             {' '}

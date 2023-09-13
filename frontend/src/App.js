@@ -10,8 +10,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faKey } from '@fortawesome/free-solid-svg-icons';
 import Booking from './pages/Booking';
 import PageNotFound from './pages/PageNotFound';
-import ManufacturerRecommendation from './pages/ManufacturerRecommendation';
-import RegisterVehicle from './pages/RegisterVehicle';
+import ManufacturerRecommendation from './pages/dashboard/services/ManufacturerRecommendation';
+import RegisterVehicle from './pages/dashboard/services/RegisterVehicle';
 import AdminDashboard from './pages/dashboard/index';
 import MaybeShowNavbarComp from './pages/commons/MaybeShowNavbarComp';
 import MaybeShowFooter from './pages/commons/MaybeShowFooter';
@@ -31,15 +31,15 @@ function App() {
           <Route exact path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Register />} />
-          <Route path='/service-booking' element={<Booking />} />
-          <Route path='/register-vehicle' element={<RegisterVehicle />} />
           <Route path='/AdminDashboard' element={<AdminDashboard />} />
+          <Route path='/service-booking' element={<Booking />} />
+          <Route path='/AdminDashboard/register-vehicle' element={<RegisterVehicle />} />
           <Route
-            path='/manufacturer-recommendation'
+            path='/AdminDashboard/manufacturer-recommendation'
             element={<ManufacturerRecommendation />}
           />
-          <Route path='/forum' element={<Forum />} />
-          <Route path='/message-system' element={<MessageSystem />} />
+          <Route path='/AdminDashboard/forum' element={<Forum />} />
+          <Route path='/AdminDashboard/message-system' element={<MessageSystem />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
 

@@ -24,6 +24,7 @@ const clientId =
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,22 +48,25 @@ const Login = () => {
       });
       if(response.data){
         localStorage.setItem('token', response.data.token);
-        alert('Login Successfull');
-        navigate('/AdminDashboard');
         setEmail('');
         setPassword('');
+        setOpen(true);
         fetchUsers();
+        navigate('/AdminDashboard');
         window.location.reload();
+
       }
     }catch(error){
       console.log(error, 'Login Failed');
     }
   };
-
   
-
-
-
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   const onSuccess = (res) => {
     console.log('LOGIN SUCCESS! Current user: ', res.profileobj);
@@ -199,6 +203,17 @@ const Login = () => {
           </Grid>
         </Grid>
       </div>
+      {/* Snackbar component */}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Vehicle Registered Successfully
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

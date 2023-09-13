@@ -6,7 +6,7 @@ const MaybeShowFooter = ({ children }) => {
   const [showFooter, setShowFooter] = useState(true);
 
   useEffect(() => {
-    if (location.pathname === '/AdminDashboard' ||location.pathname === '/forum' || location.pathname === '/register-vehicle' || location.pathname === '/manufacturer-recommendation' || location.pathname === '/message-system') {
+    if (location.pathname === '/AdminDashboard' ||location.pathname === '/AdminDashboard/forum' || location.pathname === '/AdminDashboard/register-vehicle' || location.pathname === '/AdminDashboard/manufacturer-recommendation' || location.pathname === '/AdminDashboard/message-system') {
       setShowFooter(false);
     } else {
       setShowFooter(true);

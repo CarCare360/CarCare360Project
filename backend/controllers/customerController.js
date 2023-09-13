@@ -53,7 +53,7 @@ const createCustomer = async (req, res) => {
     await newCustomer.save();
     res.status(201).json({ message: 'Customer created successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 

@@ -14,6 +14,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {useNavigate} from 'react-router-dom';
+import { useAppStore } from '../../../appStore';
 
 const drawerWidth = 300;
 
@@ -67,18 +68,20 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
+  const updateOpen = useAppStore((state) => state.updateOpen);
+  const open = useAppStore((state) => state.dopen);
   
 
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      
+      <Box height={50} />
       <Drawer variant='permanent' open={open}>
         <DrawerHeader>
-          <IconButton onClick={()=>setOpen(!open)}>
+          <IconButton>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (
@@ -86,9 +89,29 @@ export default function Sidebar() {
             )}
           </IconButton>
         </DrawerHeader>
-        <Divider />
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/register-vehicle')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/AdminDashboard')}}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/AdminDashboard/register-vehicle')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -109,7 +132,7 @@ export default function Sidebar() {
           </ListItem>
         </List>
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/manufacturer-recommendation')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/AdminDashboard/manufacturer-recommendation')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -130,7 +153,7 @@ export default function Sidebar() {
           </ListItem>
         </List>
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/message-system')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/AdminDashboard/message-system')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -151,7 +174,7 @@ export default function Sidebar() {
           </ListItem>
         </List>
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/forum')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate('/AdminDashboard/forum')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,

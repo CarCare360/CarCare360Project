@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/register.css';
 import register from '../components/images/register.jpeg';
+import swal from 'sweetalert';
 import { GoogleLogin } from 'react-google-login';
 import {
   TextField,
@@ -17,10 +18,7 @@ import {
   Alert,
   Snackbar,
 } from '@mui/material';
-import swal from "sweetalert";
-import ReCAPTCHA from "react-google-recaptcha";
-const clientId =
-  '790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com';
+const clientId ='790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com';
 
 const Register = () => {
   //form validation
@@ -63,7 +61,7 @@ const Register = () => {
         password,
       })
       .then(() => {
-        alert('Customer Added Successfully');
+        swal('Registered!','', 'success'); // Show success message
         setFname('');
         setLname('');
         setAddress('');
