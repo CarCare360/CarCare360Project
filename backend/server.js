@@ -4,6 +4,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const socket = require("socket.io");
+
 const ManufacturerRecommendationRoutes = require("./routes/manufacturerRecommendation");
 const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
@@ -11,6 +15,10 @@ const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
 const passwordReset = require("./routes/resetPassword");
 const resetNewPassword = require("./routes/resetNewPassword");
+const userRoutes = require("./routes/userRoutes");
+const messagesRoute = require("./routes/messagesRoute");
+const forumRoute = require("./routes/forumRoute");
+
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
 
@@ -37,6 +45,9 @@ app.use("/api/logincustomer", LoginCustomerRoutes);
 app.use("/api/password-reset", passwordReset);
 app.use("/api/password-reset/:id", resetNewPassword);
 // app.use("/api/sendemail", sendEmail);
+app.use("/api/auth/", userRoutes);
+app.use("/api/messages", messagesRoute);
+app.use("/api/forum", forumRoute);
 
 // connect to db
 mongoose
@@ -46,8 +57,30 @@ mongoose
   })
   .then(() => {
     // listen for requests
-    app.listen(process.env.PORT, () => {
+    const server = app.listen(process.env.PORT, () => {
       console.log("Connected to db & listening on port 4000!!!");
+    });
+    const io = socket(server, {
+      cors: {
+        origin: "http://localhost:3000",
+        credentials: true,
+      },
+    });
+
+    global.onlineUsers = new Map();
+
+    io.on("connection", (socket) => {
+      global.chatSocket = socket;
+      socket.on("add-user", (userId) => {
+        onlineUsers.set(userId, socket.id);
+      });
+
+      socket.on("send-msg", (data) => {
+        const sendUserSocket = onlineUsers.get(data.to);
+        if (sendUserSocket) {
+          socket.to(sendUserSocket).emit("msg-receive", data.message);
+        }
+      });
     });
   })
   .catch((error) => {
