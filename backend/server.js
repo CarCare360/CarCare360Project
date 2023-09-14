@@ -9,7 +9,7 @@ const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
-const sendEmail = require("./routes/sendEmail");
+const sendEmail = require("./routes/resetPassword");
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
 
