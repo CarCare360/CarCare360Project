@@ -1,5 +1,4 @@
 import * as React from "react";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,34 +11,39 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
 import { visuallyHidden } from "@mui/utils";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
 
 // Create dummy data for discussions
 const discussions = [
   {
     id: 1,
-    discussion: "Discussion 1",
-    startedBy: "User 1",
-    lastPostBy: "User 2",
-    numPosts: 10,
+    discussion: "General Discussion",
+    startedBy: "Ethan James",
+    lastPostBy: "Jackson Michael",
+    numPosts: 7,
   },
   {
     id: 2,
-    discussion: "Discussion 2",
-    startedBy: "User 2",
-    lastPostBy: "User 3",
-    numPosts: 15,
+    discussion: "Best Practices for Customer Engagement",
+    startedBy: "John Doe",
+    lastPostBy: "John Doe",
+    numPosts: 5,
   },
   {
     id: 3,
-    discussion: "Discussion 3",
-    startedBy: "User 3",
-    lastPostBy: "User 1",
+    discussion: "Customer Service Queries",
+    startedBy: "Noah Benjamin",
+    lastPostBy: "Christopher Aiden",
+    numPosts: 6,
+  },
+  {
+    id: 4,
+    discussion: "Technical Issues",
+    startedBy: "Oliver Henry",
+    lastPostBy: "Ethan James",
     numPosts: 8,
   },
 ];
@@ -112,9 +116,9 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{ textAlign: "center", fontWeight: "bold" }}
+            style={{ fontWeight: "bold" }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -169,6 +173,8 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const navigate = useNavigate();
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -199,6 +205,9 @@ export default function EnhancedTable() {
       ),
     [order, orderBy, page, rowsPerPage]
   );
+  const handleClick = () => {
+    navigate("/AdminDashboard/discussion");
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -226,25 +235,20 @@ export default function EnhancedTable() {
                 >
                   <TableCell
                     align="left"
-                    style={{ width: "50%", marginLeft: "5rem" }}
+                    style={{ width: "50%" }}
+                    onClick={handleClick}
                   >
                     {row.discussion}
                   </TableCell>
-                  <TableCell align="center" style={{ width: "20%" }}>
+                  <TableCell align="left" style={{ width: "20%" }}>
                     <AccountCircle />
                     {row.startedBy}
                   </TableCell>
-                  <TableCell
-                    align="center"
-                    style={{ width: "20%", marginRight: "2rem" }}
-                  >
+                  <TableCell align="left" style={{ width: "20%" }}>
                     <AccountCircle />
                     {row.lastPostBy}
                   </TableCell>
-                  <TableCell
-                    align="left"
-                    style={{ width: "10%", marginLeft: "3rem" }}
-                  >
+                  <TableCell align="right" style={{ width: "10%" }}>
                     {row.numPosts}
                   </TableCell>
                 </TableRow>
