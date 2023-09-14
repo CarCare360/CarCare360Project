@@ -9,7 +9,8 @@ const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
-const sendEmail = require("./routes/resetPassword");
+const passwordReset = require("./routes/resetPassword");
+const resetNewPassword = require("./routes/resetNewPassword");
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
 
@@ -33,7 +34,8 @@ app.use("/api/registervehicle", RegisterVehicleRoutes);
 app.use("/api/booking", BookingRoute);
 app.use("/api/registercustomer", RegisterCustomerRoutes);
 app.use("/api/logincustomer", LoginCustomerRoutes);
-app.use("/api/sendemail", sendEmail);
+app.use("/api/password-reset", passwordReset);
+app.use("/api/password-reset/:id", resetNewPassword);
 // app.use("/api/sendemail", sendEmail);
 
 // connect to db

@@ -3,6 +3,7 @@ const sendEmail = require('../utils/sendEmail');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const SECRET_KEY = 'secretkey';
 
 // Get All Customers
@@ -35,25 +36,13 @@ const getPasswordCustomer = async (req, res) => {
           <h3>Hello </h3>
           <p>Thank you for contacting Car Care 360,</p>
           <p>Your password is</p>`;
-          // <p>${password}</p>`;
+    // <p>${password}</p>`;
 
     await sendEmail(subject, message, send_to, sent_from, reply_to);
     return res.status(200).json({ success: true, message: 'Email Sent' });
   } catch (error) {
     res.status(500).json(error.message);
   }
-
-  // try {
-  //   const { email } = req.body;
-  //   const customers = await Customer.findOne({email})
-  //   if(!customers){
-  //     return res.status(401).json({ error: 'No such customer was registered' });
-  //   }
-  //   const password = await bcrypt(customers.password)
-  //   return res.status(201).json({password})
-  // } catch (error) {
-  //   res.status(500).json({ error: 'Internal server error' });
-  // }
 };
 
 // Get a single customer by ID
@@ -99,7 +88,52 @@ const createCustomer = async (req, res) => {
   }
 };
 
+// reset password
+const resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const customers = await Customer.findOne({ email });
+    if (!customers) {
+      return res.status(401).json({ error: 'No such customer was registered' });
+    }
+    let token = customers._id;
+    console.log(token);
+    if (!token) {
+      token = await new Customer({
+        customerId: customers._id,
+        token: crypto.randomBytes(32).toString('hex'),
+      }).save();
+    }
+    console.log(token);
+    const url = `${process.env.BASE_URL}/password-reset/${customers._id}/`;
+    await sendEmail('Password Reset', url, email, process.env.EMAIL_USER, email);
 
+    res
+      .status(200)
+      .send({ message: 'Password reset link sent to your email account' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' ,error: error.message });
+  }
+};
+
+//set new password
+const setNewPassword = async (req, res) => {
+  try {
+    const { email,password } = req.body;
+    console.log(email,password);
+    const customers = await Customer.findOne({ email });
+    console.log(customers);
+    if (!customers) {
+      return res.status(401).json({ error: 'No such customer was registered' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    customers.password = hashedPassword;
+		await customers.save();
+    res.status(200).send({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' ,error: error.message });
+  }
+};
 
 
 module.exports = {
@@ -107,4 +141,6 @@ module.exports = {
   getCustomerById,
   createCustomer,
   getPasswordCustomer,
+  resetPassword,
+  setNewPassword,
 };
