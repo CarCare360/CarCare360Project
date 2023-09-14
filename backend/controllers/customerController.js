@@ -29,9 +29,9 @@ const getCustomerById = async (req, res) => {
       return res.status(401).json({ error: 'Invalid password' });
     }
     const token = jwt.sign({customerId: customers._id}, SECRET_KEY, {expiresIn: '1hr'})
-    res.json({message: 'Login successful'})
+    return res.status(201).json({message: 'Login successful'})
   }catch(error){
-    res.status(500).json({ error: 'Error logging in' ,error: error.message});
+    res.status(401).json({ error: 'Error logging in' ,error: error.message});
   }
 
 };
