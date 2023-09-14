@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/DoesNotRememberPassword.css';
+import '../styles/VerifyPassword.css';
 import verify from '../components/images/verifypassword.jpg';
 import swal from 'sweetalert';
 import {
@@ -19,30 +19,37 @@ import {
 } from '@mui/material';
 
 const Login = () => {
-  const [password, setPassword ] = useState('');
-  const [confirm_password, setConfirmPassword ] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm_password, setConfirmPassword] = useState('');
 
   const navigate = useNavigate();
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:4000/api/sendemail/',
-        {
+      if(password === confirm_password){
+        const response = await axios.post('http://localhost:4000/api/password-reset/:id', {
           email,
-        }
-      );
+          password,
+        });
       console.log(response.data);
       if (response.data) {
         localStorage.setItem('token', response.data.token);
-        swal('Password was Sent!','', 'success'); // Show success message
+        swal('Password was Reset!', '', 'success'); // Show success message
         setEmail('');
+        setPassword('');
+        setConfirmPassword('');
         navigate('/login');
         window.location.reload();
       }
+    }
+    else{
+      swal('Passwords do not match!', '', 'error'); // Show success message
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+    }
     } catch (error) {
       console.log(error, 'Login Failed');
     }
@@ -71,7 +78,24 @@ const Login = () => {
                   </div>
                 </Grid>
                 <Grid container spacing={2}>
-                <Grid item xs={12}>
+                  <Grid item xs={12}>
+                    {/* Email */}
+                    <TextField
+                      className='input-text-login'
+                      id='outlined-basic'
+                      label='Email'
+                      variant='outlined'
+                      value={email}
+                      type='text'
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                      size='small'
+                      style={{ width: '80%' }}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     {/* New Password */}
                     <TextField
                       className='input-text-login'
@@ -85,7 +109,6 @@ const Login = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       style={{
                         width: '80%',
-                        marginBottom: '5%',
                         height: '5%',
                       }}
                       required
@@ -102,7 +125,7 @@ const Login = () => {
                       value={confirm_password}
                       autoComplete='current-password'
                       size='small'
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       style={{
                         width: '80%',
                         marginBottom: '5%',

@@ -25,6 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [textInputErrorMessageEmail, setTextInputErrorMessageEmail] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -35,11 +36,10 @@ const Login = () => {
         password,
       });
       if(response.data){
+        setOpen(true);
         localStorage.setItem('token', response.data.token);
         setEmail('');
         setPassword('');
-        setOpen(true);
-        fetchUsers();
         navigate('/AdminDashboard');
         window.location.reload();
 
@@ -71,11 +71,15 @@ const Login = () => {
     const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
 
     // Check if the input matches the pattern or is empty
-    if (emailRegex.test(inputValue) || inputValue === '') {
+    if (emailRegex.test(inputValue) || inputValue !== ' ') {
       setEmail(inputValue);
     }
-  };
+    else{
+      setTextInputErrorMessageEmail('*Please enter a valid email address');
+      
+    }
 
+  };
   return (
     <Container>
       <div className='login__customer__container '>
@@ -108,9 +112,8 @@ const Login = () => {
                       variant='outlined'
                       value={email}
                       type='text'
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
+                      helperText={textInputErrorMessageEmail}
+                      onChange={handleEmailChange}
                       size='small'
                       style={{ width: '80%' }}
                       required
@@ -136,7 +139,7 @@ const Login = () => {
                       required
                     />
                   </Grid>
-                  <Grid item xs={12} style={{ width: '80%' }}>
+                  <Grid item xs={12} style={{ width: '70%' }}>
                     {/* Signup Button */}
                     <div className='login__vehicle__submitbtn'>
                       <Button type='submit' variant='contained'>
@@ -144,13 +147,13 @@ const Login = () => {
                       </Button>
                     </div>
                   </Grid>
-                  <Grid item xs={6} style={{ width: '80%' }}>
+                  <Grid item xs={6} style={{ width: '70%' }}>
                     {/* Forgot Password */}
                     <div className='forgot__password'>
                       <a href='/forgot-password'>Forgot Password?</a>
                     </div>
                   </Grid>
-                  <Grid item xs={6} style={{ width: '80%' }}>
+                  <Grid item xs={6} style={{ width: '70%' }}>
                     {/* Remember Me */}
                     <div className='option_div'>
                       <div className='remember__me'>
@@ -199,7 +202,7 @@ const Login = () => {
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Vehicle Registered Successfully
+          You have successfully logged in!
         </Alert>
       </Snackbar>
     </Container>

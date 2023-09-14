@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/sendemail/',
+        'http://localhost:4000/api/password-reset/',
         {
           email,
         }
@@ -36,9 +36,8 @@ const Login = () => {
       console.log(response.data);
       if (response.data) {
         localStorage.setItem('token', response.data.token);
-        swal('Password was Sent!','', 'success'); // Show success message
+        swal('Reset link was Sent!','', 'success'); // Show success message
         setEmail('');
-        navigate('/login');
         window.location.reload();
       }
     } catch (error) {

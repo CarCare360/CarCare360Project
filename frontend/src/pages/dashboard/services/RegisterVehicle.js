@@ -92,7 +92,7 @@ const RegisterVehicle = () => {
     const pattern = /^[0-9]+(\.[0-9]*)?$/;
 
     // Check if the input matches the pattern or is empty
-    if (pattern.test(inputValue) || inputValue === '') {
+    if (pattern.test(inputValue) || inputValue !== ' ') {
       setLastServiceMileage(inputValue);
     }
   };

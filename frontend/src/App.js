@@ -43,7 +43,7 @@ function App() {
           <Route path='/AdminDashboard/forum' element={<Forum />} />
           <Route path='/AdminDashboard/message-system' element={<MessageSystem />} />
           <Route path='/forgot-password' element={<DoesNotRememberPassword />} />
-          <Route path='/verify-password' element={<VerifyPassword />} />
+          <Route path="/password-reset/:id" element={<VerifyPassword />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
 

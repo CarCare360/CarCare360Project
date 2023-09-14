@@ -21,10 +21,7 @@ import {
 const clientId ='790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com';
 
 const Register = () => {
-  //form validation
-  const [validated, setValidated] = useState(false);
-  // For reCAPTCHA
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
+
   
   const [fName, setFname] = useState('');
   const [lName, setLname] = useState('');
@@ -33,7 +30,8 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [open, setOpen] = React.useState(false);
-  const [error, setErrors] = useState(null);
+  const [textInputErrorMessageTelephone, setTextInputErrorMessageTelephone] =useState(null);
+  const [textInputErrorMessageEmail, setTextInputErrorMessageEmail] = useState(null);
   const navigate = useNavigate();
 
   
@@ -91,8 +89,11 @@ const Register = () => {
     const teleRegex =
       /^\\+[1-9]{1}[0-9]{0,2}-[2-9]{1}[0-9]{2}-[2-9]{1}[0-9]{2}-[0-9]{4}$/;
 
-    if (teleRegex.test(inputValue) || inputValue === '') {
+    if (teleRegex.test(inputValue) || inputValue !== ' ') {
       setPhone_no(inputValue);
+    }
+    else{
+      setTextInputErrorMessageTelephone('*Please enter a valid telephone number');
     }
   };
   const handleClose = (event, reason) => {
@@ -110,10 +111,16 @@ const Register = () => {
     const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
 
     // Check if the input matches the pattern or is empty
-    if (emailRegex.test(inputValue) || inputValue === '') {
+    if (emailRegex.test(inputValue) || inputValue !== ' ') {
       setEmail(inputValue);
     }
+    else{
+      setTextInputErrorMessageEmail('*Please enter a valid email address');
+      
+    }
+
   };
+ 
 
   return (
     <Container>
@@ -194,9 +201,8 @@ const Register = () => {
                       label='Telephone Number'
                       variant='outlined'
                       value={phone_no}
-                      onChange={(e) => {
-                        setPhone_no(e.target.value);
-                      }}
+                      helperText={textInputErrorMessageTelephone}
+                      onChange={handleTelephoneChange}
                       size='small'
                       style={{ width: '80%' }}
                       required
@@ -210,9 +216,8 @@ const Register = () => {
                       label='Email'
                       variant='outlined'
                       value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
+                      helperText={textInputErrorMessageEmail}
+                      onChange={handleEmailChange}
                       size='small'
                       style={{ width: '80%' }}
                       required

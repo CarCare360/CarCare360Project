@@ -7,7 +7,7 @@ import Topbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DateCalendar from './components/DateCalendarComp';
 import BarChart from './components/BarChart';
-
+import RecentServiceTable from './components/RecentServiceTable';
 
 const AdminDashboard = () => {
   return (
@@ -17,12 +17,20 @@ const AdminDashboard = () => {
       <Box sx={{ display: 'flex' }}>
         <Sidebar />
         <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid item xs={12} sm={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={12}>
+              <Card sx={{ maxWidth: 1000, height: 400 }}>
+                <CardContent>
+                  <Typography gutterBottom component='div'>
+                    Recent Booking
+                  </Typography>
+                  <Typography color='text.secondary'>
+                    <RecentServiceTable />
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <Card sx={{ maxWidth: 345, height: 400 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
@@ -34,7 +42,7 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} md={6}>
               <Card sx={{ maxWidth: 500, height: 400 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
