@@ -93,6 +93,7 @@ const resetPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const customers = await Customer.findOne({ email });
+    const name = " "+customers.fName+ " " + customers.lName;
     if (!customers) {
       return res.status(401).json({ error: 'No such customer was registered' });
     }
@@ -106,7 +107,12 @@ const resetPassword = async (req, res) => {
     }
     console.log(token);
     const url = `${process.env.BASE_URL}/password-reset/${customers._id}/`;
-    await sendEmail('Password Reset', url, email, process.env.EMAIL_USER, email);
+    const message = `
+          <h3>Hello ${name} ,</h3>
+          <p>Thank you for contacting Car Care 360,</p>
+          <p>For reset password Click here  ${url}</p>`;
+
+    await sendEmail('Password Reset',message , email, process.env.EMAIL_USER, email);
 
     res
       .status(200)
