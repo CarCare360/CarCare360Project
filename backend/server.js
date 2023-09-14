@@ -4,13 +4,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const ManufacturerRecommendationRoutes = require("./routes/manufacturerRecommendation");
 const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
+const sendEmail = require("./routes/sendEmail");
+const e = require("express");
+// const sendEmail = require("./routes/sendEmail")
 
 // express app
 const app = express();
@@ -26,11 +27,14 @@ app.use((req, res, next) => {
 });
 
 // routes
+
 app.use("/api/manufacturerrecommendations", ManufacturerRecommendationRoutes);
 app.use("/api/registervehicle", RegisterVehicleRoutes);
 app.use("/api/booking", BookingRoute);
 app.use("/api/registercustomer", RegisterCustomerRoutes);
 app.use("/api/logincustomer", LoginCustomerRoutes);
+app.use("/api/sendemail", sendEmail);
+// app.use("/api/sendemail", sendEmail);
 
 // connect to db
 mongoose

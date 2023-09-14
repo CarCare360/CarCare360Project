@@ -27,18 +27,6 @@ const Login = () => {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchUsers();
-  },[]);
-
-  const fetchUsers = () => {
-    axios
-    .get('http://localhost:4000/api/registercustomer/')
-    .then((response) => {
-      console.log(response.data);
-    })
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try{
@@ -159,7 +147,7 @@ const Login = () => {
                   <Grid item xs={6} style={{ width: '80%' }}>
                     {/* Forgot Password */}
                     <div className='forgot__password'>
-                      <a href='#'>Forgot Password?</a>
+                      <a href='/forgot-password'>Forgot Password?</a>
                     </div>
                   </Grid>
                   <Grid item xs={6} style={{ width: '80%' }}>
