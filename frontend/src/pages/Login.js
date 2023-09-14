@@ -35,6 +35,7 @@ const Login = () => {
         email,
         password,
       });
+      console.log(response.data, 'Login Success');
       if(response.data){
         setOpen(true);
         localStorage.setItem('token', response.data.token);
@@ -42,10 +43,13 @@ const Login = () => {
         setPassword('');
         navigate('/AdminDashboard');
         window.location.reload();
-
       }
+
     }catch(error){
-      console.log(error, 'Login Failed');
+      swal('Invalid Credential!','', 'error'); // Show success message
+      setEmail('');
+      setPassword('');
+
     }
   };
   
