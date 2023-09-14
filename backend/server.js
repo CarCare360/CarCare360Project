@@ -11,6 +11,7 @@ const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
+const whatsappController = require("./controllers/whatsappController");
 
 // express app
 const app = express();
@@ -47,3 +48,7 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+  //initiate whatsapp webJS
+whatsappController.initiateWhatsapp();
+

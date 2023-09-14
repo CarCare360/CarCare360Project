@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+const pathPatternsToHideNavbar = [
+  /^\/CustomerDashboard(\/|$)/,
+  /^\/AdminDashboard(\/|$)/,
+];
+
 const MaybeShowNavbarComp = ({ children }) => {
   const location = useLocation();
   const [showNavbar, setShowNavbar] = useState(true);
 
   useEffect(() => {
-    if (location.pathname === '/AdminDashboard' ||location.pathname === '/AdminDashboard/forum' || location.pathname === '/AdminDashboard/register-vehicle' || location.pathname === '/AdminDashboard/manufacturer-recommendation' || location.pathname === '/AdminDashboard/message-system') {
-      setShowNavbar(false);
-    } else {
-      setShowNavbar(true);
-    }
+    const shouldHideNavbar = pathPatternsToHideNavbar.some(pattern =>
+      pattern.test(location.pathname)
+    );
+    setShowNavbar(!shouldHideNavbar);
   }, [location]);
 
   return <>{showNavbar && children}</>;

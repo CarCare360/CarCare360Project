@@ -17,6 +17,10 @@ import MaybeShowNavbarComp from './pages/commons/MaybeShowNavbarComp';
 import MaybeShowFooter from './pages/commons/MaybeShowFooter';
 import Forum from './pages/dashboard/services/Forum';
 import MessageSystem from './pages/dashboard/services/MessageSystem';
+import CustomerDashboard from './pages/customerDash';
+import UserRegVehicle from "./pages/customerDash/services/UserRegVehicle"
+import RegUserBooking from './pages/customerDash/services/RegUserBooking';
+import ManufacturerRecommendationView from './pages/customerDash/services/ManufacturerRecommendation';
 
 library.add(faEnvelope, faKey);
 
@@ -40,6 +44,10 @@ function App() {
           />
           <Route path='/AdminDashboard/forum' element={<Forum />} />
           <Route path='/AdminDashboard/message-system' element={<MessageSystem />} />
+          <Route path='/CustomerDashboard' element={<CustomerDashboard/>}/>
+          <Route path='/CustomerDashboard/register-vehicle' element={<UserRegVehicle />} />
+          <Route path='/CustomerDashboard/booking' element={<RegUserBooking />} />
+          <Route path='/CustomerDashboard/manufacturer-recommendation' element={<ManufacturerRecommendationView />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
 
