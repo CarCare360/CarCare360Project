@@ -15,7 +15,9 @@ import RegisterVehicle from "./pages/dashboard/services/RegisterVehicle";
 import AdminDashboard from "./pages/dashboard/index";
 import MaybeShowNavbarComp from "./pages/commons/MaybeShowNavbarComp";
 import MaybeShowFooter from "./pages/commons/MaybeShowFooter";
-import Forum from "./pages/dashboard/services/Forum";
+import Forum from "./pages/dashboard/services/forum/Forum";
+import Discussion from "./pages/dashboard/services/forum/DiscussionPage";
+
 import MessageSystem from "./pages/dashboard/services/MessageSystem";
 import DoesNotRememberPassword from "./pages/DoesNotRememberPassword";
 import VerifyPassword from "./pages/VerifyPassword";
@@ -47,6 +49,7 @@ function App() {
             element={<ManufacturerRecommendation />}
           />
           <Route path="/AdminDashboard/forum" element={<Forum />} />
+          <Route path="/AdminDashboard/discussion" element={<Discussion />} />
           <Route path="/AdminDashboard/message-system" element={<Chat />} />
           <Route path="/chat-login" element={<ChatLogin />} />
           <Route path="/chat-register" element={<ChatRegister />} />
