@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/DoesNotRememberPassword.css';
-import forgot from '../components/images/forgotpassword.jpg';
+import verify from '../components/images/verifypassword.jpg';
 import swal from 'sweetalert';
 import {
   TextField,
@@ -19,7 +19,9 @@ import {
 } from '@mui/material';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [password, setPassword ] = useState('');
+  const [confirm_password, setConfirmPassword ] = useState('');
+
   const navigate = useNavigate();
 
 
@@ -46,22 +48,6 @@ const Login = () => {
     }
   };
 
-  
-
-  
-
-  const handleEmailChange = (e) => {
-    const inputValue = e.target.value;
-
-    // Regular expression to allow integers, alphabets and special characters
-    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-
-    // Check if the input matches the pattern or is empty
-    if (emailRegex.test(inputValue) || inputValue === '') {
-      setEmail(inputValue);
-    }
-  };
-
   return (
     <Container>
       <div className='forgot__password__container '>
@@ -69,7 +55,7 @@ const Login = () => {
           {/* Left side with register customer image */}
           <Grid item xs={12} md={6}>
             <div className='forgot__password__img'>
-              <img src={forgot}></img>
+              <img src={verify}></img>
             </div>
           </Grid>
 
@@ -81,28 +67,50 @@ const Login = () => {
                 <Grid item xs={12}>
                   {/* Heading */}
                   <div className='forgot__password__heading'>
-                    <h2>Forgot Password</h2>
+                    <h2>Add New Password</h2>
                   </div>
                 </Grid>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    {/* Email */}
+                <Grid item xs={12}>
+                    {/* New Password */}
                     <TextField
                       className='input-text-login'
-                      id='outlined-basic'
-                      label='Email'
+                      id='outlined-password-input'
+                      label='New Password'
                       variant='outlined'
-                      value={email}
-                      type='text'
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
+                      type='password'
+                      value={password}
+                      autoComplete='current-password'
                       size='small'
-                      style={{ width: '80%' }}
+                      onChange={(e) => setPassword(e.target.value)}
+                      style={{
+                        width: '80%',
+                        marginBottom: '5%',
+                        height: '5%',
+                      }}
                       required
                     />
                   </Grid>
-                    
+                  <Grid item xs={12}>
+                    {/* Confirm New Password */}
+                    <TextField
+                      className='input-text-login'
+                      id='outlined-password-input'
+                      label='Confirm New Password'
+                      variant='outlined'
+                      type='password'
+                      value={confirm_password}
+                      autoComplete='current-password'
+                      size='small'
+                      onChange={(e) => setPassword(e.target.value)}
+                      style={{
+                        width: '80%',
+                        marginBottom: '5%',
+                        height: '5%',
+                      }}
+                      required
+                    />
+                  </Grid>
 
                   <Grid item xs={12} style={{ width: '80%' }}>
                     {/* Submit Button */}
@@ -110,14 +118,6 @@ const Login = () => {
                       <Button type='submit' variant='contained'>
                         Submit
                       </Button>
-                    </div>
-                  </Grid>
-                  {/* move to login */}
-                  <Grid>
-                    <div className='go__back'>
-                      <p>
-                        Go back login page <Link to='/verify-password'>Back</Link>
-                      </p>
                     </div>
                   </Grid>
                 </Grid>

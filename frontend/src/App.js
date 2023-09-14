@@ -18,6 +18,7 @@ import MaybeShowFooter from './pages/commons/MaybeShowFooter';
 import Forum from './pages/dashboard/services/Forum';
 import MessageSystem from './pages/dashboard/services/MessageSystem';
 import DoesNotRememberPassword from './pages/DoesNotRememberPassword';
+import VerifyPassword from './pages/VerifyPassword';
 
 library.add(faEnvelope, faKey);
 
@@ -42,6 +43,7 @@ function App() {
           <Route path='/AdminDashboard/forum' element={<Forum />} />
           <Route path='/AdminDashboard/message-system' element={<MessageSystem />} />
           <Route path='/forgot-password' element={<DoesNotRememberPassword />} />
+          <Route path='/verify-password' element={<VerifyPassword />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
 

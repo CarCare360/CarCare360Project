@@ -99,6 +99,9 @@ const createCustomer = async (req, res) => {
   }
 };
 
+
+
+
 module.exports = {
   getCustomers,
   getCustomerById,
