@@ -22,3 +22,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#whatsapp webjs auth files (local Auth)
+\.wwebjs_auth
+\.wwebjs_cache

@@ -6,11 +6,19 @@ const MaybeShowFooter = ({ children }) => {
   const [showFooter, setShowFooter] = useState(true);
 
   useEffect(() => {
-    if (location.pathname === '/AdminDashboard' ||location.pathname === '/AdminDashboard/forum' || location.pathname === '/AdminDashboard/register-vehicle' || location.pathname === '/AdminDashboard/manufacturer-recommendation' || location.pathname === '/AdminDashboard/message-system') {
-      setShowFooter(false);
-    } else {
-      setShowFooter(true);
+    const hideFooterPaths = [
+      /^\/CustomerDashboard(\/|$)/,
+      /^\/AdminDashboard(\/|$)/,
+    ];
+
+    for (const path of hideFooterPaths) {
+      if (path.test(location.pathname)) {
+        setShowFooter(false);
+        return; // Exit the loop early if a match is found
+      }
     }
+
+    setShowFooter(true);
   }, [location]);
 
   return <>{showFooter && children}</>;

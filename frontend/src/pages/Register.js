@@ -71,8 +71,13 @@ const Register = () => {
         navigate('/login');
       })
       .catch((error) => {
-        console.log(error,'Unable to register customer');
-      });
+        swal('Email  is already exist!','', "error"); // Show success message
+        setFname('');
+        setLname('');
+        setAddress('');
+        setPhone_no('');
+        setEmail('');
+        setPassword('');      });
     };
 
   const onSuccess = (res) => {

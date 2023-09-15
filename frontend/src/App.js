@@ -25,6 +25,11 @@ import Chat from "./pages/dashboard/services/messaging/pages/Chat";
 import ChatLogin from "./pages/dashboard/services/messaging/pages/ChatLogin";
 import ChatRegister from "./pages/dashboard/services/messaging/pages/ChatRegister";
 
+import CustomerDashboard from "./pages/customerDash";
+import UserRegVehicle from "./pages/customerDash/services/UserRegVehicle";
+import RegUserBooking from "./pages/customerDash/services/RegUserBooking";
+import ManufacturerRecommendationView from "./pages/customerDash/services/ManufacturerRecommendation";
+
 library.add(faEnvelope, faKey);
 
 function App() {
@@ -58,6 +63,20 @@ function App() {
             element={<DoesNotRememberPassword />}
           />
           <Route path="/password-reset/:id" element={<VerifyPassword />} />
+
+          <Route path="/CustomerDashboard" element={<CustomerDashboard />} />
+          <Route
+            path="/CustomerDashboard/register-vehicle"
+            element={<UserRegVehicle />}
+          />
+          <Route
+            path="/CustomerDashboard/booking"
+            element={<RegUserBooking />}
+          />
+          <Route
+            path="/CustomerDashboard/manufacturer-recommendation"
+            element={<ManufacturerRecommendationView />}
+          />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 

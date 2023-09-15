@@ -73,16 +73,21 @@ const createCustomer = async (req, res) => {
   try {
     const { fName, lName, address, phone_no, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newCustomer = new Customer({
-      fName,
-      lName,
-      address,
-      phone_no,
-      email,
-      password: hashedPassword,
-    });
-    await newCustomer.save();
-    res.status(201).json({ message: 'Customer created successfully' });
+    const customers = await Customer.findOne({ email });
+    if (!customers) {
+      const newCustomer = new Customer({
+        fName,
+        lName,
+        address,
+        phone_no,
+        email,
+        password: hashedPassword,
+      });
+      await newCustomer.save();
+      res.status(201).json({ message: 'Customer created successfully' });
+    } else {
+      return res.status(401).json({ error: 'Customer already exist' });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -93,7 +98,7 @@ const resetPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const customers = await Customer.findOne({ email });
-    const name = " "+customers.fName+ " " + customers.lName;
+    const name = ' ' + customers.fName + ' ' + customers.lName;
     if (!customers) {
       return res.status(401).json({ error: 'No such customer was registered' });
     }
@@ -112,21 +117,29 @@ const resetPassword = async (req, res) => {
           <p>Thank you for contacting Car Care 360,</p>
           <p>For reset password Click here  ${url}</p>`;
 
-    await sendEmail('Password Reset',message , email, process.env.EMAIL_USER, email);
+    await sendEmail(
+      'Password Reset',
+      message,
+      email,
+      process.env.EMAIL_USER,
+      email
+    );
 
     res
       .status(200)
       .send({ message: 'Password reset link sent to your email account' });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' ,error: error.message });
+    res
+      .status(500)
+      .json({ error: 'Internal server error', error: error.message });
   }
 };
 
 //set new password
 const setNewPassword = async (req, res) => {
   try {
-    const { email,password } = req.body;
-    console.log(email,password);
+    const { email, password } = req.body;
+    console.log(email, password);
     const customers = await Customer.findOne({ email });
     console.log(customers);
     if (!customers) {
@@ -134,13 +147,14 @@ const setNewPassword = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     customers.password = hashedPassword;
-		await customers.save();
+    await customers.save();
     res.status(200).send({ message: 'Password updated successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' ,error: error.message });
+    res
+      .status(500)
+      .json({ error: 'Internal server error', error: error.message });
   }
 };
-
 
 module.exports = {
   getCustomers,
