@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useLocation } from 'react-router-dom';
 import swal from 'sweetalert';
 import ReCAPTCHA from 'react-google-recaptcha';
 import {
@@ -15,11 +14,13 @@ import {
 } from 'react-bootstrap';
 
 const Booking = () => {
+    // Get the current URL using the useLocation hook to hide modal in customer dashboard
+    const location = useLocation();
+    const isModalVisible = !location.pathname.startsWith('/CustomerDashboard/');
   //form validation
   const [validated, setValidated] = useState(false);
   // For reCAPTCHA
   const [recaptchaValue, setRecaptchaValue] = useState(null);
-  const captcha = useRef(null);
   //input data
   const [isGuest, setIsGuest] = useState(true);
   const [firstName, setFirstName] = useState('');
@@ -133,35 +134,37 @@ const Booking = () => {
     <section>
       <>
       
-        <Modal show={show} onHide={handleClose} centered>
-          <Modal.Body className='text-center mb-4 mt-4 '>
-            {' '}
-            <Link to='/login'>
-              <Button
-                className='mr-3 mt-3'
-                variant='primary'
-                onClick={handleClose}
-              >
-                Login
+      {isModalVisible && (
+          <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body className='text-center mb-4 mt-4 '>
+              {' '}
+              <Link to='/login'>
+                <Button
+                  className='mr-3 mt-3'
+                  variant='primary'
+                  onClick={handleClose}
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to='/signup'>
+                <Button
+                  className='ml-3 mt-3'
+                  variant='primary'
+                  onClick={handleClose}
+                >
+                  Signup
+                </Button>
+              </Link>
+              <br />
+              or
+              <br />
+              <Button variant='link' onClick={handleClose}>
+                Continue as guest
               </Button>
-            </Link>
-            <Link to='/signup'>
-              <Button
-                className='ml-3 mt-3'
-                variant='primary'
-                onClick={handleClose}
-              >
-                Signup
-              </Button>
-            </Link>
-            <br />
-            or
-            <br />
-            <Button variant='link' onClick={handleClose}>
-              Continue as guest
-            </Button>
-          </Modal.Body>
-        </Modal>
+            </Modal.Body>
+          </Modal>
+        )}
       </>
 
       <Container className='shadow p-3 mb-5 bg-body rounded'>

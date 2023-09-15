@@ -13,6 +13,7 @@ const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
+
 const passwordReset = require("./routes/resetPassword");
 const resetNewPassword = require("./routes/resetNewPassword");
 const userRoutes = require("./routes/userRoutes");
@@ -21,6 +22,9 @@ const forumRoute = require("./routes/forumRoute");
 
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
+
+const whatsappController = require("./controllers/whatsappController");
+
 
 // express app
 const app = express();
@@ -86,3 +90,7 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+  //initiate whatsapp webJS
+whatsappController.initiateWhatsapp();
+
