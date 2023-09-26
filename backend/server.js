@@ -13,13 +13,15 @@ const RegisterVehicleRoutes = require("./routes/registerVehicle");
 const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
+const privateRoute = require("./routes/private");
 
 const passwordReset = require("./routes/resetPassword");
 const resetNewPassword = require("./routes/resetNewPassword");
 const userRoutes = require("./routes/userRoutes");
 const messagesRoute = require("./routes/messagesRoute");
 const forumRoute = require("./routes/forumRoute");
-
+const authentication = require("./routes/authRoutes");
+const  errorHandler = require("./middleware/error");
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
 
@@ -39,6 +41,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Error Handler(should be last piece of middleware)
+app.use(errorHandler);
+
 // routes
 
 app.use("/api/manufacturerrecommendations", ManufacturerRecommendationRoutes);
@@ -52,6 +57,8 @@ app.use("/api/password-reset/:id", resetNewPassword);
 app.use("/api/auth/", userRoutes);
 app.use("/api/messages", messagesRoute);
 app.use("/api/forum", forumRoute);
+app.use("/api/authentication", authentication);
+app.use("/api/private", privateRoute);
 
 // connect to db
 mongoose

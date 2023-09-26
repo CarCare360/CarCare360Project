@@ -105,4 +105,8 @@ exports.resetpassword = async (req, res, next) => {
 const sendToken = (customer, statusCode, res) => {
   const token = customer.getSignedToken();
   res.status(statusCode).json({ success: true, token });
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes

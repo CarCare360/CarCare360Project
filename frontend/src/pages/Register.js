@@ -35,22 +35,22 @@ const Register = () => {
   const navigate = useNavigate();
 
   
-  useEffect(() => {
-    fetchUsers();
-  },[]);
+  // useEffect(() => {
+  //   // fetchUsers();
+  // },[]);
 
-  const fetchUsers = () => {
-    axios
-    .get('http://localhost:4000/api/registercustomer/')
-    .then((response) => {
-      console.log(response.data);
-    })
-  };
+  // // const fetchUsers = () => {
+  // //   axios
+  // //   .get('http://localhost:4000/api/authentication/register')
+  // //   .then((response) => {
+  // //     console.log(response.data);
+  // //   })
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios
-      .post('http://localhost:4000/api/registercustomer/', {
+      .post('http://localhost:4000/api/authentication/register', {
         fName,  
         lName,
         address,
@@ -67,7 +67,7 @@ const Register = () => {
         setEmail('');
         setPassword('');
         setOpen(true);
-        fetchUsers();
+        // fetchUsers();
         navigate('/login');
       })
       .catch((error) => {
