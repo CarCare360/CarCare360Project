@@ -46,6 +46,7 @@ exports.login = async (req, res, next) => {
 
 exports.forgotpassword = async (req, res, next) => {
   const { email } = req.body;
+  console.log(email);
   try {
     const customer = await customerModel.findOne({ email });
     if (!customer) {
@@ -54,6 +55,7 @@ exports.forgotpassword = async (req, res, next) => {
     const resetToken = customer.getResetPasswordToken();
     await customer.save();
     const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`;
+    console.log(resetUrl);
     const message = `
             <h1>Hello, Welcome to Car Care 360 </h1>
             <h2>You have requested a password reset</h2>
@@ -105,8 +107,4 @@ exports.resetpassword = async (req, res, next) => {
 const sendToken = (customer, statusCode, res) => {
   const token = customer.getSignedToken();
   res.status(statusCode).json({ success: true, token });
-<<<<<<< Updated upstream
-};
-=======
-};
->>>>>>> Stashed changes
+}

@@ -9,6 +9,8 @@ exports.protect = async (req, res, next) => {
         req.headers.authorization.startsWith("Bearer") 
     ) {
         token = req.headers.authorization.split(" ")[1];
+        console.log(token);
+        confirm.log("njda");
     }
     if (!token) {
         return next(new ErrorResponse("Not authorized to access this route", 401));
@@ -24,8 +26,4 @@ exports.protect = async (req, res, next) => {
     } catch (error) {
         return next(new ErrorResponse("Not authorized to access this route", 401));
     }
-<<<<<<< Updated upstream
-};
-=======
-};
->>>>>>> Stashed changes
+}
