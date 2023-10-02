@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/password-reset/',
+        'http://localhost:4000/api/authentication/forgotpassword',
         {
           email,
         }

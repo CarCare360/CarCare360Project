@@ -29,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     try {
       if(password === confirm_password){
-        const response = await axios.post('http://localhost:4000/api/password-reset/:id', {
+        const response = await axios.put('http://localhost:4000/api/authentication/resetpassword/:resetToken', {
           email,
           password,
         });
