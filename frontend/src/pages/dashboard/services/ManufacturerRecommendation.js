@@ -56,7 +56,6 @@ const ManufacturerRecommendation = () => {
     );
 
     const manufacturerecommendation = {
-      regNumber,
       chassisFirstCode,
       make,
       model,
@@ -90,7 +89,7 @@ const ManufacturerRecommendation = () => {
     }
 
     if (response.ok) {
-      setRegNumber("");
+      // setRegNumber("");
       setChassisFirstCode("");
       setMake("");
       setModel("");
@@ -108,12 +107,12 @@ const ManufacturerRecommendation = () => {
     }
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
+  // const handleClose = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+  //   setOpen(false);
+  // };
 
   return (
     <>
@@ -134,7 +133,7 @@ const ManufacturerRecommendation = () => {
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={4}>
                       {/* Register Number */}
-                      <Grid item xs={12} md={6}>
+                      {/* <Grid item xs={12} md={6}>
                         <TextField
                           style={{ width: "100%" }}
                           label="Register Number"
@@ -143,7 +142,7 @@ const ManufacturerRecommendation = () => {
                           onChange={(e) => setRegNumber(e.target.value)}
                           required
                         />
-                      </Grid>
+                      </Grid> */}
                       <Grid item xs={12} md={6}>
                         <TextField
                           style={{ width: "100%" }}
@@ -154,7 +153,7 @@ const ManufacturerRecommendation = () => {
                           required
                         />
                       </Grid>
-                      <Grid item xs={12} md={4}>
+                      <Grid item xs={12} md={6}>
                         <TextField
                           style={{ width: "100%" }}
                           label="Make"
@@ -164,7 +163,7 @@ const ManufacturerRecommendation = () => {
                           required
                         />
                       </Grid>
-                      <Grid item xs={12} md={4}>
+                      <Grid item xs={12} md={6}>
                         <TextField
                           style={{ width: "100%" }}
                           label="Model"
@@ -174,7 +173,7 @@ const ManufacturerRecommendation = () => {
                           required
                         />
                       </Grid>
-                      <Grid item xs={12} md={4}>
+                      <Grid item xs={12} md={6}>
                         <FormControl
                           style={{ width: "100%" }}
                           variant="outlined"

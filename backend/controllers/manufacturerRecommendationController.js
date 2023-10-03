@@ -42,7 +42,7 @@ const getManufacturerRecommendationById = async (req, res) => {
 // Create a new manufacturer recommendation
 const createManufacturerRecommendation = async (req, res) => {
   const {
-    regNumber,
+    // regNumber,
     chassisFirstCode,
     make,
     model,
@@ -58,7 +58,7 @@ const createManufacturerRecommendation = async (req, res) => {
   } = req.body;
 
   if (
-    !regNumber ||
+    // !regNumber ||
     !chassisFirstCode ||
     !make ||
     !model ||
@@ -77,7 +77,7 @@ const createManufacturerRecommendation = async (req, res) => {
 
   try {
     const manufacturerRecommendation = await ManufacturerRecommendation.create({
-      regNumber,
+      // regNumber,
       chassisFirstCode,
       make,
       model,

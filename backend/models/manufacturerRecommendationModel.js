@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 
 const manufacturerRecommendationSchema = new Schema(
   {
-    regNumber: {
-      type: String,
-      required: true,
-    },
+    // regNumber: {
+    //   type: String,
+    //   required: true,
+    // },
     chassisFirstCode: {
       type: String,
       required: true,
