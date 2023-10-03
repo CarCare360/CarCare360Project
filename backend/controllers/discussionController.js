@@ -2,12 +2,11 @@ const Discussion = require("../models/discussionModel");
 const mongoose = require("mongoose");
 
 module.exports.createDiscussion = async (req, res) => {
-  const { title} = req.title;
-  const { creator } = req.creator;
-  const { postId } = req.postId;
+  const { title, creator, postId } = req.body;
+
 
   if (!title || !creator || !postId) {
-    return 'Please provide a title, creator and postId' || res.status(400).json({ title, creator, postId });
+    return res.status(400).json({ title, creator, postId });
   }
 
   try {

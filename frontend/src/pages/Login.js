@@ -37,8 +37,8 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:4000/api/authentication/login",
         {
-          email,
-          password,
+          email:email,
+          password:password,
         }
       );
       console.log(response.data, "Login Success");

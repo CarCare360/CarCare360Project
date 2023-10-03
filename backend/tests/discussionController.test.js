@@ -1,8 +1,18 @@
 const discussionController = require('../controllers/discussionController');
 
+test('createDiscussion - should return an error message if inputs are null', async () => {
+    const req = { body: { title: '', creator: '', postId: '' } };
+    const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+    };
 
-test('createDiscussion - should return a error message if inputs are null',async () => {
-    const  discussion = {title  : '',creator: '',postId: ''}
-    const result = await discussionController.createDiscussion(discussion);
-    expect(result).toBe('Please provide a title, creator and postId');
+    await discussionController.createDiscussion(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+        title: '',
+        creator: '',
+        postId: '',
+    });
 });

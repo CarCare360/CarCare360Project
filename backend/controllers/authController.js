@@ -21,11 +21,10 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login =  async(req, res, next) => {
-  const { email } = req.email;
-  const { password } = req.password;
+  const { email, password } = req.body;
 
   if (!email || !password) {
-    return 'Please provide an email and password' || next(new ErrorResponse('Please provide an email and password', 400));
+    return  next(new ErrorResponse('Please provide an email and password', 400));
   }
 
   try {
