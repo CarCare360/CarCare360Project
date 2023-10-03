@@ -1,13 +1,13 @@
-const Post = require("../models/forumPostModel"); // Import the Post model
+const Post = require('../models/forumPostModel'); // Import the Post model
 
 // Create a new post
 module.exports.createPost = async (req, res) => {
-  const { content} = req.content;
-  const { author } = req.author;
-  const { discussionId } = req.discussionId;
+  const { content, author, discussionId } = req.body;
 
   if (!discussionId || !content || !author) {
-    return "Please provide an content, author and discussionId" || res.status(400).json({ content, author, discussionId });
+    return (
+      res.status(400).json({ content, author, discussionId })
+    );
   }
   try {
     const newPost = await Post.create({
@@ -24,7 +24,7 @@ module.exports.createPost = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "An error occurred while creating the post." });
+      .json({ error: 'An error occurred while creating the post.' });
   }
 };
 
@@ -35,7 +35,7 @@ module.exports.getPostsByDiscussion = async (req, res) => {
     const posts = await Post.find({ discussionId });
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while fetching posts." });
+    res.status(500).json({ error: 'An error occurred while fetching posts.' });
   }
 };
 

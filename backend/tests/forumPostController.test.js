@@ -1,8 +1,18 @@
 const forumPostController = require('../controllers/forumPostController');
 
+test('createDiscussion - should return an error message if inputs are null', async () => {
+    const req = { body: { content: '', author: '', discussionId: '' } };
+    const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+    };
 
-test('login - should return a error message if inputs are null',async () => {
-    const  forum = {content  : '',author: '',discussionId: ''}
-    const result = await forumPostController.createPost(forum);
-    expect(result).toBe("Please provide an content, author and discussionId");
+    await forumPostController.createPost(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+        content: '',
+        author: '',
+        discussionId: '',
+    });
 });
