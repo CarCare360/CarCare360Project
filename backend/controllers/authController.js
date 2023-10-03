@@ -20,11 +20,14 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
+exports.login =  async(req, res, next) => {
+  const { email } = req.email;
+  const { password } = req.password;
+
   if (!email || !password) {
-    return next(new ErrorResponse('Please provide an email and password', 400));
+    return 'Please provide an email and password' || next(new ErrorResponse('Please provide an email and password', 400));
   }
+
   try {
     const customer = await customerModel.findOne({ email }).select('+password');
 
@@ -43,6 +46,7 @@ exports.login = async (req, res, next) => {
     });
   }
 };
+
 
 exports.forgotpassword = async (req, res, next) => {
   const { email } = req.body;
