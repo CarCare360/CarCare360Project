@@ -2,9 +2,12 @@ const Post = require("../models/forumPostModel"); // Import the Post model
 
 // Create a new post
 module.exports.createPost = async (req, res) => {
-  const { content, author, discussionId } = req.body;
+  const { content} = req.content;
+  const { author } = req.author;
+  const { discussionId } = req.discussionId;
+
   if (!discussionId || !content || !author) {
-    return res.status(400).json({ content, author, discussionId });
+    return "Please provide an content, author and discussionId" || res.status(400).json({ content, author, discussionId });
   }
   try {
     const newPost = await Post.create({
