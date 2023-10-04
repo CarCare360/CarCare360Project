@@ -27,8 +27,5 @@
     "qrcode-terminal": "^0.12.0",
     "socket.io": "^4.7.2",
     "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_8"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0"
   }
 }

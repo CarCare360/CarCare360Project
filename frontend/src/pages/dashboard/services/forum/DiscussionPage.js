@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Textarea from "@mui/joy/Textarea";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Sidebar from "../../components/Sidebar";
 function DiscussionPage({ match }) {
   const [discussion, setDiscussion] = useState({
     id: "shajdfhjla",
@@ -86,88 +87,99 @@ function DiscussionPage({ match }) {
   // };
 
   return (
-    <DiscussionWrapper>
-      <DiscussionInfo>
-        <DiscussionTitle>Discussion: {discussion.title}</DiscussionTitle>
-        <p>
-          Started by: <span>{discussion.startedBy}</span>{" "}
-        </p>
+    <Container>
+      <SidebarContainer>
+        <Sidebar />
+      </SidebarContainer>
+      <DiscussionWrapper>
+        <DiscussionInfo>
+          <DiscussionTitle>Discussion: {discussion.title}</DiscussionTitle>
+          <p>
+            Started by: <span>{discussion.startedBy}</span>{" "}
+          </p>
 
-        <p>
-          No of Posts: <span>{discussion.numPosts}</span>
-        </p>
-      </DiscussionInfo>
+          <p>
+            No of Posts: <span>{discussion.numPosts}</span>
+          </p>
+        </DiscussionInfo>
 
-      <div>
-        {/* Display discussion posts */}
-        {posts.map((post) => (
-          <PostWrapper key={post.id}>
-            <PostAuthor>
-              <AccountCircleIcon fontSize="large" /> {post.author}
-            </PostAuthor>
-            <PostContent>{post.content}</PostContent>
-            {/* <Upvote>
+        <div>
+          {/* Display discussion posts */}
+          {posts.map((post) => (
+            <PostWrapper key={post.id}>
+              <PostAuthor>
+                <AccountCircleIcon fontSize="large" /> {post.author}
+              </PostAuthor>
+              <PostContent>{post.content}</PostContent>
+              {/* <Upvote>
               <IconButton
-                aria-label="Upvote"
-                onClick={() => handleUpvote(post.id)}
+              aria-label="Upvote"
+              onClick={() => handleUpvote(post.id)}
               >
-                <ThumbUpIcon fontSize="small" />
+              <ThumbUpIcon fontSize="small" />
               </IconButton>
               <h6>{post.upvotes}</h6>
             </Upvote> */}
-          </PostWrapper>
-        ))}
-        <ReplyContainer>
-          <FormControl sx={{ width: "100%" }}>
-            <h5>Add a reply</h5>
-            <Textarea
-              sx={{
-                margin: "0 auto",
-                width: "100%", // Initially set to 100% width
-                "@media screen and (max-width: 768px)": {
-                  padding: "0.4rem",
-                  width: "100%", // Adjust width for smaller screens
-                },
-              }}
-              placeholder="Type your reply here…"
-              value={replyText}
-              onChange={handleChange}
-              minRows={3}
-              endDecorator={
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    gap: "var(--Textarea-paddingBlock)",
-                    pt: "var(--Textarea-paddingBlock)",
-                    borderTop: "1px solid",
-                    borderColor: "divider",
-                    flex: "auto",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    sx={{ ml: "auto" }}
-                    onClick={handleSubmit}
+            </PostWrapper>
+          ))}
+          <ReplyContainer>
+            <FormControl sx={{ width: "100%" }}>
+              <h5>Add a reply</h5>
+              <Textarea
+                sx={{
+                  margin: "0 auto",
+                  width: "100%", // Initially set to 100% width
+                  "@media screen and (max-width: 768px)": {
+                    padding: "0.4rem",
+                    width: "100%", // Adjust width for smaller screens
+                  },
+                }}
+                placeholder="Type your reply here…"
+                value={replyText}
+                onChange={handleChange}
+                minRows={3}
+                endDecorator={
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      gap: "var(--Textarea-paddingBlock)",
+                      pt: "var(--Textarea-paddingBlock)",
+                      borderTop: "1px solid",
+                      borderColor: "divider",
+                      flex: "auto",
+                    }}
                   >
-                    Send
-                  </Button>
-                </Box>
-              }
-            />
-          </FormControl>
-        </ReplyContainer>
-      </div>
-    </DiscussionWrapper>
+                    <Button
+                      variant="contained"
+                      sx={{ ml: "auto" }}
+                      onClick={handleSubmit}
+                    >
+                      Send
+                    </Button>
+                  </Box>
+                }
+              />
+            </FormControl>
+          </ReplyContainer>
+        </div>
+      </DiscussionWrapper>
+    </Container>
   );
 }
 
 export default DiscussionPage;
+const Container = styled.div`
+  display: flex;
+`;
+const SidebarContainer = styled.div`
+  flex: 1;
+`;
 
 const DiscussionWrapper = styled.div`
+  flex: 8;
   background-color: #f7f7f7;
   padding: 40px;
-  margin-top: 40px;
 `;
 
 const DiscussionTitle = styled.h1`

@@ -62,7 +62,10 @@ function App() {
             path="/forgot-password"
             element={<DoesNotRememberPassword />}
           />
-          <Route path="/resetpassword/:resetToken" element={<VerifyPassword />} />
+          <Route
+            path="/resetpassword/:resetToken"
+            element={<VerifyPassword />}
+          />
 
           <Route path="/CustomerDashboard" element={<CustomerDashboard />} />
           <Route
@@ -77,6 +80,12 @@ function App() {
             path="/CustomerDashboard/manufacturer-recommendation"
             element={<ManufacturerRecommendationView />}
           />
+          <Route path="/CustomerDashboard/forum" element={<Forum />} />
+          <Route
+            path="/CustomerDashboard/discussion"
+            element={<Discussion />}
+          />
+          <Route path="/CustomerDashboard/message-system" element={<Chat />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 
