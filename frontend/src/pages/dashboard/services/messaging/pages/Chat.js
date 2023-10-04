@@ -6,6 +6,7 @@ import axios from "axios";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
+import Sidebar from "../../../components/Sidebar";
 import { io } from "socket.io-client";
 
 export default function Chat() {
@@ -73,32 +74,48 @@ export default function Chat() {
 
   return (
     <Container>
-      <div className="container">
-        {isContactsLoaded && (
-          <Contacts
-            contacts={contacts}
-            currentUser={currentUser}
-            changeChat={handleChatChange}
-          />
-        )}
+      <SidebarWrapper>
+        <Sidebar />
+      </SidebarWrapper>
 
-        {isContactsLoaded && isLoaded && currentChat === undefined ? (
-          <Welcome currentUser={currentUser} />
-        ) : (
-          <ChatContainer
-            currentChat={currentChat}
-            currentUser={currentUser}
-            socket={socket}
-          />
-        )}
-      </div>
+      <ChatWrapper>
+        <div className="container">
+          {isContactsLoaded && (
+            <Contacts
+              contacts={contacts}
+              currentUser={currentUser}
+              changeChat={handleChatChange}
+            />
+          )}
+
+          {isContactsLoaded && isLoaded && currentChat === undefined ? (
+            <Welcome currentUser={currentUser} />
+          ) : (
+            <ChatContainer
+              currentChat={currentChat}
+              currentUser={currentUser}
+              socket={socket}
+            />
+          )}
+        </div>
+      </ChatWrapper>
     </Container>
   );
 }
 
+const SidebarWrapper = styled.div`
+  flex: 1;
+`;
+
+const ChatWrapper = styled.div`
+  flex: 8;
+  margin-left: 20px;
+`;
+
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  margin-left: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;

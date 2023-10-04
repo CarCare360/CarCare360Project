@@ -4,50 +4,72 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import EnhancedTable from "./Table";
+import Sidebar from "../../components/Sidebar";
 
 function Forum() {
   return (
-    <>
-      <Container>
-        <div className="create-discussion">
-          <div className="avatar">
-            {" "}
-            <AccountCircle
-              className="avatar-image"
-              style={{ fontSize: "3rem" }}
+    <Wrapper>
+      <SidebarContainer>
+        <Sidebar />
+      </SidebarContainer>
+      <MainContainer>
+        <Container>
+          <div className="create-discussion">
+            <div className="avatar">
+              {" "}
+              <AccountCircle
+                className="avatar-image"
+                style={{ fontSize: "3rem" }}
+              />
+            </div>
+
+            <Textarea
+              sx={{
+                margin: "0 auto",
+                borderRadius: "2rem",
+                padding: "1rem",
+
+                width: "100%", // Initially set to 100% width
+                "@media screen and (max-width: 768px)": {
+                  padding: "0.4rem",
+                  width: "100%", // Adjust width for smaller screens
+                },
+              }}
+              placeholder="Create a new Discussion...."
             />
+            <div className="create-btn">
+              <Button
+                className="button"
+                variant="contained"
+                sx={{ ml: "auto" }}
+              >
+                Create
+              </Button>
+            </div>
           </div>
-
-          <Textarea
-            sx={{
-              margin: "0 auto",
-              borderRadius: "2rem",
-              padding: "1rem",
-
-              width: "100%", // Initially set to 100% width
-              "@media screen and (max-width: 768px)": {
-                padding: "0.4rem",
-                width: "100%", // Adjust width for smaller screens
-              },
-            }}
-            placeholder="Create a new Discussion...."
-          />
-          <div className="create-btn">
-            <Button className="button" variant="contained" sx={{ ml: "auto" }}>
-              Create
-            </Button>
-          </div>
-        </div>
-      </Container>
-      <DiscussionsTable>
-        <EnhancedTable />
-      </DiscussionsTable>
-    </>
+        </Container>
+        <DiscussionsTable>
+          <EnhancedTable />
+        </DiscussionsTable>
+      </MainContainer>
+    </Wrapper>
   );
 }
 
 export default Forum;
 
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const SidebarContainer = styled.div`
+  flex: 2;
+`;
+
+const MainContainer = styled.div`
+  flex: 10;
+  padding: 20px;
+`;
 const DiscussionsTable = styled.div`
   width: 70%;
   margin: 5rem auto 5rem auto;
