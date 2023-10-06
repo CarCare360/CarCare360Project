@@ -14,9 +14,9 @@
 }
 .login__customer__heading{
   margin-left: 10px;
+  margin-top: 5%;
   margin-bottom: 10%;
-  font-size: medium;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .login__customer__griditem {
@@ -35,42 +35,56 @@
   margin-top: 5%;
   size: 20%;
 }
-
-.login__customer__submitbtn {
+.login__customer__form__line{
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 5%;
+
+
+}
+.forgot__password{
+  display: contents;
   justify-content: center;
+  align-items: center;
+  
 }
 .forgot__password a{
   text-decoration: none;
   color: #333;
-  transform: translateX(-24%);
-  margin-left: 80px;
-  margin-left: 33%;
-  display:contents;
-
-}
-.social__icons{
-  margin-top: 10px;
+  display: flex;
   justify-content: left;
 }
 
-.social__icons__login p{
+.remember__me{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.remember__me input{
+  margin-right: 10px;
+}
+
+
+.social__icons__topic{
   display: flex;
   justify-content: center;
-
+  align-items: center;
+  flex-direction: column;
 }
 
-.already__have__an__account p{
+
+
+
+.already__have__an__account {
       color: #333;
-      transform: translateX(-24%);
-      margin-left: 80px;
-      margin-left: 33%;
+      margin-top: 5%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+          
   
 
-}
-.already__have__an__account a{
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-  margin-left: 5px;
 }

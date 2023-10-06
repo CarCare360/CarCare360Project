@@ -10,12 +10,12 @@
     /* top: -9%;
     left: 50%; */
     /* transform: translate(-5%, 5%); */
+    padding: 10% 5% 5% 5%;
     margin: 5%;
   }
   .register__customer__heading{
-    margin-left: 10px;
-    font-size: medium;
-    font-weight: 400;
+    margin-top: 10%;
+    font-weight: 500;
   }
   
   .register__customer__griditem {
@@ -38,28 +38,27 @@
     display: flex;
     justify-content: center;
   }
-  .social__icons{
-    margin-top: 10px;
-    justify-content: left;
-  }
 
-  .social__icons p{
+  .social__icons__topic{
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5%;
   }
 
-  .already__have__an__account p{
-        color: #333;
-        transform: translateX(-24%);
-        margin-left: 80px;
-        margin-left: 33%;
+
+ 
+
+  .already__have__an__account{
+    color: #333;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     
 
 }
-.already__have__an__account a{
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-    margin-left: 5px;
-}
+
   

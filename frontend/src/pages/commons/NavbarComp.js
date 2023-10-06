@@ -42,12 +42,12 @@ function NavbarComp() {
           <Nav className="ml-auto">
             <Link to="/login">
               <Button variant="primary mr-2 mt-auto mb-2 loginBtns">
-                Login
+                LOGIN
               </Button>
             </Link>
             <Link to="/signup">
               <Button variant="primary mr-2 mt-auto mb-2 loginBtns">
-                Signup
+                SIGNUP
               </Button>
             </Link>
           </Nav>
