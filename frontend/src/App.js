@@ -63,7 +63,8 @@ function App() {
             element={<DoesNotRememberPassword />}
           />
           <Route
-            path="/resetpassword/:resetToken"
+            exact
+            path="/passwordreset/:resetToken"
             element={<VerifyPassword />}
           />
 

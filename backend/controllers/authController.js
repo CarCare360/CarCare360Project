@@ -48,6 +48,7 @@ exports.login =  async(req, res, next) => {
 
 
 exports.forgotpassword = async (req, res, next) => {
+
   const { email } = req.body;
   console.log(email);
   try {
@@ -87,9 +88,10 @@ exports.resetpassword = async (req, res, next) => {
     const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
     try {
         const customer = await customerModel.findOne({
-            resetPasswordToken,
-            resetPasswordExpire: { $gt: Date.now() },
+          resetPasswordToken,
+          resetPasswordExpire: { $gt: Date.now() },
         });
+        console.log(customer);
         if (!customer) {
             return next(new ErrorResponse('Invalid Reset Token', 400));
         }

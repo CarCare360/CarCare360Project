@@ -59,11 +59,13 @@ customerSchema.methods.getSignedToken = function () {
 
 customerSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
+  console.log(resetToken);
   this.resetPasswordToken = crypto
   .createHash("sha256")
   .update(resetToken)
   .digest("hex");
-  this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+  console.log(resetToken, this.resetPasswordToken);
+  this.resetPasswordExpire = Date.now() + 40 * (60 * 1000);
   return resetToken;
 };
 module.exports = mongoose.model("customer", customerSchema);

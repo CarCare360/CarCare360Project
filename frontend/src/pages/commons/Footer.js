@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import './Footer.css';
+import '../../styles/Footer.css';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => (
@@ -56,7 +56,7 @@ const Footer = () => (
               </ul>
               <ul className='social-icons'>
                 <a
-                  href='https://www.facebook.com/sample'
+                  href='#'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -65,7 +65,7 @@ const Footer = () => (
                   </i>
                 </a>
                 <a
-                  href='https://www.twitter.com/sample'
+                  href='#'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -74,7 +74,7 @@ const Footer = () => (
                   </i>
                 </a>
                 <a
-                  href='https://www.instagram.com/sample'
+                  href='#'
                   target='_blank'
                   rel='noopener noreferrer'
                 >

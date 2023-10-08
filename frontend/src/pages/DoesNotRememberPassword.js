@@ -5,125 +5,116 @@ import '../styles/DoesNotRememberPassword.css';
 import forgot from '../components/images/forgotpassword.jpg';
 import swal from 'sweetalert';
 import {
-  TextField,
-  Grid,
   Container,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Select,
-  InputAdornment,
+  Row,
+  Col,
+  Form,
+  Grid,
   Button,
-  Alert,
-  Snackbar,
-} from '@mui/material';
+  InputGroup,
+  Modal,
+} from 'react-bootstrap';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
-
-
+  const [validated, setValidated] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        'http://localhost:4000/api/authentication/forgotpassword',
-        {
-          email,
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      setValidated(false);
+
+      e.preventDefault();
+      try {
+        const response = await axios.post(
+          'http://localhost:4000/api/authentication/forgotpassword',
+          {
+            email,
+          }
+        );
+        console.log(response.data);
+        if (response.data) {
+          localStorage.setItem('token', response.data.token);
+          swal('Reset link was Sent!', '', 'success'); // Show success message
+          setEmail('');
+          window.location.reload();
         }
-      );
-      console.log(response.data);
-      if (response.data) {
-        localStorage.setItem('token', response.data.token);
-        swal('Reset link was Sent!','', 'success'); // Show success message
-        setEmail('');
-        window.location.reload();
+      } catch (error) {
+        swal('Invalid Credential!', '', 'error'); // Show success message
       }
-    } catch (error) {
-      console.log(error, 'Login Failed');
     }
   };
 
   
-
-  
-
-  const handleEmailChange = (e) => {
-    const inputValue = e.target.value;
-
-    // Regular expression to allow integers, alphabets and special characters
-    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-
-    // Check if the input matches the pattern or is empty
-    if (emailRegex.test(inputValue) || inputValue === '') {
-      setEmail(inputValue);
-    }
-  };
 
   return (
     <Container>
       <div className='forgot__password__container '>
-        <Grid container spacing={2}>
+        <Row container spacing={2}>
           {/* Left side with register customer image */}
-          <Grid item xs={12} md={6}>
+          <Col item xs={12} md={6}>
             <div className='forgot__password__img'>
               <img src={forgot}></img>
             </div>
-          </Grid>
+          </Col>
 
           {/* Right side with form components */}
-          <Grid item xs={12} md={6}>
+          <Col item xs={12} md={6}>
             {/* Form */}
             <div className='forgot__password__form'>
-              <form onSubmit={handleSubmit}>
-                <Grid item xs={12}>
-                  {/* Heading */}
-                  <div className='forgot__password__heading'>
-                    <h2>Forgot Password</h2>
-                  </div>
-                </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    {/* Email */}
-                    <TextField
-                      className='input-text-login'
-                      id='outlined-basic'
-                      label='Email'
-                      variant='outlined'
-                      value={email}
-                      type='text'
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                      size='small'
-                      style={{ width: '80%' }}
+              {/* Heading */}
+              <div className='forgot__password__heading'>
+                <h2>Forgot Password</h2>
+              </div>
+              <Form
+                noValidate
+                validated={validated}
+                onSubmit={handleSubmit}
+                className='text-left'
+              >
+                <Row className=' pb-2'>
+                  <Form.Group as={Col} controlId='formGridEmail'>
+                    <Form.Label className='d-flex justify-content-start'>
+                      Email
+                    </Form.Label>
+                    <Form.Control
+                      type='email'
+                      pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
+                      placeholder='Enter Email'
                       required
-                    />
-                  </Grid>
-                    
+                      value={email}
+                      width={100}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />{' '}
+                    <Form.Control.Feedback type='invalid'>
+                      *Please enter a valid E-mail
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
 
-                  <Grid item xs={12} style={{ width: '80%' }}>
-                    {/* Submit Button */}
-                    <div className='forgot__password__submitbtn'>
-                      <Button type='submit' variant='contained'>
-                        Submit
-                      </Button>
-                    </div>
-                  </Grid>
-                  {/* move to login */}
-                  <Grid>
-                    <div className='go__back'>
-                      <p>
-                        Go back login page <Link to='/verify-password'>Back</Link>
-                      </p>
-                    </div>
-                  </Grid>
-                </Grid>
-              </form>
+                <div class='container d-flex justify-content-center'>
+                  <Button
+                    variant='primary'
+                    type='submit'
+                    className=' mt-2 justify-content-center'
+                  >
+                    Submit
+                  </Button>
+                </div>
+                {/* move to login */}
+                <div className='go__back'>
+                  <p>
+                    Go back login page <Link to='/verify-password'>Back</Link>
+                  </p>
+                </div>
+              </Form>
             </div>
-          </Grid>
-        </Grid>
+          </Col>
+        </Row>
       </div>
     </Container>
   );

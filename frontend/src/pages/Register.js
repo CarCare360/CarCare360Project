@@ -69,7 +69,6 @@ const Register = () => {
           setPhone_no('');
           setEmail('');
           setPassword('');
-          // fetchUsers();
           navigate('/login');
         })
         .catch((error) => {
@@ -98,11 +97,13 @@ const Register = () => {
         <Row container spacing={2}>
           {/* Left side with register customer image */}
           <Col item xs={12} md={6}>
-            <h2 className='register__customer__heading'>
-              Customer Registration
-            </h2>
-            <div className='register__customer__img'>
-              <img src={register}></img>
+            <div className='register__customer__topic'>
+              <h2 className='register__customer__heading'>
+                Customer Registration
+              </h2>
+              <div className='register__customer__img'>
+                <img src={register}></img>
+              </div>
             </div>
           </Col>
 
@@ -116,8 +117,8 @@ const Register = () => {
                 onSubmit={handleSubmit}
                 className='text-left'
               >
-                <Row className=' pb-2' >
-                  <Form.Group as={Col} controlId='text' item xs={12} md={6} >
+                <Row className=' pb-2'>
+                  <Form.Group as={Col} controlId='text' item xs={12} md={6}>
                     <Form.Label className='d-flex justify-content-start'>
                       First Name
                     </Form.Label>
@@ -134,7 +135,13 @@ const Register = () => {
                       *Please enter your name
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <Form.Group as={Col} controlId='formGridPassword'item xs={12} md={6}>
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridPassword'
+                    item
+                    xs={12}
+                    md={6}
+                  >
                     <Form.Label className='d-flex justify-content-start'>
                       Last Name
                     </Form.Label>
@@ -152,7 +159,13 @@ const Register = () => {
                   </Form.Group>
                 </Row>
                 <Row className=' pb-2'>
-                  <Form.Group as={Col} controlId='formGridAddress' item xs={12} md={6}>
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridAddress'
+                    item
+                    xs={12}
+                    md={6}
+                  >
                     <Form.Label className='d-flex justify-content-start'>
                       Address
                     </Form.Label>
@@ -169,8 +182,14 @@ const Register = () => {
                       *Please enter valiad address
                     </Form.Control.Feedback>
                   </Form.Group>
-              
-                  <Form.Group as={Col} controlId='formGridPassword'item xs={12} md={6}>
+
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridPassword'
+                    item
+                    xs={12}
+                    md={6}
+                  >
                     <Form.Label
                       htmlFor='inlineFormInputGroup'
                       visuallyHidden
