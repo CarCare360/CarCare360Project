@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../styles/login.css';
 import login from '../components/images/login.jpg';
 import swal from 'sweetalert';
+import {gapi} from 'gapi-script';
 
 import { GoogleLogin } from 'react-google-login';
 import {
@@ -18,16 +19,32 @@ import {
 } from 'react-bootstrap';
 
 const clientId =
-  '790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com';
+  '610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com';
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [open, setOpen] = React.useState(false);
-  const [textInputErrorMessageEmail, setTextInputErrorMessageEmail] =
     useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('rememberedEmail');
+    function start(){
+      gapi.client.init({
+        clientId: clientId,
+        scope: ''
+      })
+    };
+    gapi.load('client:auth2', start);
+    if (storedEmail) {
+      setEmail(storedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
 
   const handleLogin = async (e) => {
     const form = e.currentTarget;
@@ -51,6 +68,11 @@ const Login = () => {
         if (response.data) {
           setOpen(true);
           localStorage.setItem('token', response.data.token);
+          if (rememberMe) {
+            localStorage.setItem('rememberedEmail', email);
+          } else {
+            localStorage.removeItem('rememberedEmail');
+          }
           setEmail('');
           setPassword('');
           navigate('/AdminDashboard');
@@ -160,8 +182,12 @@ const Login = () => {
                   </div>
                   {/* Remember Me */}
                   <div className='remember__me'>
-                    <input type='checkbox' />
-                    <span> Remember me</span>
+                    <Form.Check
+                      type='checkbox'
+                      label='Remember me'
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
                   </div>
                 </div>
                 <div className='social__icons__topic' id='signInDutton'>
@@ -182,7 +208,7 @@ const Login = () => {
                 {/* Already have an account */}
                 <div className='already__have__an__account'>
                   <p>
-                  Don't have an account? <Link to="/signup">Create</Link>
+                    Don't have an account? <Link to='/signup'>Create</Link>
                   </p>
                 </div>
               </Form>

@@ -16,7 +16,7 @@ import {
   Modal,
 } from 'react-bootstrap';
 const clientId =
-  '790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com';
+  '610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com';
 
 const Register = () => {
   const [validated, setValidated] = useState(false);
