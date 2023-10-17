@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 const pathPatternsToHideNavbar = [
   /^\/CustomerDashboard(\/|$)/,
   /^\/AdminDashboard(\/|$)/,
+  /^\/MaintananceManagerDashboard(\/|$)/,
 ];
 
 const MaybeShowNavbarComp = ({ children }) => {

@@ -9,6 +9,7 @@ const MaybeShowFooter = ({ children }) => {
     const hideFooterPaths = [
       /^\/CustomerDashboard(\/|$)/,
       /^\/AdminDashboard(\/|$)/,
+      /^\/MaintananceManagerDashboard(\/|$)/,
     ];
 
     for (const path of hideFooterPaths) {

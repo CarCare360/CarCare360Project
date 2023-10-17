@@ -12,7 +12,7 @@ import Booking from "./pages/Booking";
 import PageNotFound from "./pages/PageNotFound";
 import ManufacturerRecommendation from "./pages/dashboard/services/ManufacturerRecommendation";
 import RegisterVehicle from "./pages/dashboard/services/RegisterVehicle";
-import AdminDashboard from "./pages/dashboard/index";
+import MaintananceManagerDashboard from "./pages/dashboard/index";
 import MaybeShowNavbarComp from "./pages/commons/MaybeShowNavbarComp";
 import MaybeShowFooter from "./pages/commons/MaybeShowFooter";
 import Forum from "./pages/dashboard/services/forum/Forum";
@@ -43,19 +43,19 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/MaintananceManagerDashboard" element={<MaintananceManagerDashboard />} />
           <Route path="/service-booking" element={<Booking />} />
           <Route
-            path="/AdminDashboard/register-vehicle"
+            path="/MaintananceManagerDashboard/register-vehicle"
             element={<RegisterVehicle />}
           />
           <Route
-            path="/AdminDashboard/manufacturer-recommendation"
+            path="/MaintananceManagerDashboard/manufacturer-recommendation"
             element={<ManufacturerRecommendation />}
           />
-          <Route path="/AdminDashboard/forum" element={<Forum />} />
-          <Route path="/AdminDashboard/discussion" element={<Discussion />} />
-          <Route path="/AdminDashboard/message-system" element={<Chat />} />
+          <Route path="/MaintananceManagerDashboard/forum" element={<Forum />} />
+          <Route path="/MaintananceManagerDashboard/discussion" element={<Discussion />} />
+          <Route path="/MaintananceManagerDashboard/message-system" element={<Chat />} />
           <Route path="/chat-login" element={<ChatLogin />} />
           <Route path="/chat-register" element={<ChatRegister />} />
           <Route

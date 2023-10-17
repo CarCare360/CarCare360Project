@@ -98,7 +98,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/AdminDashboard');
+              navigate('/MaintananceManagerDashboard');
             }}
           >
             <ListItemButton
@@ -129,7 +129,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/AdminDashboard/register-vehicle');
+              navigate('/MaintananceManagerDashboard/register-vehicle');
             }}
           >
             <ListItemButton
@@ -161,7 +161,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/AdminDashboard/manufacturer-recommendation');
+              navigate('/MaintananceManagerDashboard/manufacturer-recommendation');
             }}
           >
             <ListItemButton
@@ -192,7 +192,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/AdminDashboard/message-system');
+              navigate('/MaintananceManagerDashboard/message-system');
             }}
           >
             <ListItemButton
@@ -223,7 +223,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/AdminDashboard/forum');
+              navigate('/MaintananceManagerDashboard/forum');
             }}
           >
             <ListItemButton

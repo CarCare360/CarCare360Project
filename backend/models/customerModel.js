@@ -33,6 +33,11 @@ const customerSchema = new Schema({
     minlength: 6,
     select: false,
   },
+  role:{
+    type: String,
+    default: "customer",
+  },
+
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 
@@ -52,7 +57,7 @@ customerSchema.methods.matchPasswords = async function (password) {
 };
 
 customerSchema.methods.getSignedToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+  return jwt.sign({role: this.role, email: this.email }, process.env.JWT_SECRET,  {
     expiresIn: process.env.JWT_EXPIRE,
   });
 };

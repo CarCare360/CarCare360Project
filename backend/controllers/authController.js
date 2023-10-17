@@ -111,5 +111,8 @@ exports.resetpassword = async (req, res, next) => {
 
 const sendToken = (customer, statusCode, res) => {
   const token = customer.getSignedToken();
-  res.status(statusCode).json({ success: true, token });
+  res.cookie('token', token, {
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+  });
+  res.status(statusCode).json({ success: true, role: customer.role, token });
 }

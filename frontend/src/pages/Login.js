@@ -30,6 +30,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     const storedEmail = localStorage.getItem('rememberedEmail');
     function start(){
@@ -54,7 +55,7 @@ const Login = () => {
       setValidated(true);
     } else {
       setValidated(false);
-
+  
       e.preventDefault();
       try {
         const response = await axios.post(
@@ -64,7 +65,8 @@ const Login = () => {
             password: password,
           }
         );
-        console.log(response.data, 'Login Success');
+        console.log('Login Success');
+        console.log(response.data);
         if (response.data) {
           setOpen(true);
           localStorage.setItem('token', response.data.token);
@@ -75,16 +77,27 @@ const Login = () => {
           }
           setEmail('');
           setPassword('');
-          navigate('/AdminDashboard');
+  
+          if(response.data.success){
+            if(response.data.role === "admin"){
+              navigate('/AdminDashboard');
+            }else if(response.data.role === "maintanancemanager"){
+              navigate('/MaintananceManagerDashboard');
+            }else{
+              navigate('/CustomerDashboard');
+            }
+          }
+  
           window.location.reload();
         }
       } catch (error) {
-        swal('Invalid Credential!', '', 'error'); // Show success message
+        swal('Invalid Credential!', '', 'error'); // Show error message
         setEmail('');
         setPassword('');
       }
     }
   };
+  
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -114,7 +127,7 @@ const Login = () => {
 
           {/* Right side with form components */}
           <Col item xs={12} md={6}>
-            <h2 className='login__customer__heading'> Customer Login </h2>
+            <h2 data-testid="cypress-title" className='login__customer__heading'> Customer Login </h2>
 
             {/* Form */}
             <div className='login__customer__form'>

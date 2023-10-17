@@ -98,7 +98,7 @@ const Register = () => {
           {/* Left side with register customer image */}
           <Col item xs={12} md={6}>
             <div className='register__customer__topic'>
-              <h2 className='register__customer__heading'>
+              <h2 data-testid="cypress-title" className='register__customer__heading'>
                 Customer Registration
               </h2>
               <div className='register__customer__img'>
@@ -224,7 +224,7 @@ const Register = () => {
                     <Form.Control
                       type='email'
                       pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
-                      placeholder='Enter email'
+                      placeholder='Enter Email'
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
