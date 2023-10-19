@@ -21,24 +21,24 @@ const userRoutes = require("./routes/userRoutes");
 const messagesRoute = require("./routes/messagesRoute");
 const forumRoute = require("./routes/forumRoute");
 const authentication = require("./routes/authRoutes");
-const  errorHandler = require("./middleware/error");
+const errorHandler = require("./middleware/error");
 const e = require("express");
 // const sendEmail = require("./routes/sendEmail")
 
 const whatsappController = require("./controllers/whatsappController");
-
 
 // express app
 const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST", "PUT"],
-  credentials: true,
-
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT"],
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -64,6 +64,7 @@ app.use("/api/messages", messagesRoute);
 app.use("/api/forum", forumRoute);
 app.use("/api/authentication", authentication);
 app.use("/api/private", privateRoute);
+app.use("/api/forum/", forumRoute);
 
 // connect to db
 mongoose
@@ -103,6 +104,5 @@ mongoose
     console.log(error);
   });
 
-  //initiate whatsapp webJS
+//initiate whatsapp webJS
 whatsappController.initiateWhatsapp();
-

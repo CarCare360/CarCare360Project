@@ -12,6 +12,10 @@ const discussionSchema = new Schema(
       type: String,
       ref: "User",
     },
+    lastPostBy: {
+      type: String,
+      ref: "User",
+    },
     posts: [
       {
         type: Schema.Types.ObjectId,

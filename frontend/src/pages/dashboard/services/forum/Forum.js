@@ -1,12 +1,26 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Textarea from "@mui/joy/Textarea";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import EnhancedTable from "./Table";
 import Sidebar from "../../components/Sidebar";
+import axios from "axios";
 
 function Forum() {
+  const [discussionTitle, setDiscussionTitle] = useState("");
+
+  const token = localStorage.getItem("token");
+
+  const handleCreateDiscussion = () => {
+    const response = axios.post(
+      "http://localhost:4000/api/forum/createDiscussion",
+      {
+        title: discussionTitle.trim(),
+        creatorToken: token,
+      }
+    );
+  };
   return (
     <Wrapper>
       <SidebarContainer>
@@ -24,6 +38,7 @@ function Forum() {
             </div>
 
             <Textarea
+              onChange={(e) => setDiscussionTitle(e.target.value)}
               sx={{
                 margin: "0 auto",
                 borderRadius: "2rem",
@@ -42,6 +57,7 @@ function Forum() {
                 className="button"
                 variant="contained"
                 sx={{ ml: "auto" }}
+                onClick={handleCreateDiscussion}
               >
                 Create
               </Button>

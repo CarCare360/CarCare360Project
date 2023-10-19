@@ -24,8 +24,11 @@ const customerSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique:true,
-    match: [ /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, "Please enter a valid e-mail address"],
+    unique: true,
+    match: [
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+      "Please enter a valid e-mail address",
+    ],
   },
   password: {
     type: String,
@@ -33,18 +36,17 @@ const customerSchema = new Schema({
     minlength: 6,
     select: false,
   },
-  role:{
+  role: {
     type: String,
     default: "customer",
   },
 
   resetPasswordToken: String,
   resetPasswordExpire: Date,
-
 });
 
 customerSchema.pre("save", async function (next) {
-  if(!this.isModified("password")){
+  if (!this.isModified("password")) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -57,18 +59,26 @@ customerSchema.methods.matchPasswords = async function (password) {
 };
 
 customerSchema.methods.getSignedToken = function () {
-  return jwt.sign({role: this.role, email: this.email }, process.env.JWT_SECRET,  {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  return jwt.sign(
+    {
+      role: this.role,
+      email: this.email,
+      username: this.fName + " " + this.lName,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRE,
+    }
+  );
 };
 
 customerSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
   console.log(resetToken);
   this.resetPasswordToken = crypto
-  .createHash("sha256")
-  .update(resetToken)
-  .digest("hex");
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
   console.log(resetToken, this.resetPasswordToken);
   this.resetPasswordExpire = Date.now() + 40 * (60 * 1000);
   return resetToken;

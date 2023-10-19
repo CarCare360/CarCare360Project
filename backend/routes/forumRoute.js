@@ -8,13 +8,15 @@ const {
 const {
   createDiscussion,
   updateDiscussion,
+  getDiscussions,
 } = require("../controllers/discussionController");
 
 const router = express.Router();
 
 // Discussion routes
 router.post("/createDiscussion", createDiscussion);
-router.post("/updateDiscussion", updateDiscussion);
+router.patch("/updateDiscussion", updateDiscussion);
+router.get("/getDiscussions", getDiscussions);
 
 // Post routes
 router.get("/getPosts/:discussionId", getPostsByDiscussion);
