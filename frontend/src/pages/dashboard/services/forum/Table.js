@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 
 import { visuallyHidden } from "@mui/utils";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Create dummy data for discussions
 const discussions = [
@@ -174,7 +174,8 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const navigate = useNavigate();
-
+  const currentUrl = useLocation().pathname;
+  const nextUrl = currentUrl.replace("/forum", "/discussion");
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -206,7 +207,7 @@ export default function EnhancedTable() {
     [order, orderBy, page, rowsPerPage]
   );
   const handleClick = () => {
-    navigate("/AdminDashboard/discussion");
+    navigate(nextUrl);
   };
 
   return (
