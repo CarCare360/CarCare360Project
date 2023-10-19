@@ -9,17 +9,24 @@ import axios from "axios";
 
 function Forum() {
   const [discussionTitle, setDiscussionTitle] = useState("");
+  const [refreshTable, setRefreshTable] = useState(false);
 
   const token = localStorage.getItem("token");
 
   const handleCreateDiscussion = () => {
-    const response = axios.post(
-      "http://localhost:4000/api/forum/createDiscussion",
-      {
-        title: discussionTitle.trim(),
-        creatorToken: token,
-      }
-    );
+    try {
+      const response = axios.post(
+        "http://localhost:4000/api/forum/createDiscussion",
+        {
+          title: discussionTitle.trim(),
+          creatorToken: token,
+        }
+      );
+      setDiscussionTitle("");
+      setRefreshTable(!refreshTable);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Wrapper>
@@ -38,6 +45,7 @@ function Forum() {
             </div>
 
             <Textarea
+              value={discussionTitle}
               onChange={(e) => setDiscussionTitle(e.target.value)}
               sx={{
                 margin: "0 auto",
@@ -65,7 +73,7 @@ function Forum() {
           </div>
         </Container>
         <DiscussionsTable>
-          <EnhancedTable />
+          <EnhancedTable key={refreshTable} />
         </DiscussionsTable>
       </MainContainer>
     </Wrapper>

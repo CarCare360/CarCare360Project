@@ -14,49 +14,51 @@ import Paper from "@mui/material/Paper";
 
 import { visuallyHidden } from "@mui/utils";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// Create dummy data for discussions
-const discussions = [
-  {
-    id: 1,
-    discussion: "General Discussion",
-    startedBy: "Ethan James",
-    lastPostBy: "Jackson Michael",
-    numPosts: 7,
-  },
-  {
-    id: 2,
-    discussion: "Best Practices for Customer Engagement",
-    startedBy: "John Doe",
-    lastPostBy: "John Doe",
-    numPosts: 5,
-  },
-  {
-    id: 3,
-    discussion: "Customer Service Queries",
-    startedBy: "Noah Benjamin",
-    lastPostBy: "Christopher Aiden",
-    numPosts: 6,
-  },
-  {
-    id: 4,
-    discussion: "Technical Issues",
-    startedBy: "Oliver Henry",
-    lastPostBy: "Ethan James",
-    numPosts: 8,
-  },
-];
+// // Create dummy data for discussions
+// const discussions = [
+//   {
+//     id: 1,
+//     discussion: "General Discussion",
+//     startedBy: "Ethan James",
+//     lastPostBy: "Jackson Michael",
+//     numPosts: 7,
+//   },
+//   {
+//     id: 2,
+//     discussion: "Best Practices for Customer Engagement",
+//     startedBy: "John Doe",
+//     lastPostBy: "John Doe",
+//     numPosts: 5,
+//   },
+//   {
+//     id: 3,
+//     discussion: "Customer Service Queries",
+//     startedBy: "Noah Benjamin",
+//     lastPostBy: "Christopher Aiden",
+//     numPosts: 6,
+//   },
+//   {
+//     id: 4,
+//     discussion: "Technical Issues",
+//     startedBy: "Oliver Henry",
+//     lastPostBy: "Ethan James",
+//     numPosts: 8,
+//   },
+// ];
 
 const headCells = [
   {
-    id: "discussion",
+    id: "title",
     numeric: false,
     disablePadding: true,
     label: "Discussion",
   },
   {
-    id: "startedBy",
+    id: "creator",
     numeric: false,
     disablePadding: false,
     label: "Started By",
@@ -68,7 +70,7 @@ const headCells = [
     label: "Last Post By",
   },
   {
-    id: "numPosts",
+    id: "posts",
     numeric: true,
     disablePadding: false,
     label: "No of Posts",
@@ -167,11 +169,27 @@ function EnhancedTableToolbar(props) {
 }
 
 export default function EnhancedTable() {
+  const [discussions, setdiscussions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  async function fetchDiscussions() {
+    const response = await axios.get(
+      "http://localhost:4000/api/forum/getDiscussions"
+    );
+    const reversedData = response.data.reverse();
+
+    setdiscussions(reversedData);
+    setIsLoading(false);
+  }
+  useEffect(() => {
+    fetchDiscussions();
+  }, []);
+  console.log(discussions);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const navigate = useNavigate();
   const currentUrl = useLocation().pathname;
@@ -197,86 +215,89 @@ export default function EnhancedTable() {
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - discussions.length) : 0;
-
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(discussions, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const visibleRows = React.useMemo(() => {
+    const sortedData = stableSort(discussions, getComparator(order, orderBy));
+    return sortedData.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+  }, [discussions, order, orderBy, page, rowsPerPage]);
   const handleClick = () => {
     navigate(nextUrl);
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
+    <>
+      {isLoading && <div>Loading...</div>}
+      {!isLoading && (
+        <Box sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <EnhancedTableToolbar />
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size={dense ? "small" : "medium"}
+              >
+                <EnhancedTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                  {visibleRows.map((row, index) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.id}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell
+                        align="left"
+                        style={{ width: "50%" }}
+                        onClick={handleClick}
+                      >
+                        {row.title}
+                      </TableCell>
+                      <TableCell align="left" style={{ width: "20%" }}>
+                        <AccountCircle />
+                        {row.creator}
+                      </TableCell>
+                      <TableCell align="left" style={{ width: "20%" }}>
+                        <AccountCircle />
+                        {row.lastPostBy ? row.lastPostBy : ""}
+                      </TableCell>
+                      <TableCell align="right" style={{ width: "10%" }}>
+                        {row.posts.length}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow
+                      style={{
+                        height: (dense ? 33 : 53) * emptyRows,
+                      }}
+                    >
+                      <TableCell colSpan={4} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* Bottom part of the table */}
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={discussions.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <TableBody>
-              {visibleRows.map((row, index) => (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={row.id}
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell
-                    align="left"
-                    style={{ width: "50%" }}
-                    onClick={handleClick}
-                  >
-                    {row.discussion}
-                  </TableCell>
-                  <TableCell align="left" style={{ width: "20%" }}>
-                    <AccountCircle />
-                    {row.startedBy}
-                  </TableCell>
-                  <TableCell align="left" style={{ width: "20%" }}>
-                    <AccountCircle />
-                    {row.lastPostBy}
-                  </TableCell>
-                  <TableCell align="right" style={{ width: "10%" }}>
-                    {row.numPosts}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={4} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {/* Bottom part of the table */}
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={discussions.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }
