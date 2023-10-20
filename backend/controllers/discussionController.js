@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 module.exports.getDiscussions = async (req, res) => {
   try {
     const discussions = await Discussion.find();
-    console.log(discussions);
     res.status(200).json(discussions);
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -17,7 +16,6 @@ module.exports.createDiscussion = async (req, res) => {
   const { title, creatorToken } = req.body;
   try {
     const decoded = jwt.verify(creatorToken, process.env.JWT_SECRET);
-    console.log(decoded);
     creator = decoded.username;
   } catch (error) {
     console.log(error);
@@ -34,7 +32,6 @@ module.exports.createDiscussion = async (req, res) => {
       lastPostBy: "",
     });
     res.status(201).json({ title, creator });
-    console.log({ title, creator });
   } catch (error) {
     res.status(500).json({
       error: "An error occurred while creating the forum discussion.",

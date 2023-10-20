@@ -1,13 +1,20 @@
-const Post = require('../models/forumPostModel'); // Import the Post model
+const Post = require("../models/forumPostModel"); // Import the Post model
+const Discussion = require("../models/discussionModel"); // Import the Discussion model
+const jwt = require("jsonwebtoken"); // Import jsonwebtoken package
 
 // Create a new post
 module.exports.createPost = async (req, res) => {
-  const { content, author, discussionId } = req.body;
+  const { content, creatorToken, discussionId } = req.body;
+  let author = "";
+  try {
+    const decoded = jwt.verify(creatorToken, process.env.JWT_SECRET);
+    author = decoded.username;
+  } catch (error) {
+    console.log(error);
+  }
 
   if (!discussionId || !content || !author) {
-    return (
-      res.status(400).json({ content, author, discussionId })
-    );
+    return res.status(400).json({ content, author, discussionId });
   }
   try {
     const newPost = await Post.create({
@@ -15,16 +22,21 @@ module.exports.createPost = async (req, res) => {
       content,
       author,
     });
-    console.log({
+
+    await Discussion.findByIdAndUpdate(
       discussionId,
-      content,
-      author,
-    });
+      {
+        $push: { posts: newPost._id }, // Append the new post's ID to the posts array
+        lastPostBy: author, // Update the lastPostBy field
+      },
+      { new: true } // To get the updated discussion object
+    );
+
     res.status(201).json({ discussionId, content, author });
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'An error occurred while creating the post.' });
+      .json({ error: "An error occurred while creating the post." });
   }
 };
 
@@ -35,7 +47,7 @@ module.exports.getPostsByDiscussion = async (req, res) => {
     const posts = await Post.find({ discussionId });
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching posts.' });
+    res.status(500).json({ error: "An error occurred while fetching posts." });
   }
 };
 

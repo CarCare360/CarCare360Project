@@ -5,47 +5,31 @@ import Textarea from "@mui/joy/Textarea";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Sidebar from "../../components/Sidebar";
-function DiscussionPage({ match }) {
-  const [discussion, setDiscussion] = useState({
-    id: "shajdfhjla",
-    title: "Sample Discussion Title",
-    startedBy: "User123",
-    lastPostBy: "User456",
-    numPosts: 5,
-  });
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "User123",
-      content: "This is the first post in the discussion.",
-      upvotes: 0, // Add this field and initialize it to 0
-    },
-    {
-      id: 2,
-      author: "User789",
-      content: "I agree with the previous post.",
-      upvotes: 0,
-    },
-    {
-      id: 3,
-      author: "User123",
-      content: "Here is another response to the discussion.",
-      upvotes: 0,
-    },
-    {
-      id: 4,
-      author: "User456",
-      content: "I have a different point of view.",
-      upvotes: 0,
-    },
-    {
-      id: 5,
-      author: "User789",
-      content: "Let's continue the discussion.",
-      upvotes: 0,
-    },
-  ]);
+function DiscussionPage({ match }) {
+  const url = useLocation();
+  const discussionId = url.pathname.split("/")[3];
+  const discussionDetails = localStorage.getItem("discussion_details");
+  let currentDiscussion = JSON.parse(discussionDetails);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/api/forum/getPosts/${discussionId}`
+        );
+        setPosts(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getPosts();
+  }, [discussionId]);
+
+  const [posts, setPosts] = useState([]);
 
   const [replyText, setReplyText] = useState("");
 
@@ -55,14 +39,37 @@ function DiscussionPage({ match }) {
   };
 
   const handleSubmit = () => {
-    const newPost = {
-      id: posts.length + 1, // Generate a unique ID (you might want to use a more robust method)
-      author: "Me", // Set the author as "Me"
-      content: replyText, // Use the replyText as the content
-      upvotes: 0, // Initialize upvotes to 0
+    // Create a new post object
+    const createPost = async () => {
+      try {
+        const response = await axios.post(
+          `http://localhost:4000/api/forum/createPost`,
+          {
+            content: replyText,
+            discussionId: discussionId,
+            creatorToken: localStorage.getItem("token"),
+          }
+        );
+        const newPost = {
+          id: posts.length + 1,
+          author: response.data.author,
+          content: response.data.content,
+        };
+
+        const updatedPosts = [...posts, newPost];
+        setPosts(updatedPosts);
+        currentDiscussion.posts.push(newPost);
+        currentDiscussion.lastPostBy = newPost.author;
+        localStorage.setItem(
+          "discussion_details",
+          JSON.stringify(currentDiscussion)
+        );
+        setReplyText("");
+      } catch (error) {
+        console.log(error);
+      }
     };
-    const updatedPosts = [...posts, newPost];
-    setPosts(updatedPosts);
+    createPost();
   };
 
   // const handleUpvote = (postId) => {
@@ -93,20 +100,24 @@ function DiscussionPage({ match }) {
       </SidebarContainer>
       <DiscussionWrapper>
         <DiscussionInfo>
-          <DiscussionTitle>Discussion: {discussion.title}</DiscussionTitle>
+          <DiscussionTitle>
+            Discussion: {currentDiscussion.title}
+          </DiscussionTitle>
           <p>
-            Started by: <span>{discussion.startedBy}</span>{" "}
+            Started by: <span>{currentDiscussion.creator}</span>{" "}
           </p>
-
           <p>
-            No of Posts: <span>{discussion.numPosts}</span>
+            Lasy Post by: <span>{currentDiscussion.lastPostBy}</span>
+          </p>
+          <p>
+            No of Posts: <span>{currentDiscussion.posts.length}</span>
           </p>
         </DiscussionInfo>
 
         <div>
           {/* Display discussion posts */}
-          {posts.map((post) => (
-            <PostWrapper key={post.id}>
+          {posts.map((post, i) => (
+            <PostWrapper key={i}>
               <PostAuthor>
                 <AccountCircleIcon fontSize="large" /> {post.author}
               </PostAuthor>

@@ -222,8 +222,10 @@ export default function EnhancedTable() {
       page * rowsPerPage + rowsPerPage
     );
   }, [discussions, order, orderBy, page, rowsPerPage]);
-  const handleClick = () => {
-    navigate(nextUrl);
+  const handleClick = (row) => {
+    const details = JSON.stringify(row);
+    localStorage.setItem("discussion_details", details);
+    navigate(nextUrl + "/" + row._id);
   };
 
   return (
@@ -256,7 +258,9 @@ export default function EnhancedTable() {
                       <TableCell
                         align="left"
                         style={{ width: "50%" }}
-                        onClick={handleClick}
+                        onClick={() => {
+                          handleClick(row);
+                        }}
                       >
                         {row.title}
                       </TableCell>

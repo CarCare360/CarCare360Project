@@ -43,7 +43,10 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/MaintananceManagerDashboard" element={<MaintananceManagerDashboard />} />
+          <Route
+            path="/MaintananceManagerDashboard"
+            element={<MaintananceManagerDashboard />}
+          />
           <Route path="/service-booking" element={<Booking />} />
           <Route
             path="/MaintananceManagerDashboard/register-vehicle"
@@ -53,9 +56,26 @@ function App() {
             path="/MaintananceManagerDashboard/manufacturer-recommendation"
             element={<ManufacturerRecommendation />}
           />
-          <Route path="/MaintananceManagerDashboard/forum" element={<Forum />} />
-          <Route path="/MaintananceManagerDashboard/discussion" element={<Discussion />} />
-          <Route path="/MaintananceManagerDashboard/message-system" element={<Chat />} />
+          <Route
+            path="/MaintananceManagerDashboard/forum"
+            element={<Forum />}
+          />
+          <Route
+            path="/MaintananceManagerDashboard/discussion/:discussionId"
+            element={<Discussion />}
+          />
+          <Route
+            path="/CustomerDashboard/discussion/:discussionId"
+            element={<Discussion />}
+          />
+          <Route
+            path="/MaintananceManagerDashboard/discussion"
+            element={<Discussion />}
+          />
+          <Route
+            path="/MaintananceManagerDashboard/message-system"
+            element={<Chat />}
+          />
           <Route path="/chat-login" element={<ChatLogin />} />
           <Route path="/chat-register" element={<ChatRegister />} />
           <Route
