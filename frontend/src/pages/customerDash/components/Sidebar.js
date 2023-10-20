@@ -15,6 +15,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../../appStore";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const drawerWidth = 300;
 
@@ -254,6 +255,33 @@ export default function Sidebar() {
                 }}
               ></ListItemIcon>
               <ListItemText primary="Forum" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            onClick={() => {
+              localStorage.clear();
+              navigate("/login");
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              ></ListItemIcon>
+              <ListItemText primary="Log out" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
         </List>

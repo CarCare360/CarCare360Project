@@ -1,7 +1,10 @@
 import React from "react";
 import unauthorizedImg from "../components/images/unauthorized.jpg";
+import useAuth from "../hooks/useAuth";
 
 const Unauthorized = () => {
+  const { role } = useAuth();
+  console.log(role);
   return (
     <div>
       <img

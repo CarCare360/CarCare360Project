@@ -62,7 +62,7 @@ function App() {
           {/* Private Routes */}
           <Route element={<PrivateRoutes />}>
             <Route
-              element={<RequireAuth allowedRoles={["maintenance manager"]} />}
+              element={<RequireAuth allowedRoles={["maintenancemanager"]} />}
             >
               {" Maintenance manager specific routes "}
               <Route

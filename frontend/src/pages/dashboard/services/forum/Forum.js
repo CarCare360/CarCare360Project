@@ -4,13 +4,15 @@ import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
 import EnhancedTable from "./Table";
-import Sidebar from "../../components/Sidebar";
+import MaintenanceManagerSidebar from "../../components/Sidebar";
+import CustomerSidebar from "../../../customerDash/components/Sidebar";
 import axios from "axios";
 import useAuth from "../../../../hooks/useAuth";
 
 function Forum() {
   const [discussionTitle, setDiscussionTitle] = useState("");
   const [refreshTable, setRefreshTable] = useState(false);
+  const { role } = useAuth();
 
   const token = localStorage.getItem("token");
 
@@ -32,7 +34,11 @@ function Forum() {
   return (
     <Wrapper>
       <SidebarContainer>
-        <Sidebar />
+        {role === "maintenancemanager" ? (
+          <MaintenanceManagerSidebar />
+        ) : (
+          <CustomerSidebar />
+        )}
       </SidebarContainer>
       <MainContainer>
         <Container>

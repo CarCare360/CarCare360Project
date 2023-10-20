@@ -6,10 +6,12 @@ import axios from "axios";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
-import Sidebar from "../../../components/Sidebar";
+import MaintenanceManagerSidebar from "../../../components/Sidebar";
+import CustomerSidebar from "../../../../customerDash/components/Sidebar";
 import { registerRoute, loginRoute } from "../utils/APIRoutes";
 
 import { io } from "socket.io-client";
+import useAuth from "../../../../../hooks/useAuth";
 
 export default function Chat() {
   const socket = useRef();
@@ -122,10 +124,15 @@ export default function Chat() {
     );
   };
 
+  const { role } = useAuth();
   return (
     <Container>
       <SidebarWrapper>
-        <Sidebar />
+        {role === "maintenancemanager" ? (
+          <MaintenanceManagerSidebar />
+        ) : (
+          <CustomerSidebar />
+        )}
       </SidebarWrapper>
 
       <ChatWrapper>
