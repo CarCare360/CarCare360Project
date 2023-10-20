@@ -6,6 +6,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import { Buffer } from "buffer";
+import useAuth from "../../../../../hooks/useAuth";
 
 function SetAvatar() {
   const api = "https://api.multiavatar.com/45678945";
@@ -13,6 +14,7 @@ function SetAvatar() {
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
+  const { role } = useAuth();
 
   const toastOptions = {
     position: "bottom-right",
@@ -42,6 +44,9 @@ function SetAvatar() {
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem("chat-app-user", JSON.stringify(user));
+        if (role === "maintenanceManager") {
+          navigate("/MaintenanceManagerDashboard/message-system");
+        }
         navigate("/CustomerDashboard/message-system");
       } else {
         toast.error("Error setting avatar. Please try again", toastOptions);

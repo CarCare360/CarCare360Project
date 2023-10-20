@@ -5,6 +5,7 @@ import Textarea from "@mui/joy/Textarea";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Sidebar from "../../components/Sidebar";
+import TopBar from "../../components/Navbar";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -95,6 +96,7 @@ function DiscussionPage({ match }) {
 
   return (
     <Container>
+      <TopBar />
       <SidebarContainer>
         <Sidebar />
       </SidebarContainer>
@@ -181,7 +183,9 @@ function DiscussionPage({ match }) {
 
 export default DiscussionPage;
 const Container = styled.div`
-  display: flex;
+  margin-top: 10px;
+  margin-left: 100px;
+  padding-left: 200px;
 `;
 const SidebarContainer = styled.div`
   flex: 1;
@@ -203,6 +207,7 @@ const DiscussionInfo = styled.div`
   flex-direction: column;
   gap: 10px;
   font-size: 16px;
+  padding-top: 20px;
   width: 70%;
   margin: 0 auto;
   background-color: white;

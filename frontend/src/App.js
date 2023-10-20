@@ -45,10 +45,10 @@ function App() {
           <NavbarComp />
         </MaybeShowNavbarComp>
         <Routes>
-          {/* Public Routes */}
-          <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Register />} />
+          {/* Public Routes */}{" "}
+          <Route key="home" exact path="/" element={<Home />} />
+          <Route key="login" path="/login" element={<Login />} />,
+          <Route key="signup" path="/signup" element={<Register />} />,
           <Route
             path="/forgot-password"
             element={<DoesNotRememberPassword />}
@@ -65,6 +65,7 @@ function App() {
               element={<RequireAuth allowedRoles={["maintenancemanager"]} />}
             >
               {" Maintenance manager specific routes "}
+
               <Route
                 path="/MaintananceManagerDashboard"
                 element={<MaintananceManagerDashboard />}

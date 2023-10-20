@@ -6,6 +6,7 @@ import styled from "styled-components";
 import EnhancedTable from "./Table";
 import MaintenanceManagerSidebar from "../../components/Sidebar";
 import CustomerSidebar from "../../../customerDash/components/Sidebar";
+import TopBar from "../../components/Navbar";
 import axios from "axios";
 import useAuth from "../../../../hooks/useAuth";
 
@@ -33,6 +34,7 @@ function Forum() {
   };
   return (
     <Wrapper>
+      <TopBar />
       <SidebarContainer>
         {role === "maintenancemanager" ? (
           <MaintenanceManagerSidebar />
@@ -90,7 +92,8 @@ function Forum() {
 export default Forum;
 
 const Wrapper = styled.div`
-  display: flex;
+  margin-left: 100px;
+  padding-left: 200px;
 `;
 
 const SidebarContainer = styled.div`
@@ -109,7 +112,7 @@ const DiscussionsTable = styled.div`
 const Container = styled.div`
   background-color: #c9c9c9;
   width: 70%;
-  margin: 5rem auto 5rem auto;
+  margin: 3rem auto 5rem auto;
   border-radius: 2rem;
   padding: 10px 20px 10px 20px;
   .create-discussion {

@@ -5,6 +5,8 @@ import { allUsersRoute, host, getMe } from "../utils/APIRoutes";
 import axios from "axios";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
+import Topbar from "../../../components/Navbar";
+
 import ChatContainer from "../components/ChatContainer";
 import MaintenanceManagerSidebar from "../../../components/Sidebar";
 import CustomerSidebar from "../../../../customerDash/components/Sidebar";
@@ -14,6 +16,7 @@ import { io } from "socket.io-client";
 import useAuth from "../../../../../hooks/useAuth";
 
 export default function Chat() {
+  const { role } = useAuth();
   const socket = useRef();
   const [me, setMe] = useState("");
   const [contacts, setContacts] = useState([]);
@@ -56,7 +59,11 @@ export default function Chat() {
               if (!data.user.isAvatarImageSet) {
                 navigate("/setAvatar");
               } else {
-                navigate("/CustomerDashboard/message-system");
+                if (role === "maintenanceManager") {
+                  navigate("/MaintenanceManagerDashboard/message-system");
+                } else if (role === "customer") {
+                  navigate("/CustomerDashboard/message-system");
+                }
               }
             }
           } else {
@@ -64,7 +71,11 @@ export default function Chat() {
             if (!data.user.isAvatarImageSet) {
               navigate("/setAvatar");
             } else {
-              navigate("/CustomerDashboard/message-system");
+              if (role === "maintenanceManager") {
+                navigate("/MaintenanceManagerDashboard/message-system");
+              } else if (role === "customer") {
+                navigate("/CustomerDashboard/message-system");
+              }
             }
           }
         } catch (error) {
@@ -124,9 +135,10 @@ export default function Chat() {
     );
   };
 
-  const { role } = useAuth();
   return (
     <Container>
+      <Topbar />
+
       <SidebarWrapper>
         {role === "maintenancemanager" ? (
           <MaintenanceManagerSidebar />
@@ -172,7 +184,10 @@ const ChatWrapper = styled.div`
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
-  margin-left: 50px;
+
+  padding-bottom: 40px;
+  margin-left: 100px;
+  padding-left: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
