@@ -6,6 +6,7 @@ import styled from "styled-components";
 import EnhancedTable from "./Table";
 import Sidebar from "../../components/Sidebar";
 import axios from "axios";
+import useAuth from "../../../../hooks/useAuth";
 
 function Forum() {
   const [discussionTitle, setDiscussionTitle] = useState("");

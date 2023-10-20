@@ -251,7 +251,7 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.id}
+                      key={index}
                       sx={{ cursor: "pointer" }}
                     >
                       <TableCell

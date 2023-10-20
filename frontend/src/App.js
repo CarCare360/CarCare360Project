@@ -2,7 +2,8 @@ import "./App.css";
 import Home from "./pages/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import PrivateRoutes from "./utils/ProtectedRoute";
+import RequireAuth from "./utils/RequireAuth";
+import PrivateRoutes from "./utils/PrivateRoutes";
 import Footer from "./pages/commons/Footer";
 import NavbarComp from "./pages/commons/NavbarComp";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
@@ -32,6 +33,7 @@ import CustomerDashboard from "./pages/customerDash";
 import UserRegVehicle from "./pages/customerDash/services/UserRegVehicle";
 import RegUserBooking from "./pages/customerDash/services/RegUserBooking";
 import ManufacturerRecommendationView from "./pages/customerDash/services/ManufacturerRecommendation";
+import Unauthorized from "./pages/Unauthorized";
 
 library.add(faEnvelope, faKey);
 
@@ -43,80 +45,91 @@ function App() {
           <NavbarComp />
         </MaybeShowNavbarComp>
         <Routes>
+          {/* Public Routes */}
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-
+          <Route
+            path="/forgot-password"
+            element={<DoesNotRememberPassword />}
+          />
+          <Route
+            exact
+            path="/passwordreset/:resetToken"
+            element={<VerifyPassword />}
+          />
+          <Route path="/service-booking" element={<Booking />} />
+          {/* Private Routes */}
           <Route element={<PrivateRoutes />}>
             <Route
-              path="/MaintananceManagerDashboard"
-              element={<MaintananceManagerDashboard />}
-            />
-
-            <Route path="/service-booking" element={<Booking />} />
-            <Route
-              path="/MaintananceManagerDashboard/register-vehicle"
-              element={<RegisterVehicle />}
-            />
-            <Route
-              path="/MaintananceManagerDashboard/manufacturer-recommendation"
-              element={<ManufacturerRecommendation />}
-            />
-            <Route
-              path="/MaintananceManagerDashboard/forum"
-              element={<Forum />}
-            />
-            <Route
-              path="/MaintananceManagerDashboard/discussion/:discussionId"
-              element={<Discussion />}
-            />
-            <Route
-              path="/CustomerDashboard/discussion/:discussionId"
-              element={<Discussion />}
-            />
-            <Route
-              path="/MaintananceManagerDashboard/discussion"
-              element={<Discussion />}
-            />
-            <Route
-              path="/MaintananceManagerDashboard/message-system"
-              element={<Chat />}
-            />
+              element={<RequireAuth allowedRoles={["maintenance manager"]} />}
+            >
+              {" Maintenance manager specific routes "}
+              <Route
+                path="/MaintananceManagerDashboard"
+                element={<MaintananceManagerDashboard />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/register-vehicle"
+                element={<RegisterVehicle />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/manufacturer-recommendation"
+                element={<ManufacturerRecommendation />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/forum"
+                element={<Forum />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/discussion/:discussionId"
+                element={<Discussion />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/discussion"
+                element={<Discussion />}
+              />
+              <Route
+                path="/MaintananceManagerDashboard/message-system"
+                element={<Chat />}
+              />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={["customer"]} />}>
+              {" Customer specific routes "}
+              <Route
+                path="/CustomerDashboard/discussion/:discussionId"
+                element={<Discussion />}
+              />
+              <Route
+                path="/CustomerDashboard"
+                element={<CustomerDashboard />}
+              />
+              <Route
+                path="/CustomerDashboard/register-vehicle"
+                element={<UserRegVehicle />}
+              />
+              <Route
+                path="/CustomerDashboard/booking"
+                element={<RegUserBooking />}
+              />
+              <Route
+                path="/CustomerDashboard/manufacturer-recommendation"
+                element={<ManufacturerRecommendationView />}
+              />
+              <Route path="/CustomerDashboard/forum" element={<Forum />} />
+              <Route
+                path="/CustomerDashboard/discussion"
+                element={<Discussion />}
+              />
+              <Route
+                path="/CustomerDashboard/message-system"
+                element={<Chat />}
+              />
+            </Route>
 
             <Route path="/setAvatar" element={<SetAvatar />} />
-            <Route
-              path="/forgot-password"
-              element={<DoesNotRememberPassword />}
-            />
-            <Route
-              exact
-              path="/passwordreset/:resetToken"
-              element={<VerifyPassword />}
-            />
-
-            <Route path="/CustomerDashboard" element={<CustomerDashboard />} />
-            <Route
-              path="/CustomerDashboard/register-vehicle"
-              element={<UserRegVehicle />}
-            />
-            <Route
-              path="/CustomerDashboard/booking"
-              element={<RegUserBooking />}
-            />
-            <Route
-              path="/CustomerDashboard/manufacturer-recommendation"
-              element={<ManufacturerRecommendationView />}
-            />
-            <Route path="/CustomerDashboard/forum" element={<Forum />} />
-            <Route
-              path="/CustomerDashboard/discussion"
-              element={<Discussion />}
-            />
-            <Route
-              path="/CustomerDashboard/message-system"
-              element={<Chat />}
-            />
           </Route>
+          <Route path="/Unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 
