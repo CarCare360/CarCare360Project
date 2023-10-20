@@ -52,9 +52,9 @@ module.exports.getMe = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const myDetails = jwt.verify(token, process.env.JWT_SECRET);
-    const { username } = myDetails;
-    console.log(username);
-    res.status(200).json({ username });
+    console.log(myDetails);
+    const { username, email } = myDetails;
+    res.status(200).json({ username, email });
   } catch (error) {
     console.error(error);
     res.status(401).json({ message: "Unauthorized" });

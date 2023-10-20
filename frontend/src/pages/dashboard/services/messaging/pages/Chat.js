@@ -7,6 +7,8 @@ import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import Sidebar from "../../../components/Sidebar";
+import { registerRoute, loginRoute } from "../utils/APIRoutes";
+
 import { io } from "socket.io-client";
 
 export default function Chat() {
@@ -24,18 +26,58 @@ export default function Chat() {
   useEffect(() => {
     const setUsers = async () => {
       if (!localStorage.getItem("chat-app-user")) {
-        navigate("/chat-login");
-      } else {
+        // navigate("/chat-login");
+        const token = localStorage.getItem("token");
+        const result = await axios.get(
+          "http://localhost:4000/api/messages/getme" + "/" + token
+        );
+        console.log(result.data);
+        const username = result.data.username;
+        const email = result.data.email;
+        const password = "123456";
+
+        // Try logging in
         try {
-          const token = localStorage.getItem("token");
-          const result = await axios.get(
-            "http://localhost:4000/api/messages/getme" + "/" + token
-          );
-          setMe(result.data.username);
-        } catch (error) {}
-        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
-        setIsLoaded(true);
+          const { data } = await axios.post(loginRoute, {
+            username,
+            password,
+          });
+          if (data.status === false) {
+            // If login fails, try registering
+            const { data } = await axios.post(registerRoute, {
+              username,
+              email,
+              password,
+            });
+            if (data.status === true) {
+              localStorage.setItem("chat-app-user", JSON.stringify(data.user));
+              if (!data.user.isAvatarImageSet) {
+                navigate("/setAvatar");
+              } else {
+                navigate("/CustomerDashboard/message-system");
+              }
+            }
+          } else {
+            localStorage.setItem("chat-app-user", JSON.stringify(data.user));
+            if (!data.user.isAvatarImageSet) {
+              navigate("/setAvatar");
+            } else {
+              navigate("/CustomerDashboard/message-system");
+            }
+          }
+        } catch (error) {
+          console.log("Error occured");
+        }
       }
+      try {
+        const token = localStorage.getItem("token");
+        const result = await axios.get(
+          "http://localhost:4000/api/messages/getme" + "/" + token
+        );
+        setMe(result.data.username);
+      } catch (error) {}
+      setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+      setIsLoaded(true);
     };
     setUsers();
   }, [navigate]);

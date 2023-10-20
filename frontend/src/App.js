@@ -77,8 +77,8 @@ function App() {
             path="/MaintananceManagerDashboard/message-system"
             element={<Chat />}
           />
-          <Route path="/chat-login" element={<ChatLogin />} />
-          <Route path="/chat-register" element={<ChatRegister />} />
+          {/* <Route path="/chat-login" element={<ChatLogin />} />
+          <Route path="/chat-register" element={<ChatRegister />} /> */}
           <Route path="/setAvatar" element={<SetAvatar />} />
           <Route
             path="/forgot-password"

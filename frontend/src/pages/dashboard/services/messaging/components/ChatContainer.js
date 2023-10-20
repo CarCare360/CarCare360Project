@@ -82,7 +82,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
               </div>
             </div>
             {/* Logout button */}
-            <Logout />
+            {/* <Logout /> */}
           </div>
           <div className="chat-messages">
             {messages.map((message) => {
