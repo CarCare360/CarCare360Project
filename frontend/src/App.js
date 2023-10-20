@@ -1,6 +1,8 @@
 import "./App.css";
 import Home from "./pages/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import PrivateRoutes from "./utils/ProtectedRoute";
 import Footer from "./pages/commons/Footer";
 import NavbarComp from "./pages/commons/NavbarComp";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
@@ -44,71 +46,77 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route
-            path="/MaintananceManagerDashboard"
-            element={<MaintananceManagerDashboard />}
-          />
-          <Route path="/service-booking" element={<Booking />} />
-          <Route
-            path="/MaintananceManagerDashboard/register-vehicle"
-            element={<RegisterVehicle />}
-          />
-          <Route
-            path="/MaintananceManagerDashboard/manufacturer-recommendation"
-            element={<ManufacturerRecommendation />}
-          />
-          <Route
-            path="/MaintananceManagerDashboard/forum"
-            element={<Forum />}
-          />
-          <Route
-            path="/MaintananceManagerDashboard/discussion/:discussionId"
-            element={<Discussion />}
-          />
-          <Route
-            path="/CustomerDashboard/discussion/:discussionId"
-            element={<Discussion />}
-          />
-          <Route
-            path="/MaintananceManagerDashboard/discussion"
-            element={<Discussion />}
-          />
-          <Route
-            path="/MaintananceManagerDashboard/message-system"
-            element={<Chat />}
-          />
-          {/* <Route path="/chat-login" element={<ChatLogin />} />
-          <Route path="/chat-register" element={<ChatRegister />} /> */}
-          <Route path="/setAvatar" element={<SetAvatar />} />
-          <Route
-            path="/forgot-password"
-            element={<DoesNotRememberPassword />}
-          />
-          <Route
-            exact
-            path="/passwordreset/:resetToken"
-            element={<VerifyPassword />}
-          />
 
-          <Route path="/CustomerDashboard" element={<CustomerDashboard />} />
-          <Route
-            path="/CustomerDashboard/register-vehicle"
-            element={<UserRegVehicle />}
-          />
-          <Route
-            path="/CustomerDashboard/booking"
-            element={<RegUserBooking />}
-          />
-          <Route
-            path="/CustomerDashboard/manufacturer-recommendation"
-            element={<ManufacturerRecommendationView />}
-          />
-          <Route path="/CustomerDashboard/forum" element={<Forum />} />
-          <Route
-            path="/CustomerDashboard/discussion"
-            element={<Discussion />}
-          />
-          <Route path="/CustomerDashboard/message-system" element={<Chat />} />
+          <Route element={<PrivateRoutes />}>
+            <Route
+              path="/MaintananceManagerDashboard"
+              element={<MaintananceManagerDashboard />}
+            />
+
+            <Route path="/service-booking" element={<Booking />} />
+            <Route
+              path="/MaintananceManagerDashboard/register-vehicle"
+              element={<RegisterVehicle />}
+            />
+            <Route
+              path="/MaintananceManagerDashboard/manufacturer-recommendation"
+              element={<ManufacturerRecommendation />}
+            />
+            <Route
+              path="/MaintananceManagerDashboard/forum"
+              element={<Forum />}
+            />
+            <Route
+              path="/MaintananceManagerDashboard/discussion/:discussionId"
+              element={<Discussion />}
+            />
+            <Route
+              path="/CustomerDashboard/discussion/:discussionId"
+              element={<Discussion />}
+            />
+            <Route
+              path="/MaintananceManagerDashboard/discussion"
+              element={<Discussion />}
+            />
+            <Route
+              path="/MaintananceManagerDashboard/message-system"
+              element={<Chat />}
+            />
+
+            <Route path="/setAvatar" element={<SetAvatar />} />
+            <Route
+              path="/forgot-password"
+              element={<DoesNotRememberPassword />}
+            />
+            <Route
+              exact
+              path="/passwordreset/:resetToken"
+              element={<VerifyPassword />}
+            />
+
+            <Route path="/CustomerDashboard" element={<CustomerDashboard />} />
+            <Route
+              path="/CustomerDashboard/register-vehicle"
+              element={<UserRegVehicle />}
+            />
+            <Route
+              path="/CustomerDashboard/booking"
+              element={<RegUserBooking />}
+            />
+            <Route
+              path="/CustomerDashboard/manufacturer-recommendation"
+              element={<ManufacturerRecommendationView />}
+            />
+            <Route path="/CustomerDashboard/forum" element={<Forum />} />
+            <Route
+              path="/CustomerDashboard/discussion"
+              element={<Discussion />}
+            />
+            <Route
+              path="/CustomerDashboard/message-system"
+              element={<Chat />}
+            />
+          </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 

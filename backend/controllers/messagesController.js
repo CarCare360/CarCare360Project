@@ -23,7 +23,6 @@ module.exports.addMessage = async (req, res, next) => {
 module.exports.getAllMessage = async (req, res, next) => {
   try {
     const { from, to } = req.body;
-    console.log(from, to);
     const messages = await messageModel
       .find({
         users: {
@@ -52,7 +51,6 @@ module.exports.getMe = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const myDetails = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(myDetails);
     const { username, email } = myDetails;
     res.status(200).json({ username, email });
   } catch (error) {
