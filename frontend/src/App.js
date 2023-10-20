@@ -24,6 +24,7 @@ import VerifyPassword from "./pages/VerifyPassword";
 import Chat from "./pages/dashboard/services/messaging/pages/Chat";
 import ChatLogin from "./pages/dashboard/services/messaging/pages/ChatLogin";
 import ChatRegister from "./pages/dashboard/services/messaging/pages/ChatRegister";
+import SetAvatar from "./pages/dashboard/services/messaging/pages/SetAvatar";
 
 import CustomerDashboard from "./pages/customerDash";
 import UserRegVehicle from "./pages/customerDash/services/UserRegVehicle";
@@ -78,6 +79,7 @@ function App() {
           />
           <Route path="/chat-login" element={<ChatLogin />} />
           <Route path="/chat-register" element={<ChatRegister />} />
+          <Route path="/setAvatar" element={<SetAvatar />} />
           <Route
             path="/forgot-password"
             element={<DoesNotRememberPassword />}

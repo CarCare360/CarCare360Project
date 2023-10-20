@@ -55,7 +55,7 @@ export default function Chat() {
           setContacts(data.data);
           setIsContactsLoaded(true);
         } else {
-          // navigate("/setAvatar");
+          navigate("/setAvatar");
         }
       }
     };

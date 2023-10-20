@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import loader from "../../../components/images/loader.gif";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,7 +42,7 @@ function SetAvatar() {
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem("chat-app-user", JSON.stringify(user));
-        navigate("/chat");
+        navigate("/CustomerDashboard/message-system");
       } else {
         toast.error("Error setting avatar. Please try again", toastOptions);
       }
@@ -67,9 +66,7 @@ function SetAvatar() {
   return (
     <>
       {isLoading ? (
-        <Container>
-          <img src={loader} alt="loader" className="loader" />
-        </Container>
+        <Container>Please Wait......</Container>
       ) : (
         <Container>
           <div className="title-container">
