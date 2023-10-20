@@ -8,7 +8,7 @@ export default function Welcome({ currentUser }) {
       {/* {Image by freepik} */}
 
       <h1>
-        Welcome, <span>{currentUser.username}</span>
+        Welcome, <span>{currentUser}</span>
       </h1>
       <h3> Please select a chat to Start Messaging. </h3>
     </Container>

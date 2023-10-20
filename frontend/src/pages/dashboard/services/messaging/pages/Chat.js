@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { allUsersRoute, host } from "../utils/APIRoutes";
+import { allUsersRoute, host, getMe } from "../utils/APIRoutes";
 import axios from "axios";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
@@ -11,6 +11,7 @@ import { io } from "socket.io-client";
 
 export default function Chat() {
   const socket = useRef();
+  const [me, setMe] = useState("");
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
@@ -25,6 +26,13 @@ export default function Chat() {
       if (!localStorage.getItem("chat-app-user")) {
         navigate("/chat-login");
       } else {
+        try {
+          const token = localStorage.getItem("token");
+          const result = await axios.get(
+            "http://localhost:4000/api/messages/getme" + "/" + token
+          );
+          setMe(result.data.username);
+        } catch (error) {}
         setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
         setIsLoaded(true);
       }
@@ -47,7 +55,7 @@ export default function Chat() {
           setContacts(data.data);
           setIsContactsLoaded(true);
         } else {
-          navigate("/setAvatar");
+          // navigate("/setAvatar");
         }
       }
     };
@@ -89,7 +97,7 @@ export default function Chat() {
           )}
 
           {isContactsLoaded && isLoaded && currentChat === undefined ? (
-            <Welcome currentUser={currentUser} />
+            <Welcome currentUser={me} />
           ) : (
             <ChatContainer
               currentChat={currentChat}

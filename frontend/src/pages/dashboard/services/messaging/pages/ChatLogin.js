@@ -43,7 +43,7 @@ function ChatLogin() {
 
       if (data.status === true) {
         localStorage.setItem("chat-app-user", JSON.stringify(data.user));
-        navigate("/AdminDashboard/message-system");
+        navigate("/MaintenanceManagerDashboard/message-system");
       }
     }
   };

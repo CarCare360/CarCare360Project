@@ -1,4 +1,5 @@
 const messageModel = require("../models/messageModel");
+const jwt = require("jsonwebtoken");
 
 module.exports.addMessage = async (req, res, next) => {
   try {
@@ -40,5 +41,22 @@ module.exports.getAllMessage = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+};
+
+module.exports.getMe = async (req, res, next) => {
+  try {
+    const token = req.params.token;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const myDetails = jwt.verify(token, process.env.JWT_SECRET);
+    const { username } = myDetails;
+    console.log(username);
+    res.status(200).json({ username });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Unauthorized" });
   }
 };

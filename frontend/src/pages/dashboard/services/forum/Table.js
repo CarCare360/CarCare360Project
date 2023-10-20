@@ -184,7 +184,6 @@ export default function EnhancedTable() {
   useEffect(() => {
     fetchDiscussions();
   }, []);
-  console.log(discussions);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");
   const [page, setPage] = React.useState(0);

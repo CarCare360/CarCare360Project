@@ -26,7 +26,7 @@ function ChatRegister() {
 
   useEffect(() => {
     if (localStorage.getItem("chat-app-user")) {
-      navigate("/AdminDashboard/message-system");
+      navigate("/MaintananceManagerDashboard/message-system");
     }
   }, []);
   const handleSubmit = async (e) => {
