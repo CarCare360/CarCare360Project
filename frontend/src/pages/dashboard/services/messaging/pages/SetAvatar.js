@@ -32,7 +32,6 @@ function SetAvatar() {
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
-      toast.error("Please select an avatar", toastOptions);
     } else {
       const user = await JSON.parse(localStorage.getItem("chat-app-user"));
       const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
@@ -48,8 +47,6 @@ function SetAvatar() {
           navigate("/MaintenanceManagerDashboard/message-system");
         }
         navigate("/CustomerDashboard/message-system");
-      } else {
-        toast.error("Error setting avatar. Please try again", toastOptions);
       }
     }
   };
@@ -57,11 +54,15 @@ function SetAvatar() {
     const tempFn = async () => {
       const data = [];
       for (let i = 0; i < 4; i++) {
-        const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}`
-        );
-        const buffer = new Buffer(image.data);
-        data.push(buffer.toString("base64"));
+        try {
+          const image = await axios.get(
+            `${api}/${Math.round(Math.random() * 1000)}`
+          );
+          const buffer = new Buffer(image.data);
+          await data.push(buffer.toString("base64"));
+        } catch (error) {
+          console.log(error);
+        }
       }
       setAvatars(data);
       setIsLoading(false);
