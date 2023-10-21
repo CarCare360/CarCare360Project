@@ -48,9 +48,10 @@ exports.scheduledetails = async (req, res, next) => {
 
   exports.recentschedule = async (req, res, next) => {
     try {
+      
       // Fetch recent booking data from the MongoDB collection, sorted by selectedDate in descending order
       const recentBookingData = await bookingModel
-        .find({}, '_id, firstName, lastName,serviceType,')
+        .find({}, '_id, firstName, lastName,serviceType,status')
         .sort({ selectedDate: -1 }) // Sort in descending order based on selectedDate
         .limit(5); // Limit to the most recent 5 bookings (adjust the number as needed)
   
