@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
   isGuest: Boolean,
@@ -13,9 +13,9 @@ const bookingSchema = new mongoose.Schema({
   serviceType: String,
   selectedDate: String,
   preferredTime: String,
-  lastUpdateDate: { type: Date, default: Date.now },
+  status: String,
 
 });
 
-const bookingModel = mongoose.model('bookings', bookingSchema);
+const bookingModel = mongoose.model("bookings", bookingSchema);
 module.exports = bookingModel;

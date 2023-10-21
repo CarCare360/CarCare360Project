@@ -1,4 +1,4 @@
-const bookingModel = require("../models/bookingModel");
+const bookingModel = require('../models/bookingModel');
 
 exports.barchartdetails = async (req, res, next) => {
   try {
@@ -35,33 +35,34 @@ exports.barchartdetails = async (req, res, next) => {
 };
 
 exports.scheduledetails = async (req, res, next) => {
-    try {
-      const bookingData = await bookingModel.find({}, 'selectedDate email serviceType firstName lastName');
-  
-      res.status(200).json({ bookingData });
-    } catch (error) {
-      console.error('Error fetching booking data:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
+  try {
+    const bookingData = await bookingModel.find(
+      {},
+      'selectedDate email serviceType firstName lastName'
+    );
 
+    res.status(200).json({ bookingData });
+  } catch (error) {
+    console.error('Error fetching booking data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-  exports.recentschedule = async (req, res, next) => {
-    try {
-      
-      // Fetch recent booking data from the MongoDB collection, sorted by selectedDate in descending order
-      const recentBookingData = await bookingModel
-        .find({}, '_id, firstName, lastName,serviceType,status')
-        .sort({ selectedDate: -1 }) // Sort in descending order based on selectedDate
-        .limit(5); // Limit to the most recent 5 bookings (adjust the number as needed)
-  
-      res.status(200).json({ recentBookingData });
-    } catch (error) {
-      console.error('Error fetching recent booking data:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
-  
+exports.recentschedule = async (req, res, next) => {
+  try {
+    // Fetch recent booking data from the MongoDB collection, sorted by selectedDate in descending order
+    const recentBookingData = await bookingModel
+      .find({}, '_id, firstName, lastName,serviceType,status,lastUpdate')
+      .sort({ selectedDate: -1 }) // Sort in descending order based on selectedDate
+      .limit(5); // Limit to the most recent 5 bookings (adjust the number as needed)
+
+    res.status(200).json({ recentBookingData });
+  } catch (error) {
+    console.error('Error fetching recent booking data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 // Helper function to get the day of the week from a date string
 function getDayOfWeek(dateString) {
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
