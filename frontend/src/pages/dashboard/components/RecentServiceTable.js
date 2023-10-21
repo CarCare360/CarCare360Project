@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -23,26 +23,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }));
 
-function createData(id, name, description, status, update) {
-  return { id, name, description, status, update };
-}
+function RecentServiceTable() {
+  const [rows, setRows] = useState([]);
 
-const rows = [
-  createData("VN-12456", "Jenny Deo", "Engine oil Change", "DONE", "Aug 12, 2023"),
-  createData("VN-12457", "Maria Michel", "Replace Tyre", "PROGRESS", "Aug 14, 2023"),
-  createData('VN-12458', "David Grey", "Replace Pad Set" ,"ON HOLD",     "Aug 11, 2023"),
-  createData('VN-12459', "Stella Johson", "Full Service", "REJECTED", "Aug 10, 2023"),
-  createData('VN-12460', "Willon Clark", "Full Service", "PROGRESS", "Aug 10, 2023"),
+  useEffect(() => {
+    // Fetch data from your backend API
+    fetch('YOUR_BACKEND_API_ENDPOINT')
+      .then((response) => response.json())
+      .then((data) => {
+        // Update the component state with the fetched data
+        setRows(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); // Empty dependency array ensures that this effect runs once on mount
 
-];
-
-export default function RecentServiceTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -72,3 +73,5 @@ export default function RecentServiceTable() {
     </TableContainer>
   );
 }
+
+export default RecentServiceTable;
