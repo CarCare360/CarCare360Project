@@ -13,6 +13,7 @@ const bookingSchema = new mongoose.Schema({
   serviceType: String,
   selectedDate: String,
   preferredTime: String,
+  status: String,
 });
 
 const bookingModel = mongoose.model("bookings", bookingSchema);
