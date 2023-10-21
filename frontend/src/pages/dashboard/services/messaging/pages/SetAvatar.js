@@ -6,6 +6,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import { Buffer } from "buffer";
+import useAuth from "../../../../../hooks/useAuth";
 
 function SetAvatar() {
   const api = "https://api.multiavatar.com/45678945";
@@ -13,6 +14,7 @@ function SetAvatar() {
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
+  const { role } = useAuth();
 
   const toastOptions = {
     position: "bottom-right",
@@ -30,7 +32,6 @@ function SetAvatar() {
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
-      toast.error("Please select an avatar", toastOptions);
     } else {
       const user = await JSON.parse(localStorage.getItem("chat-app-user"));
       const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
@@ -42,9 +43,10 @@ function SetAvatar() {
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem("chat-app-user", JSON.stringify(user));
+        if (role === "maintenanceManager") {
+          navigate("/MaintenanceManagerDashboard/message-system");
+        }
         navigate("/CustomerDashboard/message-system");
-      } else {
-        toast.error("Error setting avatar. Please try again", toastOptions);
       }
     }
   };
@@ -52,11 +54,15 @@ function SetAvatar() {
     const tempFn = async () => {
       const data = [];
       for (let i = 0; i < 4; i++) {
-        const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}`
-        );
-        const buffer = new Buffer(image.data);
-        data.push(buffer.toString("base64"));
+        try {
+          const image = await axios.get(
+            `${api}/${Math.round(Math.random() * 1000)}`
+          );
+          const buffer = new Buffer(image.data);
+          await data.push(buffer.toString("base64"));
+        } catch (error) {
+          console.log(error);
+        }
       }
       setAvatars(data);
       setIsLoading(false);
@@ -108,7 +114,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 3rem;
-  background-color: #131324;
+  background-color: #3498db;
   height: 100vh;
   width: 100vw;
 

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../styles/login.css';
-import login from '../components/images/login.jpg';
-import swal from 'sweetalert';
-import {gapi} from 'gapi-script';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../styles/login.css";
+import login from "../components/images/login.jpg";
+import swal from "sweetalert";
+import { gapi } from "gapi-script";
 
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from "react-google-login";
 import {
   Container,
   Row,
@@ -16,38 +16,39 @@ import {
   Button,
   InputGroup,
   Modal,
-} from 'react-bootstrap';
+} from "react-bootstrap";
+import { data } from "./dashboard/components/BarChart";
 
 const clientId =
-  '610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com';
+  "610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com";
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [open, setOpen] = React.useState(false);
-    useState(null);
+  useState(null);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
-    const storedEmail = localStorage.getItem('rememberedEmail');
-    function start(){
+    const storedEmail = localStorage.getItem("rememberedEmail");
+    function start() {
       gapi.client.init({
         clientId: clientId,
-        scope: ''
-      })
-    };
-    gapi.load('client:auth2', start);
+        scope: "",
+      });
+    }
+    gapi.load("client:auth2", start);
     if (storedEmail) {
       setEmail(storedEmail);
       setRememberMe(true);
     }
   }, []);
 
-
   const handleLogin = async (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
@@ -55,173 +56,180 @@ const Login = () => {
       setValidated(true);
     } else {
       setValidated(false);
-  
+
       e.preventDefault();
       try {
         const response = await axios.post(
-          'http://localhost:4000/api/authentication/login',
+          "http://localhost:4000/api/authentication/login",
           {
             email: email,
             password: password,
           }
         );
-        console.log('Login Success');
+        console.log("Login Success");
         console.log(response.data);
         if (response.data) {
           setOpen(true);
-          localStorage.setItem('token', response.data.token);
+          localStorage.setItem("token", response.data.token);
           if (rememberMe) {
-            localStorage.setItem('rememberedEmail', email);
+            localStorage.setItem("rememberedEmail", email);
           } else {
-            localStorage.removeItem('rememberedEmail');
+            localStorage.removeItem("rememberedEmail");
           }
-          setEmail('');
-          setPassword('');
-  
-          if(response.data.success){
-            if(response.data.role === "admin"){
-              navigate('/AdminDashboard');
-            }else if(response.data.role === "maintanancemanager"){
-              navigate('/MaintananceManagerDashboard');
-            }else{
-              navigate('/CustomerDashboard');
+          setEmail("");
+          setPassword("");
+          if (response.data.success) {
+            console.log(response.data.role);
+            if (response.data.role === "admin") {
+              navigate("/AdminDashboard");
+            } else if (response.data.role == "maintenancemanager") {
+              navigate("/MaintananceManagerDashboard");
+            } else {
+              navigate("/CustomerDashboard");
             }
           }
-  
-          window.location.reload();
+        } else {
+          swal("Invalid Credential!", "", "error"); // Show error message
+          setEmail("");
+          setPassword("");
         }
       } catch (error) {
-        swal('Invalid Credential!', '', 'error'); // Show error message
-        setEmail('');
-        setPassword('');
+        swal("Invalid Credential!", "", "error"); // Show error message
+        setEmail("");
+        setPassword("");
       }
     }
   };
-  
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
 
   const onSuccess = (res) => {
-    console.log('LOGIN SUCCESS! Current user: ', res.profileobj);
+    console.log("LOGIN SUCCESS! Current user: ", res.profileobj);
   };
 
   const onFailure = (res) => {
-    console.log('LOGIN FAILED! res: ', res);
+    console.log("LOGIN FAILED! res: ", res);
   };
 
   return (
     <Container>
-      <div className='login__customer__container '>
+      <div className="login__customer__container ">
         <Row container spacing={2}>
           {/* Left side with register customer image */}
           <Col item xs={12} md={6}>
-            <div className='login__customer__img'>
+            <div className="login__customer__img">
               <img src={login}></img>
             </div>
           </Col>
 
           {/* Right side with form components */}
           <Col item xs={12} md={6}>
-            <h2 data-testid="cypress-title" className='login__customer__heading'> Customer Login </h2>
+            <h2
+              data-testid="cypress-title"
+              className="login__customer__heading"
+            >
+              {" "}
+              Customer Login{" "}
+            </h2>
 
             {/* Form */}
-            <div className='login__customer__form'>
+            <div className="login__customer__form">
               <Form
                 noValidate
                 validated={validated}
                 onSubmit={handleLogin}
-                className='text-left'
+                className="text-left"
               >
-                <Row className=' pb-2'>
-                  <Form.Group as={Col} controlId='formGridEmail'>
-                    <Form.Label className='d-flex justify-content-start'>
+                <Row className=" pb-2">
+                  <Form.Group as={Col} controlId="formGridEmail">
+                    <Form.Label className="d-flex justify-content-start">
                       Email
                     </Form.Label>
                     <Form.Control
-                      type='email'
-                      pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
-                      placeholder='Enter Email'
+                      type="email"
+                      pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                      placeholder="Enter Email"
                       required
                       value={email}
                       width={100}
                       onChange={(e) => setEmail(e.target.value)}
-                    />{' '}
-                    <Form.Control.Feedback type='invalid'>
+                    />{" "}
+                    <Form.Control.Feedback type="invalid">
                       *Please enter a valid E-mail
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
 
-                <Row className=' pb-2'>
-                  <Form.Group as={Col} controlId='formGridpassword'>
-                    <Form.Label className='d-flex justify-content-start'>
+                <Row className=" pb-2">
+                  <Form.Group as={Col} controlId="formGridpassword">
+                    <Form.Label className="d-flex justify-content-start">
                       Password
                     </Form.Label>
                     <Form.Control
-                      type='password'
+                      type="password"
                       required
                       minLength={6}
                       maxLength={20}
                       value={password}
                       width={100}
-                      placeholder='Enter Password'
+                      placeholder="Enter Password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Form.Control.Feedback type='invalid'>
+                    <Form.Control.Feedback type="invalid">
                       *Please enter valid password above 6 characters
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
 
-                <div class='container d-flex justify-content-center'>
+                <div class="container d-flex justify-content-center">
                   <Button
-                    variant='primary'
-                    type='submit'
-                    className=' mt-2 justify-content-center'
+                    variant="primary"
+                    type="submit"
+                    className=" mt-2 justify-content-center"
                   >
                     LOGIN
                   </Button>
                 </div>
-                <div className='login__customer__form__line'>
-                  <div className='forgot__password'>
+                <div className="login__customer__form__line">
+                  <div className="forgot__password">
                     <p>
-                      <Link to='/forgot-password'>Forgot Password?</Link>
+                      <Link to="/forgot-password">Forgot Password?</Link>
                     </p>
                   </div>
                   {/* Remember Me */}
-                  <div className='remember__me'>
+                  <div className="remember__me">
                     <Form.Check
-                      type='checkbox'
-                      label='Remember me'
+                      type="checkbox"
+                      label="Remember me"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
                   </div>
                 </div>
-                <div className='social__icons__topic' id='signInDutton'>
+                <div className="social__icons__topic" id="signInDutton">
                   <p> or Sign Up Using</p>
 
                   {/* Google Signup Button */}
                   <GoogleLogin
-                    className='google__login'
+                    className="google__login"
                     clientId={clientId}
-                    buttonText='Sign in with Google'
+                    buttonText="Sign in with Google"
                     onSuccess={onSuccess}
                     onFailure={onFailure}
-                    cookiePolicy={'single_host_origin'}
+                    cookiePolicy={"single_host_origin"}
                     isSignedIn={true}
                   />
                 </div>
 
                 {/* Already have an account */}
-                <div className='already__have__an__account'>
+                <div className="already__have__an__account">
                   <p>
-                    Don't have an account? <Link to='/signup'>Create</Link>
+                    Don't have an account? <Link to="/signup">Create</Link>
                   </p>
                 </div>
               </Form>
