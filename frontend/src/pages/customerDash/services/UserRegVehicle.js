@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import '../../../styles/registervehicle.css';
 import { Box } from '@mui/material';
 import Topbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import registerVehicle from '../../../components/images/registerVehicle.jpg';
+import axios from 'axios';
 import {
   TextField,
   Grid,
@@ -20,6 +21,7 @@ import {
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import useAuth from '../../../hooks/useAuth';
 
 const UserRegVehicle = () => {
   const [registerNumber, setRegisterNumber] = useState('');
@@ -30,51 +32,57 @@ const UserRegVehicle = () => {
   const [fuelType, setFuelType] = useState('');
   const [lastServiceMileage, setLastServiceMileage] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [userData,setUserData]=useState(useAuth()); //getting current loggedin user data
+  const [customerID,setCustomerID] = useState(userData.id);
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(
-      registerNumber,
-      chassisFirstCode,
-      make,
-      model,
-      lastServiceDate.format('YYYY-MM-DD'),
-      fuelType,
-      lastServiceMileage
-    );
+
     const vehicle = {
       registerNumber,
       chassisFirstCode,
       make,
       model,
-      lastServiceDate: lastServiceDate.format('YYYY-MM-DD'),
+      lastServiceDate: lastServiceDate.format("YYYY-MM-DD"),
       fuelType,
       lastServiceMileage,
+      customerID,
     };
-    const response = await fetch('api/registervehicle/', {
-      method: 'POST',
-      body: JSON.stringify(vehicle),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    console.log(customerID)
 
-    const json = await response.json();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/registervehicle",
+        vehicle,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
 
-    if (!response.ok) {
-      console.log(json);
-      console.log('Error Registering the vehicle');
-    }
+      if (response) {
 
-    if (response.ok) {
-      setRegisterNumber('');
-      setChasisFirstcode('');
-      setMake('');
-      setModel('');
-      setLastServiceDate(dayjs());
-      setFuelType('');
-      setLastServiceMileage(0);
-      setOpen(true);
+        setRegisterNumber("");
+        setChasisFirstcode("");
+        setMake("");
+        setModel("");
+        setLastServiceDate(dayjs());
+        setFuelType("");
+        setLastServiceMileage(0);
+        setOpen(true);
+        setCustomerID(userData.id);
+      } else {
+        const json = response.json();
+        console.log(json);
+        console.log("Error Registering the vehicle");
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("An error occurred:", error);
     }
   };
 

@@ -46,6 +46,7 @@ const createVehicle = async (req, res) => {
     lastServiceDate,
     fuelType,
     lastServiceMileage,
+    customerID,
   } = req.body;
   if (
     !registerNumber ||
@@ -54,7 +55,8 @@ const createVehicle = async (req, res) => {
     !model ||
     !lastServiceDate ||
     !fuelType ||
-    !lastServiceMileage
+    !lastServiceMileage ||
+    !customerID
   ) {
     return res.status(400).json({
       registerNumber,
@@ -64,6 +66,7 @@ const createVehicle = async (req, res) => {
       lastServiceDate,
       fuelType,
       lastServiceMileage,
+      customerID,
     });
   }
 
@@ -76,12 +79,15 @@ const createVehicle = async (req, res) => {
       lastServiceDate,
       fuelType,
       lastServiceMileage,
+      customerID,
     });
     res.status(201).json(vehicle);
   } catch {
     res.status(500).json({ error: "While creating the document" });
   }
 };
+
+
 
 module.exports = {
   getVehicles,
