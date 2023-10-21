@@ -44,7 +44,7 @@ exports.scheduledetails = async (req, res, next) => {
   try {
     const bookingData = await bookingModel.find(
       {},
-      'selectedDate email serviceType firstName lastName'
+      'firstName lastName email serviceType selectedDate   '
     );
 
     res.status(200).json({ bookingData });
@@ -56,11 +56,10 @@ exports.scheduledetails = async (req, res, next) => {
 
 exports.recentschedule = async (req, res, next) => {
   try {
-    // Fetch recent booking data from the MongoDB collection, sorted by selectedDate in descending order
     const recentBookingData = await bookingModel
       .find({}, '_id firstName lastName serviceType status lastUpdate')
-      .sort({ lastUpdate: -1 }) // Sort in descending order based on lastUpdate
-      .limit(5); // Limit to the most recent 5 bookings (adjust the number as needed)
+      .sort({ lastUpdate: -1 }) 
+      .limit(5); 
 
     res.status(200).json({ recentBookingData });
   } catch (error) {

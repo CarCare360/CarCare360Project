@@ -253,7 +253,7 @@ export default function Sidebar() {
             sx={{ display: "block" }}
             onClick={() => {
               localStorage.clear();
-              navigate("/login");
+              navigate("/");
             }}
           >
             <ListItemButton

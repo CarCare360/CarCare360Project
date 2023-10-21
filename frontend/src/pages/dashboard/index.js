@@ -31,7 +31,7 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Card sx={{ maxWidth: 600, height: 500 }}>
+              <Card sx={{ maxWidth: 500, height: 400 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
                     Schedule Calendar
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Card sx={{ maxWidth: 500, height: 500 }}>
+              <Card sx={{ maxWidth: 500, height: 400 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
                     Statastics of Customers
