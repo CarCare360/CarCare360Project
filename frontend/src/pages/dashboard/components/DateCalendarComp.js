@@ -1,20 +1,57 @@
-import * as React from 'react';
-import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+// Import necessary libraries
+import React, { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-export default function DateCalendarComp() {
-  const [value, setValue] = React.useState(dayjs('2022-04-17'));
+const BookingCalendar = () => {
+  const [bookingDates, setBookingDates] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBookingData()
+      .then((data) => {
+        console.log('Booking Data:', data);
+        setBookingDates(data.dates || []);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching booking data:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  const fetchBookingData = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:4000/api/components/scheduledate'
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const localizer = momentLocalizer(moment);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DateCalendar', 'DateCalendar']}>
-        <DemoItem>
-          <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} />
-        </DemoItem>
-      </DemoContainer>
-    </LocalizationProvider>
+    <div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <Calendar
+          localizer={localizer}
+          events={bookingDates.map((booking) => ({
+            start: new Date(booking.selectedDate),
+            title: `Name: ${booking.firstName} ${booking.lastName}, Email: ${booking.email}, Service Type: ${booking.serviceType}`,
+          }))}
+          startAccessor='start'
+          style={{ height: 400 }}
+        />
+      )}
+    </div>
   );
-}
+};
+
+export default BookingCalendar;

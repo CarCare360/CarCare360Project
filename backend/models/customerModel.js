@@ -61,6 +61,7 @@ customerSchema.methods.matchPasswords = async function (password) {
 customerSchema.methods.getSignedToken = function () {
   return jwt.sign(
     {
+      id: this._id,
       role: this.role,
       email: this.email,
       username: this.fName + " " + this.lName,
