@@ -14,6 +14,7 @@ const BookingRoute = require("./routes/booking");
 const RegisterCustomerRoutes = require("./routes/registerCustomer");
 const LoginCustomerRoutes = require("./routes/loginCustomer");
 const privateRoute = require("./routes/private");
+const MailingRoute = require("./routes/mailingRoute");
 
 const passwordReset = require("./routes/resetPassword");
 const resetNewPassword = require("./routes/resetNewPassword");
@@ -65,6 +66,7 @@ app.use("/api/forum", forumRoute);
 app.use("/api/authentication", authentication);
 app.use("/api/private", privateRoute);
 app.use("/api/forum/", forumRoute);
+app.use("/api/mailing/", MailingRoute);
 
 // connect to db
 mongoose

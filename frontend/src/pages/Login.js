@@ -84,6 +84,8 @@ const Login = () => {
               navigate("/AdminDashboard");
             } else if (response.data.role == "maintenancemanager") {
               navigate("/MaintananceManagerDashboard");
+            } else if (response.data.role == "marketingmanager") {
+              navigate("/sendEmail");
             } else {
               navigate("/CustomerDashboard");
             }
