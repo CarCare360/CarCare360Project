@@ -19,7 +19,7 @@ const AdminDashboard = () => {
         <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={12}>
-              <Card sx={{ maxWidth: 1000, height: 400 }}>
+              <Card sx={{ maxWidth: 1100, height: 400 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
                     Recent Booking
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Card sx={{ maxWidth: 500, height: 400 }}>
+              <Card sx={{ maxWidth: 500, height: 500 }}>
                 <CardContent>
                   <Typography gutterBottom component='div'>
                     Statastics of Customers

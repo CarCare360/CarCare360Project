@@ -33,11 +33,11 @@ function RecentServiceTable() {
 
   useEffect(() => {
     // Fetch data from your backend API
-    fetch('YOUR_BACKEND_API_ENDPOINT')
+    fetch('http://localhost:4000/api/components/recentschedule')  // Replace with your actual backend endpoint
       .then((response) => response.json())
       .then((data) => {
-        // Update the component state with the fetched data
-        setRows(data);
+        // Assuming your backend returns an array of recent bookings under the 'recentBookingData' key
+        setRows(data.recentBookingData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -50,22 +50,22 @@ function RecentServiceTable() {
         <TableHead>
           <TableRow>
             <StyledTableCell>Service ID</StyledTableCell>
-            <StyledTableCell align="right">Customer</StyledTableCell>
-            <StyledTableCell align="right">Service Description</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Last Update</StyledTableCell>
+            <StyledTableCell align="left">Customer</StyledTableCell>
+            <StyledTableCell align="left">Service Description</StyledTableCell>
+            <StyledTableCell align="left">Status</StyledTableCell>
+            <StyledTableCell align="left">Last Update</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <StyledTableRow key={row.id}>
+            <StyledTableRow key={row._id}> {/* Assuming the ID is stored in the _id field */}
               <StyledTableCell component="th" scope="row">
-                {row.id}
+                {row._id}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.name}</StyledTableCell>
-              <StyledTableCell align="right">{row.description}</StyledTableCell>
-              <StyledTableCell align="right">{row.status}</StyledTableCell>
-              <StyledTableCell align="right">{row.update}</StyledTableCell>
+              <StyledTableCell align="left">{`${row.firstName} ${row.lastName}`}</StyledTableCell>
+              <StyledTableCell align="left">{row.serviceType}</StyledTableCell>
+              <StyledTableCell align="left">{row.status}</StyledTableCell>
+              <StyledTableCell align="left">{row.lastUpdate}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

@@ -20,5 +20,5 @@ export default function BarChart() {
     return data;
   };
 
-  return <Chart chartType='Bar' width='100%' height='320px' data={chartData} />;
+  return <Chart chartType='Bar' width='100%' height='350px' data={chartData} />;
 }

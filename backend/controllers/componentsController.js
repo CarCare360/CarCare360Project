@@ -3,7 +3,7 @@ const bookingModel = require('../models/bookingModel');
 exports.barchartdetails = async (req, res, next) => {
   try {
     // Fetch customer count data from the MongoDB collection
-    const bookingData = await bookingModel.find({}, 'selectedDate email');
+    const bookingData = await bookingModel.find({}, 'selectedDate');
 
     // Format the data to match the structure expected by the chart
     const chartData = [['Days', 'Customer']];
@@ -11,18 +11,16 @@ exports.barchartdetails = async (req, res, next) => {
 
     bookingData.forEach((booking) => {
       const dayOfWeek = getDayOfWeek(booking.selectedDate);
-      const email = booking.email;
 
-      // Generate a unique key for each day and email combination
-      const key = `${dayOfWeek}_${email}`;
+      // Generate a unique key for each day
+      const key = `${dayOfWeek}`;
 
-      // Increment the customer count for the day and email combination
+      // Increment the customer count for the day
       customerCounts[key] = (customerCounts[key] || 0) + 1;
     });
 
     // Convert the customerCounts object to the chartData array
-    Object.entries(customerCounts).forEach(([key, count]) => {
-      const [dayOfWeek, email] = key.split('_');
+    Object.entries(customerCounts).forEach(([dayOfWeek, count]) => {
       chartData.push([dayOfWeek, count]);
     });
 
@@ -33,6 +31,14 @@ exports.barchartdetails = async (req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const date = new Date(dateString);
+  const dayIndex = date.getDay();
+  return daysOfWeek[dayIndex];
+}
+
 
 exports.scheduledetails = async (req, res, next) => {
   try {
@@ -52,8 +58,8 @@ exports.recentschedule = async (req, res, next) => {
   try {
     // Fetch recent booking data from the MongoDB collection, sorted by selectedDate in descending order
     const recentBookingData = await bookingModel
-      .find({}, '_id, firstName, lastName,serviceType,status,lastUpdate')
-      .sort({ selectedDate: -1 }) // Sort in descending order based on selectedDate
+      .find({}, '_id firstName lastName serviceType status lastUpdate')
+      .sort({ lastUpdate: -1 }) // Sort in descending order based on lastUpdate
       .limit(5); // Limit to the most recent 5 bookings (adjust the number as needed)
 
     res.status(200).json({ recentBookingData });
@@ -63,10 +69,5 @@ exports.recentschedule = async (req, res, next) => {
   }
 };
 
-// Helper function to get the day of the week from a date string
-function getDayOfWeek(dateString) {
-  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  const date = new Date(dateString);
-  const dayIndex = date.getDay();
-  return daysOfWeek[dayIndex];
-}
+
+

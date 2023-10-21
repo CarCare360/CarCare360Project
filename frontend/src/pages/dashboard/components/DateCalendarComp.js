@@ -1,3 +1,4 @@
+// Import necessary libraries
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -19,7 +20,7 @@ const BookingCalendar = () => {
         setLoading(false);
       });
   }, []);
-  
+
   const fetchBookingData = async () => {
     try {
       const response = await fetch(
@@ -41,17 +42,11 @@ const BookingCalendar = () => {
       ) : (
         <Calendar
           localizer={localizer}
-          events={bookingDates.map((booking) => {
-            console.log('Selected Date:', booking.selectedDate);
-            return {
-              start: new Date(booking.selectedDate),
-              end: new Date(booking.selectedDate),
-              title: `Name: ${booking.firstName} ${booking.lastName}, Email: ${booking.email}, Service Type: ${booking.serviceType}`,
-            };
-          })}
-          
+          events={bookingDates.map((booking) => ({
+            start: new Date(booking.selectedDate),
+            title: `Name: ${booking.firstName} ${booking.lastName}, Email: ${booking.email}, Service Type: ${booking.serviceType}`,
+          }))}
           startAccessor='start'
-          endAccessor='end'
           style={{ height: 400 }}
         />
       )}
