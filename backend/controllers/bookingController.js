@@ -74,9 +74,6 @@ const bookAService = async (req, res) => {
           ⏰ Time: ${preferredTime} \nThank you!
     We are waiting for you!`;
     whatsappController.sendWAppMsg(mobileNumber, msgBody);
-    for (let i = 0; i < 50; i++) {
-      whatsappController.sendWAppMsg("742965778", "👽HI Nisal👽");
-    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "While creating the document" });
