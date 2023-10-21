@@ -36,7 +36,9 @@ import CustomerDashboard from "./pages/customerDash";
 import UserRegVehicle from "./pages/customerDash/services/UserRegVehicle";
 import RegUserBooking from "./pages/customerDash/services/RegUserBooking";
 import ManufacturerRecommendationView from "./pages/customerDash/services/ManufacturerRecommendation";
+import SendEmail from "./pages/SendEmail";
 import Unauthorized from "./pages/Unauthorized";
+import CreateGroups from "./pages/CreateGroups";
 
 library.add(faEnvelope, faKey);
 
@@ -132,6 +134,24 @@ function App() {
               <Route
                 path="/CustomerDashboard/message-system"
                 element={<Chat />}
+              />
+            </Route>
+
+            {/* Marketing manager specific routes */}
+            <Route
+              element={<RequireAuth allowedRoles={["marketingmanager"]} />}
+            >
+              {" Marketing manager specific routes "}
+
+              <Route
+                key="sendemail"
+                path="/sendEmail"
+                element={<SendEmail />}
+              />
+              <Route
+                key="createmailgroups"
+                path="/createMailGroups"
+                element={<CreateGroups />}
               />
             </Route>
 

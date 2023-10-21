@@ -13,6 +13,8 @@ const Home = () => {
       navigate("/customerDashboard");
     } else if (role === "maintenancemanager") {
       navigate("/MaintananceManagerDashboard");
+    } else if (role === "marketingmanager") {
+      navigate("/sendEmail");
     }
   }, []);
   return (
