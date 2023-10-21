@@ -14,6 +14,8 @@ const bookingSchema = new mongoose.Schema({
   selectedDate: String,
   preferredTime: String,
   status: String,
+  lastUpdate: { type: Date, default: Date.now }
+
 
 });
 
