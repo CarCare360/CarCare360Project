@@ -1,57 +1,104 @@
-// Import necessary libraries
-import React, { useEffect, useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import * as React from 'react';
+import dayjs from 'dayjs';
+import Badge from '@mui/material/Badge';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 
-const BookingCalendar = () => {
-  const [bookingDates, setBookingDates] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ServerDay(props) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
 
-  useEffect(() => {
-    fetchBookingData()
-      .then((data) => {
-        console.log('Booking Data:', data);
-        setBookingDates(data.dates || []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching booking data:', error);
-        setLoading(false);
-      });
-  }, []);
+  const isSelected =
+    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
 
-  const fetchBookingData = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:4000/api/components/scheduledate'
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const localizer = momentLocalizer(moment);
+  const isScheduled = highlightedDays.indexOf(dayjs(day.date()).date()) >= 0;
 
   return (
-    <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <Calendar
-          localizer={localizer}
-          events={bookingDates.map((booking) => ({
-            start: new Date(booking.selectedDate),
-            title: `Name: ${booking.firstName} ${booking.lastName}, Email: ${booking.email}, Service Type: ${booking.serviceType}`,
-          }))}
-          startAccessor='start'
-          style={{ height: 400 }}
-        />
-      )}
-    </div>
+    <Badge
+      key={props.day.toString()}
+      overlap="circular"
+      badgeContent={undefined} // Remove the 🌚 badge
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      style={{
+        borderRadius: isScheduled ? '100%' : isSelected ? '100%' : '0', // Round the selected date
+        backgroundColor: isSelected ? '#1E88E5' : isScheduled ? '#1E88E5' : 'transparent', // Adjust the color value here
+      }}
+    >
+      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+    </Badge>
   );
-};
+}
 
-export default BookingCalendar;
+export default function DateCalendarServerRequest() {
+  const requestAbortController = React.useRef(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [highlightedDays, setHighlightedDays] = React.useState([]);
+
+  const fetchHighlightedDays = () => {
+    const controller = new AbortController();
+
+    fetch('http://localhost:4000/api/components/scheduledate', {
+      method: 'GET',
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(({ bookingData }) => {
+        const daysToHighlight = bookingData.map((booking) =>
+          dayjs(booking.selectedDate).date()
+        );
+
+        setHighlightedDays(daysToHighlight);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') {
+          throw error;
+        }
+      });
+
+    requestAbortController.current = controller;
+  };
+
+  React.useEffect(() => {
+    fetchHighlightedDays();
+    return () => requestAbortController.current?.abort();
+  }, []);
+
+  const handleMonthChange = () => {
+    if (requestAbortController.current) {
+      requestAbortController.current.abort();
+    }
+
+    setIsLoading(true);
+    setHighlightedDays([]);
+    fetchHighlightedDays();
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateCalendar
+        loading={isLoading}
+        onMonthChange={handleMonthChange}
+        renderLoading={() => <DayCalendarSkeleton />}
+        slots={{
+          day: ServerDay,
+        }}
+        slotProps={{
+          day: {
+            highlightedDays,
+          },
+        }}
+      />
+    </LocalizationProvider>
+  );
+}

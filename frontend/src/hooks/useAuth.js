@@ -3,11 +3,12 @@ import jwtDecode from "jwt-decode";
 const useAuth = () => {
   const token = localStorage.getItem("token");
   if (!token) {
-    return { username: "", email: "", role: "" };
+    return { id:"",role:"", email:"",username:"" };
   }
   const decodedToken = jwtDecode(token);
-  const { username, email, role } = decodedToken;
-  return { username, email, role };
+
+  const { id,role, email,username} = decodedToken;
+  return { id,role, email,username };
 };
 
 export default useAuth;

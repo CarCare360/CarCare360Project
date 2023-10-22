@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../../styles/registervehicle.css";
 import { Box } from "@mui/material";
 import Topbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import registerVehicle from "../../../components/images/registerVehicle.jpg";
+import axios from "axios";
 import {
   TextField,
   Grid,
@@ -20,7 +21,7 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 
 const UserRegVehicle = () => {
   const [registerNumber, setRegisterNumber] = useState("");
@@ -31,6 +32,8 @@ const UserRegVehicle = () => {
   const [fuelType, setFuelType] = useState("");
   const [lastServiceMileage, setLastServiceMileage] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [userData, setUserData] = useState(useAuth()); //getting current loggedin user data
+  const [customerID, setCustomerID] = useState(userData.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +46,9 @@ const UserRegVehicle = () => {
       lastServiceDate: lastServiceDate.format("YYYY-MM-DD"),
       fuelType,
       lastServiceMileage,
+      customerID,
     };
+    console.log(customerID);
 
     try {
       const response = await axios.post(
@@ -66,6 +71,7 @@ const UserRegVehicle = () => {
         setFuelType("");
         setLastServiceMileage(0);
         setOpen(true);
+        setCustomerID(userData.id);
       } else {
         const json = response.json();
         console.log(json);

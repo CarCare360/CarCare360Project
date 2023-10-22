@@ -20,7 +20,10 @@ import MaybeShowNavbarComp from "./pages/commons/MaybeShowNavbarComp";
 import MaybeShowFooter from "./pages/commons/MaybeShowFooter";
 import Forum from "./pages/dashboard/services/forum/Forum";
 import Discussion from "./pages/dashboard/services/forum/DiscussionPage";
-
+import Service from "./pages/commons/NavbarComponents/Service";
+import Engine from "./pages/commons/NavbarComponents/Engine";
+import Brakes from "./pages/commons/NavbarComponents/Brakes";
+import Pricing from "./pages/commons/NavbarComponents/Pricing";
 import MessageSystem from "./pages/dashboard/services/MessageSystem";
 import DoesNotRememberPassword from "./pages/DoesNotRememberPassword";
 import VerifyPassword from "./pages/VerifyPassword";
@@ -51,6 +54,10 @@ function App() {
           <Route key="home" exact path="/" element={<Home />} />
           <Route key="login" path="/login" element={<Login />} />,
           <Route key="signup" path="/signup" element={<Register />} />,
+          <Route path="/services" element={<Service/>} />
+          <Route path="/engine" element={<Engine/>} />
+          <Route path="/brakes" element={<Brakes/>} />
+          <Route path="/pricing" element={<Pricing/>} />
           <Route
             path="/forgot-password"
             element={<DoesNotRememberPassword />}
