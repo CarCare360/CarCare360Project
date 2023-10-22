@@ -13,10 +13,8 @@ const bookingSchema = new mongoose.Schema({
   serviceType: String,
   selectedDate: String,
   preferredTime: String,
+  customerID: String,
   status: String,
-  lastUpdate: { type: Date, default: Date.now }
-
-
 });
 
 const bookingModel = mongoose.model("bookings", bookingSchema);

@@ -15,6 +15,7 @@ const bookAService = async (req, res) => {
     serviceType,
     selectedDate,
     preferredTime,
+    customerID,
   } = req.body;
 
   if (
@@ -44,7 +45,7 @@ const bookAService = async (req, res) => {
       serviceType,
       selectedDate,
       preferredTime,
-      status: "scheduled",
+      customerID,
     });
   }
 
@@ -63,6 +64,7 @@ const bookAService = async (req, res) => {
       serviceType,
       selectedDate,
       preferredTime,
+      customerID,
       status: "scheduled",
     });
 

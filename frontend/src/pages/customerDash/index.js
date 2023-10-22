@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useState, useEffect, useRef } from "react";
+import { Form, Row, Col } from "react-bootstrap";
+
 import {
   Box,
   Typography,
@@ -8,42 +11,47 @@ import {
   CardHeader,
   CardContent,
   Button,
+  TextField,
+  TableContainer,
+  Paper,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Topbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import useAuth from "../../hooks/useAuth";
 
 const CustomerDashboard = () => {
-  const sampleData = [
-    {
-      id: 1,
-      title: "Corolla",
-      content: "This is the content for Card 1.",
-      reg: "CAB-1234",
-      NextService: "53040 km",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/2010_Toyota_Corolla_CE%2C_Front_Left.jpg/420px-2010_Toyota_Corolla_CE%2C_Front_Left.jpg",
-    },
-    {
-      id: 2,
-      title: "Aqua",
-      content: "This is the content for Card 2.",
-      reg: "KK-2590",
-      NextService: "78965 km",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/2017_Toyota_Aqua_%28cropped%29.jpg/300px-2017_Toyota_Aqua_%28cropped%29.jpg",
-    },
-    {
-      id: 3,
-      title: "Prius",
-      content: "This is the content for Card 3.",
-      reg: "KF-3269",
-      NextService: "53040 km",
-      image:
-        "https://global.toyota/pages/news/images/2015/10/13/1330/20151013_01_15_s.jpg",
-    },
-  ];
+  const [vehicles, setVehicles] = useState([]);
+  const [userData, setUserData] = useState(useAuth()); //getting current loggedin user data
+  const [customerID, setCustomerID] = useState(userData.id);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [showVehicleForm, setShowVehicleForm] = useState(false);
+  const [currentMileage, setCurrentMileage] = useState();
+  const formSectionRef = useRef(null);
+  const [make, setMake] = useState('');
+  const [model, setModel] = useState('');
+  const [registerNumber, setRegisterNumber] = useState('');
 
+  useEffect(() => {
+    // Define the URL of your API endpoint
+    const apiUrl = "/api/registervehicle/" + customerID; // Replace with the actual URL
+
+    // Make a GET request to the API
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setVehicles(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  console.log(vehicles);
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "RegisterNumber", headerName: "Register number", width: 200 },
@@ -96,6 +104,46 @@ const CustomerDashboard = () => {
     },
   ];
 
+/*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const vehicle = {
+      registerNumber,
+      make,
+      model,
+      lastServiceMileage,
+      customerID,
+    };
+    console.log(customerID)
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/registervehicle",
+        vehicle,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+
+      if (response) {
+        ;
+      } else {
+        const json = response.json();
+        console.log(json);
+        console.log("Error Registering the vehicle");
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("An error occurred:", error);
+    }
+  };
+
+*/
+
   return (
     <>
       <Topbar />
@@ -111,36 +159,139 @@ const CustomerDashboard = () => {
             spacing={2}
             style={{ paddingLeft: "30px", paddingRight: "30px" }}
           >
-            {sampleData.map((card) => (
+            {vehicles.map((card) => (
               <Grid
                 item
                 xs={12}
                 sm={6}
                 md={4}
-                key={card.id}
+                key={card._id}
                 style={{ padding: "30px" }}
               >
                 <Card>
-                  <CardMedia sx={{ height: 140 }} image={card.image} />
+                  {/* <CardMedia sx={{ height: 140 }} image={"https://global.toyota/pages/news/images/2015/10/13/1330/20151013_01_15_s.jpg"} /> */}
                   <CardHeader
-                    title={card.title}
+                    title={
+                      card.make.toUpperCase() + " " + card.model.toUpperCase()
+                    }
                     style={{ marginBottom: "-20px" }}
                   />
                   <CardContent>
                     <Typography variant="body2" color="textSecondary">
-                      {card.reg} <br />
-                      Next service on {card.NextService}
+                      {card.registerNumber.toUpperCase()} <br />
+                      Last service on {card.lastServiceMileage} km
                       <br />
-                      {card.content}
+                      {/*card.content*/}
                     </Typography>
                   </CardContent>
-                  <Button variant="contained" style={{ margin: "10px" }}>
+                  <Button
+                    variant="contained"
+                    style={{ margin: "10px" }}
+                    onClick={() => {
+                      setSelectedVehicle(card);
+                      setShowVehicleForm(true);
+                      if (formSectionRef.current) {
+                        formSectionRef.current.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }
+                    }}
+                  >
                     See more
                   </Button>
                 </Card>
               </Grid>
             ))}
           </Grid>
+
+          {showVehicleForm && selectedVehicle && (
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Handle the form submission logic here
+              }}
+            >
+              <Box p={2} style={{ paddingTop: "60px" }} ref={formSectionRef}>
+                <Typography variant="h4" gutterBottom>
+                  {`${selectedVehicle.registerNumber.toUpperCase()} ${selectedVehicle.make.toUpperCase()} ${selectedVehicle.model.toUpperCase()}`}
+                  {console.log("selected vehicle:", selectedVehicle)}
+                </Typography>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Make</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedVehicle.make.toUpperCase()}
+                        readOnly
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Model</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedVehicle.model.toUpperCase()}
+                        onChange={(e) => setModel(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Registration Number</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedVehicle.registerNumber.toUpperCase()}
+                        onChange={(e) => setRegisterNumber(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Last Service Mileage</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={`${selectedVehicle.lastServiceMileage} Km`}
+                        readOnly
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Last Service Date</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedVehicle.lastServiceDate}
+                
+                        readOnly
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Current Mileage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        min={parseInt(selectedVehicle.lastServiceMileage, 10)}
+                        required
+                        value={currentMileage}
+                        onChange={(e) => setCurrentMileage(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Button type="submit" variant="primary">
+                  Update
+                </Button>
+              </Box>
+            </Form>
+          )}
+
           {/* Table below the grid */}
           <Box mt={4}>
             <Typography variant="h4" gutterBottom>

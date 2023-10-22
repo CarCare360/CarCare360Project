@@ -114,5 +114,5 @@ const sendToken = (customer, statusCode, res) => {
   res.cookie('token', token, {
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
-  res.status(statusCode).json({ success: true, role: customer.role, id: customer._id, name: customer.fName, email: customer.email, token });
+  res.status(statusCode).json({ success: true, role: customer.role, id: customer._id, name: customer.fName, email: customer.email,phone:customer.phone_no, token });
 }

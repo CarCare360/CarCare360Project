@@ -65,6 +65,7 @@ customerSchema.methods.getSignedToken = function () {
       role: this.role,
       email: this.email,
       username: this.fName + " " + this.lName,
+      phone: this.phone_no,
     },
     process.env.JWT_SECRET,
     {

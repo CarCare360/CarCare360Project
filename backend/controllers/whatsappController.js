@@ -7,9 +7,10 @@ const client = new Client({
 const initiateWhatsapp = () => {
   console.log("Initialting whatsapp...");
   client.initialize();
-  client.on("qr", (qr) => {
-    qrcode.generate(qr, { small: true });
-  });
+  //disabled temperarly
+  // client.on("qr", (qr) => {
+  //   qrcode.generate(qr, { small: true });
+  // });
 
   client.on("authenticated", () => {
     console.log("AUTHENTICATED");
