@@ -108,7 +108,7 @@ const Login = () => {
                 {/* move to login */}
                 <div className='go__back'>
                   <p>
-                    Go back login page <Link to='/verify-password'>Back</Link>
+                    Go back login page <Link to='/login'>Back</Link>
                   </p>
                 </div>
               </Form>

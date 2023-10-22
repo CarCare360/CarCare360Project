@@ -213,20 +213,6 @@ const Login = () => {
                     />
                   </div>
                 </div>
-                <div className="social__icons__topic" id="signInDutton">
-                  <p> or Sign Up Using</p>
-
-                  {/* Google Signup Button */}
-                  <GoogleLogin
-                    className="google__login"
-                    clientId={clientId}
-                    buttonText="Sign in with Google"
-                    onSuccess={onSuccess}
-                    onFailure={onFailure}
-                    cookiePolicy={"single_host_origin"}
-                    isSignedIn={true}
-                  />
-                </div>
 
                 {/* Already have an account */}
                 <div className="already__have__an__account">
