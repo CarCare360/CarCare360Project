@@ -98,9 +98,7 @@ const Register = () => {
           {/* Left side with register customer image */}
           <Col item xs={12} md={6}>
             <div className='register__customer__topic'>
-              <h2 data-testid="cypress-title" className='register__customer__heading'>
-                Customer Registration
-              </h2>
+              
               <div className='register__customer__img'>
                 <img src={register}></img>
               </div>
@@ -111,6 +109,9 @@ const Register = () => {
           <Col item xs={12} md={6}>
             {/* Form */}
             <div className='register__customer__form'>
+            <h2 data-testid="cypress-title" className='register__customer__heading'>
+                Customer Registration
+              </h2>
               <Form
                 noValidate
                 validated={validated}
@@ -264,22 +265,6 @@ const Register = () => {
                     SIGN UP
                   </Button>
                 </div>
-
-                <div className='social__icons__topic' id='signInDutton'>
-                  <p> or Sign Up Using</p>
-
-                  {/* Google Signup Button */}
-                  <GoogleLogin
-                    className='google__login'
-                    clientId={clientId}
-                    buttonText='Sign in with Google'
-                    onSuccess={onSuccess}
-                    onFailure={onFailure}
-                    cookiePolicy={'single_host_origin'}
-                    isSignedIn={true}
-                  />
-                </div>
-
                 {/* move to login */}
                 <div className='already__have__an__account'>
                   <p>
