@@ -31,6 +31,9 @@ const vehicleSchema = new Schema({
     type: String,
     required: true,
   },
+  customerID: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Vehicle", vehicleSchema);
