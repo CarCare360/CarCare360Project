@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { blue } from '@mui/material/colors';
+import swal from "sweetalert";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,6 +46,40 @@ function RecentServiceTable() {
       });
   }, []); // Empty dependency array ensures that this effect runs once on mount
 
+  const handleSave = (id, field, value) => {
+    // Send the updated data to the backend for modification
+    fetch(`http://localhost:4000/api/components/update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ [field]: value }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        swal("Successfully Updated!", "", "success"); 
+
+        // Handle success, update the state or perform any other necessary actions
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+  };
+
+  const handleSubmit = (id, field, value) => {
+    // Implement your logic for submitting the changes
+    handleSave(id, field, value);
+  };
+
+  const handleButtonClick = (id) => {
+    // Implement your logic for button click
+    // You can change the color or perform any other actions
+    console.log(`Button clicked for row with ID: ${id}`);
+  };
+
+  // Display only the first 4 entries for upcoming schedules
+  const upcomingSchedules = rows.slice(0, 4);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -54,18 +90,30 @@ function RecentServiceTable() {
             <StyledTableCell align="left">Service Description</StyledTableCell>
             <StyledTableCell align="left">Status</StyledTableCell>
             <StyledTableCell align="left">Last Update</StyledTableCell>
+            <StyledTableCell align="left">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row._id}> {/* Assuming the ID is stored in the _id field */}
+          {upcomingSchedules.map((row) => (
+            <StyledTableRow key={row._id}>
               <StyledTableCell component="th" scope="row">
                 {row._id}
               </StyledTableCell>
-              <StyledTableCell align="left">{`${row.firstName} ${row.lastName}`}</StyledTableCell>
-              <StyledTableCell align="left">{row.serviceType}</StyledTableCell>
-              <StyledTableCell align="left">{row.status}</StyledTableCell>
+              <StyledTableCell align="left" contentEditable onBlur={(e) => handleSubmit(row._id, 'firstName', e.target.innerText)} style={{ borderBottom: '1px solid #ddd', padding: '8px', outline: 'none' }}>
+                {`${row.firstName} ${row.lastName}`}
+              </StyledTableCell>
+              <StyledTableCell align="left" contentEditable onBlur={(e) => handleSubmit(row._id, 'serviceType', e.target.innerText)} style={{ borderBottom: '1px solid #ddd', padding: '8px', outline: 'none' }}>
+                {row.serviceType}
+              </StyledTableCell>
+              <StyledTableCell align="left" contentEditable onBlur={(e) => handleSubmit(row._id, 'status', e.target.innerText)} style={{ borderBottom: '1px solid #ddd', padding: '8px', outline: 'none' }}>
+                {row.status}
+              </StyledTableCell>
               <StyledTableCell align="left">{row.lastUpdate}</StyledTableCell>
+              <StyledTableCell align="left">
+                <button onClick={() => handleButtonClick(row._id)} style={{ backgroundColor: '#1E88E5', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                  Submit
+                </button>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

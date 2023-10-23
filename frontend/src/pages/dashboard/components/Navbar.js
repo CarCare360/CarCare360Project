@@ -16,13 +16,15 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../../appStore';
+import Avatar from '@mui/material/Avatar';
+import { useEffect } from 'react';
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-  })(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    
-  }));
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+}));
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -68,6 +70,13 @@ export default function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
   const dopen = useAppStore((state) => state.dopen);
+  
+  useEffect(() => {
+    // Retrieve name and photo from local storage and update state
+    const userName = localStorage.getItem('userName');
+    const profilePhoto = localStorage.getItem('profilePhoto');
+    // Set state or perform any other actions with the retrieved data
+  }, []); // Empty dependency array means this effect runs once after the component mounts
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -106,7 +115,12 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Avatar alt="Profile Photo" src={localStorage.getItem('profilePhoto') || '/sample-avatar.jpg'} />
+        <Typography sx={{ marginLeft: 2 }}>
+          {localStorage.getItem('userName') || 'Your Name'}
+        </Typography>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -173,7 +187,9 @@ export default function Navbar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={()=>{updateOpen(!dopen)}}
+            onClick={() => {
+              updateOpen(!dopen);
+            }}
           >
             <MenuIcon />
           </IconButton>

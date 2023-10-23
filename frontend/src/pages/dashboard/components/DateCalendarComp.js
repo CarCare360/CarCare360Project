@@ -1,6 +1,7 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import Badge from '@mui/material/Badge';
+import Tooltip from '@mui/material/Tooltip';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
@@ -8,29 +9,57 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 
 function ServerDay(props) {
-  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+  const { bookingData = [], day, outsideCurrentMonth, ...other } = props;
 
-  const isSelected =
-    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
-
-  const isScheduled = highlightedDays.indexOf(dayjs(day.date()).date()) >= 0;
+  const isScheduled = bookingData.some((booking) =>
+    dayjs(booking.selectedDate).isSame(day, 'day')
+  );
 
   return (
-    <Badge
-      key={props.day.toString()}
-      overlap="circular"
-      badgeContent={undefined} // Remove the 🌚 badge
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      style={{
-        borderRadius: isScheduled ? '100%' : isSelected ? '100%' : '0', // Round the selected date
-        backgroundColor: isSelected ? '#1E88E5' : isScheduled ? '#1E88E5' : 'transparent', // Adjust the color value here
-      }}
-    >
-      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-    </Badge>
+    <Tooltip title={getTooltipContent(day, bookingData)} arrow>
+      <Badge
+        key={day.toString()}
+        overlap="circular"
+        badgeContent={undefined}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        style={{
+          borderRadius: isScheduled ? '100%' : '0', // Round the scheduled date
+          backgroundColor: isScheduled ? '#1E88E5' : 'transparent', // Blue color for scheduled dates
+          cursor: 'default',
+        }}
+      >
+        <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+      </Badge>
+    </Tooltip>
+  );
+}
+
+function getTooltipContent(selectedDay, bookingData) {
+  const daySchedules = bookingData.filter((booking) =>
+    dayjs(booking.selectedDate).isSame(selectedDay, 'day')
+  );
+
+  if (daySchedules.length === 0) {
+    return dayjs(selectedDay).format('MMMM YYYY'); // Show only month and year when no schedule
+  }
+
+  return (
+    <div>
+      <p>Date: {dayjs(selectedDay).format('YYYY-MM-DD')}</p>
+      <h3>Schedule Details</h3>
+      <ul>
+        {daySchedules.map((schedule) => (
+          <li key={schedule.selectedDate}>
+            <p>Full Name: {`${schedule.firstName} ${schedule.lastName}`}</p>
+            <p>Service Type: {schedule.serviceType}</p>
+          </li>
+        ))}
+      </ul>
+      <p>Occurrences: {daySchedules.length}</p>
+    </div>
   );
 }
 
@@ -53,11 +82,7 @@ export default function DateCalendarServerRequest() {
         return response.json();
       })
       .then(({ bookingData }) => {
-        const daysToHighlight = bookingData.map((booking) =>
-          dayjs(booking.selectedDate).date()
-        );
-
-        setHighlightedDays(daysToHighlight);
+        setHighlightedDays(bookingData); // Save the entire booking data
         setIsLoading(false);
       })
       .catch((error) => {
@@ -91,11 +116,11 @@ export default function DateCalendarServerRequest() {
         onMonthChange={handleMonthChange}
         renderLoading={() => <DayCalendarSkeleton />}
         slots={{
-          day: ServerDay,
+          day: (props) => <ServerDay {...props} bookingData={highlightedDays} />,
         }}
         slotProps={{
           day: {
-            highlightedDays,
+            bookingData: highlightedDays, // Pass the entire booking data from the backend
           },
         }}
       />
