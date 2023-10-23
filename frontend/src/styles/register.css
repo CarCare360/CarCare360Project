@@ -16,14 +16,12 @@
   }
   .register__customer__form {
     padding: 10% 5% 5% 5%;
-    margin: 5%;
   }
   .register__customer__heading{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20%;
     font-weight: 500;
   }
   
@@ -40,6 +38,7 @@
   
   .register__customer__img {
     size: 50%;
+    margin-top: 5%;
     display: flex;
     justify-content: center;
     align-items: center;

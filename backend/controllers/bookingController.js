@@ -46,6 +46,7 @@ const bookAService = async (req, res) => {
       selectedDate,
       preferredTime,
       customerID,
+      status: "Scheduled",
     });
   }
 
@@ -64,7 +65,6 @@ const bookAService = async (req, res) => {
       serviceType,
       selectedDate,
       preferredTime,
-      customerID,
       status: "scheduled",
     });
 
