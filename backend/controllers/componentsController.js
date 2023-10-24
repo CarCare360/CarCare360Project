@@ -38,7 +38,7 @@ exports.scheduledetails = async (req, res, next) => {
   try {
     const bookingData = await bookingModel.find(
       {},
-      'firstName lastName email serviceType selectedDate'
+      'firstName lastName email serviceType selectedDate preferredTime'
     );
 
     // Map the data to the required format
@@ -48,6 +48,7 @@ exports.scheduledetails = async (req, res, next) => {
       lastName: booking.lastName,
       email: booking.email,
       serviceType: booking.serviceType,
+      preferredTime: booking.preferredTime,
     }));
 
     res.status(200).json({ bookingData: formattedData });
@@ -60,7 +61,7 @@ exports.scheduledetails = async (req, res, next) => {
 exports.recentschedule = async (req, res, next) => {
   try {
     const recentBookingData = await bookingModel
-      .find({}, '_id firstName lastName serviceType status lastUpdate preferredTime')
+      .find({}, '_id firstName lastName serviceType status lastUpdate ')
       .sort({ lastUpdate: -1 })
       .limit(5);
 
