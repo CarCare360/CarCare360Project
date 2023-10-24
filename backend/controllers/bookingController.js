@@ -1,5 +1,6 @@
-const bookingModel = require("../models/bookingModel");
-const whatsappController = require("../controllers/whatsappController");
+const bookingModel = require('../models/bookingModel');
+// const whatsappController = require('../controllers/whatsappController');
+const sendEmail = require('../utils/sendEmail');
 
 const bookAService = async (req, res) => {
   const {
@@ -46,7 +47,7 @@ const bookAService = async (req, res) => {
       selectedDate,
       preferredTime,
       customerID,
-      status: "Scheduled",
+      status: 'Scheduled',
     });
   }
 
@@ -66,22 +67,39 @@ const bookAService = async (req, res) => {
       selectedDate,
       preferredTime,
       customerID,
-      status: "scheduled",
+      status: 'scheduled',
     });
 
-    res.status(201).json(createdBooking);
-    //Sending appointment confirmation whatsapp msg to customer
-    const msgBody = `Dear ${firstName} ${lastName},
-    *Service Appointment Confirmed!* 
-          vehicle: ${make} ${model}
-          RegNum: ${registrationNumber} 
-          📅 Date: ${selectedDate} 
-          ⏰ Time: ${preferredTime} \nThank you!
-    We are waiting for you!`;
-    whatsappController.sendWAppMsg(mobileNumber, msgBody);
+    // Sending appointment confirmation email to customer
+    const msgBody = `
+  <h2> Welcome to Car Care 360 </h2>
+  <p>Hello ${firstName} ${lastName},</p>
+  <p><strong>Service Appointment Confirmed! 🎉</strong></p>
+  <p> 🚗 Vehicle: ${make} ${model} </p>
+  <p> 🔍 RegNum: ${registrationNumber} </p>
+  <p> 📅 Date: ${selectedDate} </p>
+  <p> ⏰ Time: ${preferredTime} </p>
+  <p>Thank you! We are waiting for you! 🤝</p>
+`;
+
+    try {
+      await sendEmail({
+        to: email, // Use the customer's email, not bookingModel.email
+        subject: 'Service Appointment Confirmed!',
+        text: msgBody,
+      });
+
+      // Send WhatsApp message
+      // whatsappController.sendWAppMsg(mobileNumber, msgBody);
+
+      res.status(200).json({ success: true, data: 'Email Sent' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Email could not be sent' });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "While creating the document" });
+    res.status(500).json({ error: 'While creating the document' });
   }
 };
 
@@ -91,38 +109,40 @@ const getbookingsByCustomerID = async (req, res) => {
   //console.log("CID:",customerID);
 
   try {
-    const bookings = await bookingModel.find({ customerID }); 
+    const bookings = await bookingModel.find({ customerID });
     if (bookings.length === 0) {
-      return res.status(404).json({ error: "No bookings found for the specified customer" });
+      return res
+        .status(404)
+        .json({ error: 'No bookings found for the specified customer' });
     }
 
     res.status(200).json(bookings);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred" });
+    res.status(500).json({ error: 'An error occurred' });
   }
 };
 
-
 // Delete a booking by Object ID
 const deleteBookingById = async (req, res) => {
-  const bookingId  = req.params.id;
+  const bookingId = req.params.id;
 
   try {
     const deletedBooking = await bookingModel.findByIdAndDelete(bookingId);
 
     if (!deletedBooking) {
-      return res.status(404).json({ error: "Booking not found" });
+      return res.status(404).json({ error: 'Booking not found' });
     }
 
     // You can add additional logic here, such as sending a confirmation message.
 
-    res.status(200).json({ message: "Booking deleted successfully" });
+    res.status(200).json({ message: 'Booking deleted successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "An error occurred while deleting the booking" });
+    res
+      .status(500)
+      .json({ error: 'An error occurred while deleting the booking' });
   }
 };
-
 
 module.exports = {
   bookAService,
