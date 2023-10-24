@@ -23,7 +23,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import ForumIcon from "@mui/icons-material/Forum";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-const drawerWidth = 300;
+const drawerWidth = 350;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -182,7 +182,7 @@ export default function Sidebar() {
                 <RecommendIcon style={{ fontSize: 40 }} />
               </ListItemIcon>
               <ListItemText
-                primary="Manufacture Recommendation"
+                primary="Manufacturer Recommendation"
                 sx={{ opacity: open ? 1 : 0 }}
               />
             </ListItemButton>

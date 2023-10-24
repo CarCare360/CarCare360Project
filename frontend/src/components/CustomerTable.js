@@ -8,8 +8,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Pagination from "@mui/material/Pagination";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   "&.MuiTableCell-head": {
@@ -29,7 +32,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const CustomerTable = ({ selectedUsers, setSelectedUsers }) => {
   const [customers, setCustomers] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1); // Page starts from 1
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Number of rows per page
+  const [searchText, setSearchText] = useState(""); // State to hold search input text
 
   useEffect(() => {
     // Fetch customers from the backend when the component mounts
@@ -52,11 +57,25 @@ const CustomerTable = ({ selectedUsers, setSelectedUsers }) => {
       });
   }, []);
 
-  const itemsPerPage = 20;
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = page * itemsPerPage;
+  const emptyRows =
+    rowsPerPage -
+    Math.min(rowsPerPage, customers.length - (page - 1) * rowsPerPage);
 
-  const displayCustomers = customers.slice(startIndex, endIndex);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Filter the customers based on the search input
+  const filteredCustomers = customers.filter((customer) =>
+    `${customer.fName} ${customer.lName} ${customer.email}`
+      .toLowerCase()
+      .includes(searchText.toLowerCase())
+  );
+
+  const displayCustomers = filteredCustomers.slice(
+    (page - 1) * rowsPerPage,
+    (page - 1) * rowsPerPage + rowsPerPage
+  );
 
   const toggleCustomerSelection = (customer) => {
     if (
@@ -72,46 +91,72 @@ const CustomerTable = ({ selectedUsers, setSelectedUsers }) => {
     }
   };
 
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+    setPage(1); // Reset page to 1 when a new search is performed
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="customer table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Select</StyledTableCell>
-            <StyledTableCell>Username</StyledTableCell>
-            <StyledTableCell>Email</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {displayCustomers.map((customer) => (
-            <StyledTableRow key={customer._id}>
-              <StyledTableCell>
-                <input
-                  type="checkbox"
-                  checked={selectedUsers.some(
-                    (selectedUser) => selectedUser._id === customer._id
-                  )}
-                  onChange={() => toggleCustomerSelection(customer)}
-                />
-              </StyledTableCell>
-              <StyledTableCell>{`${customer.fName} ${customer.lName}`}</StyledTableCell>
-              <StyledTableCell>{customer.email}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div>
-        <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-          Previous
-        </button>
-        <button
-          onClick={() => setPage(page + 1)}
-          disabled={endIndex >= customers.length}
-        >
-          Next
-        </button>
+    <div>
+      <div style={{ display: "flex", marginBottom: "20px" }}>
+        <div className="form-group">
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text">
+                <PersonSearchIcon /> {/* Bootstrap search icon */}
+              </span>
+            </div>
+            <input
+              name="name"
+              type="text"
+              className="form-control"
+              placeholder="Search for users"
+              value={searchText || ""}
+              onChange={handleSearch}
+            />
+          </div>
+        </div>
+        {/* Add the search icon */}
       </div>
-    </TableContainer>
+      <TableContainer component={Paper}>
+        <Table aria-label="customer table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Select</StyledTableCell>
+              <StyledTableCell>Username</StyledTableCell>
+              <StyledTableCell>Email</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayCustomers.map((customer) => (
+              <StyledTableRow key={customer._id}>
+                <StyledTableCell>
+                  <input
+                    type="checkbox"
+                    checked={selectedUsers.some(
+                      (selectedUser) => selectedUser._id === customer._id
+                    )}
+                    onChange={() => toggleCustomerSelection(customer)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell>{`${customer.fName} ${customer.lName}`}</StyledTableCell>
+                <StyledTableCell>{customer.email}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <StyledTableCell colSpan={3} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Pagination
+        count={Math.ceil(filteredCustomers.length / rowsPerPage)}
+        page={page}
+        onChange={handleChangePage}
+      />
+    </div>
   );
 };
 
