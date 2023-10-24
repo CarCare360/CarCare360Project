@@ -155,6 +155,50 @@ function App() {
               />
             </Route>
 
+            {/* Admin specific routes */}
+            <Route element={<RequireAuth allowedRoles={["admin"]} />}>
+              {" Admin specific routes "}
+              <Route
+                key="sendemail"
+                path="/Admindashboard/sendEmail"
+                element={<SendEmail />}
+              />
+              <Route
+                key="createmailgroups"
+                path="/Admindashboard/createMailGroups"
+                element={<CreateGroups />}
+              />
+              <Route
+                path="/Admindashboard/discussion/:discussionId"
+                element={<Discussion />}
+              />
+              <Route
+                path="/Admindashboard"
+                element={<CustomerDashboard />}
+              />
+              <Route
+                path="/Admindashboard/register-vehicle"
+                element={<UserRegVehicle />}
+              />
+              <Route
+                path="/Admindashboard/booking"
+                element={<RegUserBooking />}
+              />
+              <Route
+                path="/Admindashboard/manufacturer-recommendation"
+                element={<ManufacturerRecommendationView />}
+              />
+              <Route path="/Admindashboard/forum" element={<Forum />} />
+              <Route
+                path="/Admindashboard/discussion"
+                element={<Discussion />}
+              />
+              <Route
+                path="/Admindashboard/message-system"
+                element={<Chat />}
+              />
+            </Route>
+
             <Route path="/setAvatar" element={<SetAvatar />} />
           </Route>
           <Route path="/Unauthorized" element={<Unauthorized />} />

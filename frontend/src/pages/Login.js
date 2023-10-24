@@ -81,7 +81,7 @@ const Login = () => {
           if (response.data.success) {
             console.log(response.data.role);
             if (response.data.role === "admin") {
-              navigate("/AdminDashboard");
+              navigate("/Admindashboard");
             } else if (response.data.role == "maintenancemanager") {
               navigate("/MaintananceManagerDashboard");
             } else if (response.data.role == "marketingmanager") {
