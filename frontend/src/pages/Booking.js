@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import swal from 'sweetalert';
-import ReCAPTCHA from 'react-google-recaptcha';
+import React, { useRef } from "react";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import swal from "sweetalert";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Container,
   Row,
@@ -11,43 +11,111 @@ import {
   Button,
   InputGroup,
   Modal,
-} from 'react-bootstrap';
+} from "react-bootstrap";
 
 const Booking = () => {
-    // Get the current URL using the useLocation hook to hide modal in customer dashboard
-    const location = useLocation();
-    const isModalVisible = !location.pathname.startsWith('/CustomerDashboard/');
+  // Get the current URL using the useLocation hook to hide modal in customer dashboard
+  const location = useLocation();
+  const isModalVisible = !location.pathname.startsWith("/CustomerDashboard/");
   //form validation
   const [validated, setValidated] = useState(false);
   // For reCAPTCHA
   const [recaptchaValue, setRecaptchaValue] = useState(null);
   //input data
   const [isGuest, setIsGuest] = useState(true);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [registrationNumber, setRegistrationNumber] = useState('');
-  const [odoMeter, setOdoMeter] = useState('');
-  const [serviceType, setServiceType] = useState('Full Service');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [preferredTime, setPreferredTime] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [odoMeter, setOdoMeter] = useState("");
+  const [serviceType, setServiceType] = useState("Full Service");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [preferredTime, setPreferredTime] = useState("");
+  const [timeSlots, setTimeSlots] = useState([
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "14:00",
+    "15:00",
+  ]);
+  const [bookingData, setBookingData] = useState([]);
+
+  function fetchData() {
+    const apiUrl5 = `/api/components/scheduledate/`;
+
+    fetch(apiUrl5)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setBookingData(data.bookingData);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  function resetTimeSlots() {
+    setTimeSlots(["09:00", "10:00", "11:00", "12:00", "14:00", "15:00"]);
+    console.log("called", timeSlots);
+  }
+  //update available time slots when date selected
+  useEffect(() => {
+    if (selectedDate !== "") {
+      resetTimeSlots();
+      function getPreferredTimesForDate(appointments, selectedDate) {
+        const preferredTimes = [];
+        for (const appointment of appointments) {
+          if (appointment.selectedDate === selectedDate) {
+            preferredTimes.push(appointment.preferredTime);
+          }
+        }
+        return preferredTimes;
+      }
+
+      const timesForSelectedDate = getPreferredTimesForDate(
+        bookingData,
+        selectedDate
+      );
+      console.log("selected times", timesForSelectedDate);
+
+      // Create a new array of available time slots
+      const updatedTimeSlots = timeSlots.filter(
+        (timeSlot) => !timesForSelectedDate.includes(timeSlot)
+      );
+
+      if (updatedTimeSlots.length === 0) {
+        updatedTimeSlots.push("");
+      }
+
+      setTimeSlots(updatedTimeSlots);
+      console.log("updated time slots", timeSlots);
+    }
+  }, [selectedDate]);
 
   const resetForm = () => {
     // Reset the form fields
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setMobileNumber('');
-    setMake('');
-    setModel('');
-    setRegistrationNumber('');
-    setOdoMeter('');
-    setSelectedDate('');
-    setPreferredTime('');
-    setServiceType('');
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setMobileNumber("");
+    setMake("");
+    setModel("");
+    setRegistrationNumber("");
+    setOdoMeter("");
+    setSelectedDate("");
+    setPreferredTime("");
+    setServiceType("");
   };
 
   //triggers when submit button clicked
@@ -57,13 +125,13 @@ const Booking = () => {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
-    } 
+    }
     // else if (!recaptchaValue) {
     //   // Handle the case where reCAPTCHA is not filled
     //   alert('Please complete the reCAPTCHA.');
     //   e.preventDefault();
     //   e.stopPropagation();
-    // } 
+    // }
     else {
       setValidated(false);
 
@@ -86,26 +154,26 @@ const Booking = () => {
       };
 
       // Create the fetch request
-      fetch('/api/booking/', {
-        method: 'POST',
+      fetch("/api/booking/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       })
         .then((response) => {
-          console.log('this is the result', response.status);
-          if (response.status === 201) {
+          console.log("this is the result", response.status);
+          if (response.status === 201 || response.status === 200) {
             e.target.reset();
             resetForm(); // Clear user entered form data
-            swal('Booked!', 'We are waiting for you!', 'success'); // Show success message
+            swal("Booked!", "We are waiting for you!", "success"); // Show success message
           } else {
-            throw new Error('Request failed');
+            throw new Error("Request failed");
           }
         })
         .catch((error) => {
           console.error(error);
-          swal('Something went wrong!', 'Try again shortly.', 'error'); // Show error message
+          swal("Something went wrong!", "Try again shortly.", "error"); // Show error message
         });
     }
   };
@@ -135,24 +203,23 @@ const Booking = () => {
   return (
     <section>
       <>
-      
-      {isModalVisible && (
+        {isModalVisible && (
           <Modal show={show} onHide={handleClose} centered>
-            <Modal.Body className='text-center mb-4 mt-4 '>
-              {' '}
-              <Link to='/login'>
+            <Modal.Body className="text-center mb-4 mt-4 ">
+              {" "}
+              <Link to="/login">
                 <Button
-                  className='mr-3 mt-3'
-                  variant='primary'
+                  className="mr-3 mt-3"
+                  variant="primary"
                   onClick={handleClose}
                 >
                   Login
                 </Button>
               </Link>
-              <Link to='/signup'>
+              <Link to="/signup">
                 <Button
-                  className='ml-3 mt-3'
-                  variant='primary'
+                  className="ml-3 mt-3"
+                  variant="primary"
                   onClick={handleClose}
                 >
                   Signup
@@ -161,7 +228,7 @@ const Booking = () => {
               <br />
               or
               <br />
-              <Button variant='link' onClick={handleClose}>
+              <Button variant="link" onClick={handleClose}>
                 Continue as guest
               </Button>
             </Modal.Body>
@@ -169,238 +236,237 @@ const Booking = () => {
         )}
       </>
 
-      <Container className='shadow p-3 mb-5 bg-body rounded'>
+      <Container className="shadow p-3 mb-5 bg-body rounded">
         <h2>Book a service</h2>
-        <div className=' pl-4 pr-4 pt-2 pb-2'>
+        <div className=" pl-4 pr-4 pt-2 pb-2">
           <Form
             noValidate
             validated={validated}
             onSubmit={handleSubmit}
-            className='text-left'
+            className="text-left"
           >
-            <Row className=' pb-2'>
-              <Form.Group as={Col} controlId='text'>
-                <Form.Label className='d-flex justify-content-start'>
+            <Row className=" pb-2">
+              <Form.Group as={Col} controlId="text">
+                <Form.Label className="d-flex justify-content-start">
                   First Name
                 </Form.Label>
 
                 <Form.Control
-                  type='text'
-                  placeholder='EX:John'
+                  type="text"
+                  placeholder="EX:John"
                   maxLength={25}
                   required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please enter your name
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group as={Col} controlId='formGridPassword'>
-                <Form.Label className='d-flex justify-content-start'>
+              <Form.Group as={Col} controlId="formGridPassword">
+                <Form.Label className="d-flex justify-content-start">
                   Last Name
                 </Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='EX:Smith'
+                  type="text"
+                  placeholder="EX:Smith"
                   maxLength={25}
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please enter your last name
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
-            <Row className=' pb-2'>
-              <Form.Group as={Col} controlId='formGridEmail'>
-                <Form.Label className='d-flex justify-content-start'>
+            <Row className=" pb-2">
+              <Form.Group as={Col} controlId="formGridEmail">
+                <Form.Label className="d-flex justify-content-start">
                   Email
                 </Form.Label>
                 <Form.Control
-                  type='email'
-                  pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
-                  placeholder='Enter email'
+                  type="email"
+                  pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                  placeholder="Enter email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                />{' '}
-                <Form.Control.Feedback type='invalid'>
+                />{" "}
+                <Form.Control.Feedback type="invalid">
                   *Please enter a valid E-mail
                 </Form.Control.Feedback>
               </Form.Group>
 
               <Col>
                 <Form.Label
-                  htmlFor='inlineFormInputGroup'
+                  htmlFor="inlineFormInputGroup"
                   visuallyHidden
-                  className='d-flex justify-content-start'
+                  className="d-flex justify-content-start"
                 >
                   Mobile Number
                 </Form.Label>
-                <InputGroup className='mb-2'>
-                  <InputGroup.Text type='number'>+94</InputGroup.Text>
+                <InputGroup className="mb-2">
+                  <InputGroup.Text type="number">+94</InputGroup.Text>
                   <Form.Control
-                    type='tel'
-                    pattern='[0-9]{9}'
+                    type="tel"
+                    pattern="[0-9]{9}"
                     minLength={9}
                     maxLength={9}
-                    id='inlineFormInputGroup'
-                    placeholder=''
+                    id="inlineFormInputGroup"
+                    placeholder=""
                     required
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
                   />
-                  <Form.Control.Feedback type='invalid'>
+                  <Form.Control.Feedback type="invalid">
                     *Please enter a valid mobile number
                   </Form.Control.Feedback>
                 </InputGroup>
               </Col>
             </Row>
 
-            <Row className=' pb-2'>
-              <Form.Group as={Col} controlId='formGridMake'>
-                <Form.Label className='d-flex justify-content-start'>
+            <Row className=" pb-2">
+              <Form.Group as={Col} controlId="formGridMake">
+                <Form.Label className="d-flex justify-content-start">
                   Make
                 </Form.Label>
 
                 <Form.Control
-                  type='text'
-                  placeholder='EX:Toyota'
+                  type="text"
+                  placeholder="EX:Toyota"
                   maxLength={20}
                   required
                   value={make}
                   onChange={(e) => setMake(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please enter make of your vehicle
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group as={Col} controlId='formGridModel'>
-                <Form.Label className='d-flex justify-content-start'>
+              <Form.Group as={Col} controlId="formGridModel">
+                <Form.Label className="d-flex justify-content-start">
                   Model
                 </Form.Label>
                 <Form.Control
-                  type='text'
+                  type="text"
                   required
                   maxLength={25}
-                  placeholder='EX:Corolla'
+                  placeholder="EX:Corolla"
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please enter model of your vehicle
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
 
-            <Row className=' pb-2'>
-              <Form.Group as={Col} controlId='formGridRegNum'>
-                <Form.Label className='d-flex justify-content-start'>
+            <Row className=" pb-2">
+              <Form.Group as={Col} controlId="formGridRegNum">
+                <Form.Label className="d-flex justify-content-start">
                   Registration Number
                 </Form.Label>
 
                 <Form.Control
-                  type='text'
-                  placeholder='EX:XX-8888'
+                  type="text"
+                  placeholder="EX:XX-8888"
                   minLength={4}
                   maxLength={15}
                   required
                   value={registrationNumber}
                   onChange={(e) => setRegistrationNumber(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please enter valid registration number
                 </Form.Control.Feedback>
               </Form.Group>
 
               <Col>
                 <Form.Label
-                  htmlFor='inlineFormInputGroup'
+                  htmlFor="inlineFormInputGroup"
                   visuallyHidden
-                  className='d-flex justify-content-start'
+                  className="d-flex justify-content-start"
                 >
                   ODO Meter Reading
                 </Form.Label>
-                <InputGroup className='mb-2'>
+                <InputGroup className="mb-2">
                   <Form.Control
-                    id='inlineFormInputGroup'
-                    type='Number'
-                    placeholder=''
+                    id="inlineFormInputGroup"
+                    type="Number"
+                    placeholder=""
                     required
                     value={odoMeter}
                     onChange={(e) => setOdoMeter(e.target.value)}
                   />
-                  <InputGroup.Text type='number'>km</InputGroup.Text>{' '}
-                  <Form.Control.Feedback type='invalid'>
+                  <InputGroup.Text type="number">km</InputGroup.Text>{" "}
+                  <Form.Control.Feedback type="invalid">
                     *Please enter valid mileage
                   </Form.Control.Feedback>
                 </InputGroup>
               </Col>
             </Row>
 
-            <Row className=' pb-2 '>
-              <Form.Group as={Col} controlId='formGridState '>
-                <Form.Label className='d-flex justify-content-start'>
+            <Row className=" pb-2 ">
+              <Form.Group as={Col} controlId="formGridState ">
+                <Form.Label className="d-flex justify-content-start">
                   Service type
                 </Form.Label>
                 <Form.Select
-                  aria-label='Default select example'
-                  className='d-flex justify-content-start w-100'
+                  aria-label="Default select example"
+                  className="d-flex justify-content-start w-100"
                   required
                   value={serviceType}
                   onChange={(e) => setServiceType(e.target.value)}
                 >
-                  <option value=''>Select service type</option>
-                  <option value='Full_Service'>Full Service</option>
-                  <option value='Body_wash'>Body wash</option>
-                  <option value='Express_Lube'>Express Lube</option>
+                  <option value="">Select service type</option>
+                  <option value="Full_Service">Full Service</option>
+                  <option value="Body_wash">Body wash</option>
+                  <option value="Express_Lube">Express Lube</option>
                 </Form.Select>
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please select service type
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group as={Col} controlId='dob'>
-                <Form.Label className='d-flex justify-content-start'>
+              <Form.Group as={Col} controlId="dob">
+                <Form.Label className="d-flex justify-content-start">
                   Select Date
                 </Form.Label>
                 <Form.Control
-                  type='date'
-                  placeholder='Preferred date'
+                  type="date"
+                  placeholder="Preferred date"
                   required
                   min={getCurrentDate()} // Use a function to get the current date
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
                 />
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please select the preferred date
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group as={Col} controlId='formGridState'>
-                <Form.Label className='d-flex justify-content-start'>
+              <Form.Group as={Col} controlId="formGridState">
+                <Form.Label className="d-flex justify-content-start">
                   Preferred Time
                 </Form.Label>
                 <Form.Select
-                  aria-label='Default select example'
-                  className='d-flex justify-content-start w-100'
+                  aria-label="Default select example"
+                  className="d-flex justify-content-start w-100"
                   required
                   value={preferredTime}
                   onChange={(e) => setPreferredTime(e.target.value)}
                 >
-                  {/* available time slots to be granted from database dynamicaly */}
-                  <option value=''>Select preferred time</option>
-                  <option value='1'>10.00</option>
-                  <option value='2'>11.00</option>
-                  <option value='3'>12.00</option>
-                  <option value='4'>13.00</option>
-                  <option value='5'>14.00</option>
+                  <option value="">Select preferred time</option>
+                  {timeSlots.map((timeSlot) => (
+                    <option key={timeSlot} value={timeSlot}>
+                      {timeSlot}
+                    </option>
+                  ))}
                 </Form.Select>
-                <Form.Control.Feedback type='invalid'>
+                <Form.Control.Feedback type="invalid">
                   *Please select the preferred date
                 </Form.Control.Feedback>
               </Form.Group>
@@ -409,14 +475,14 @@ const Booking = () => {
               <col></col>
             </Row>
             <ReCAPTCHA
-              sitekey='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
               onChange={(value) => setRecaptchaValue(value)}
             />
-            <div class='container d-flex justify-content-center'>
+            <div class="container d-flex justify-content-center">
               <Button
-                variant='primary'
-                type='submit'
-                className=' mt-2 justify-content-center'
+                variant="primary"
+                type="submit"
+                className=" mt-2 justify-content-center"
               >
                 Book Now!
               </Button>
