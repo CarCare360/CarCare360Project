@@ -35,6 +35,9 @@ const ManufacturerRecommendation = () => {
   const [coolantType, setCoolantType] = useState("");
   const [oilFilter, setOilFilter] = useState("");
   const [wheelAlignmentInterval, setwheelAlignmentInterval] = useState("");
+  const [engineIntervalError, setengineIntervalError] = useState(false);
+  const [wheelAlignmentError, setWheelAlignmentError] = useState(false);
+  const [coolantReplacementError, setCoolantReplacementError] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -104,6 +107,38 @@ const ManufacturerRecommendation = () => {
       setwheelAlignmentInterval("");
       setOpen(true);
       swal("Registered manufacturer recommendation details!", "", "success");
+    }
+  };
+
+  const handleIntervalChange = (e) => {
+    const inputValue = e.target.value;
+
+    if (/^\d*$/.test(inputValue)) {
+      setEngineOilServiceInterval(inputValue);
+      setengineIntervalError(false);
+    } else {
+      setengineIntervalError(true);
+    }
+  };
+  const handleWheelAlignmentChange = (e) => {
+    const inputValue = e.target.value;
+
+    if (/^\d*$/.test(inputValue)) {
+      setwheelAlignmentInterval(inputValue);
+      setWheelAlignmentError(false);
+    } else {
+      setWheelAlignmentError(true);
+    }
+  };
+
+  const handleCoolantReplacementChange = (e) => {
+    const inputValue = e.target.value;
+
+    if (/^\d*$/.test(inputValue)) {
+      setCoolantReplacementInterval(inputValue);
+      setCoolantReplacementError(false);
+    } else {
+      setCoolantReplacementError(true);
     }
   };
 
@@ -233,8 +268,12 @@ const ManufacturerRecommendation = () => {
                           label="Coolant Replacement Interval"
                           variant="outlined"
                           value={coolantReplacementInterval}
-                          onChange={(e) =>
-                            setCoolantReplacementInterval(e.target.value)
+                          onChange={handleCoolantReplacementChange}
+                          error={coolantReplacementError}
+                          helperText={
+                            coolantReplacementError
+                              ? "Please enter a valid integer."
+                              : ""
                           }
                           required
                         />
@@ -255,8 +294,12 @@ const ManufacturerRecommendation = () => {
                           label="Engine Oil Service Interval"
                           variant="outlined"
                           value={engineOilServiceInterval}
-                          onChange={(e) =>
-                            setEngineOilServiceInterval(e.target.value)
+                          onChange={handleIntervalChange}
+                          error={engineIntervalError}
+                          helperText={
+                            engineIntervalError
+                              ? "Please enter a valid integer."
+                              : ""
                           }
                           required
                         />
@@ -278,8 +321,12 @@ const ManufacturerRecommendation = () => {
                           label="Wheel Alignment Interval"
                           variant="outlined"
                           value={wheelAlignmentInterval}
-                          onChange={(e) =>
-                            setwheelAlignmentInterval(e.target.value)
+                          onChange={handleWheelAlignmentChange}
+                          error={wheelAlignmentError}
+                          helperText={
+                            wheelAlignmentError
+                              ? "Please enter a valid integer."
+                              : ""
                           }
                           required
                         />

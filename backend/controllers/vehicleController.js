@@ -91,6 +91,9 @@ const updateVehicle = async (req, res) => {
     if (updates.customerID) {
       vehicle.customerID = updates.customerID;
     }
+    if (updates.currentMileage){
+      vehicle.currentMileage=updates.currentMileage;
+    }
     await vehicle.save();
 
     res.status(200).json(vehicle);
@@ -114,6 +117,7 @@ const createVehicle = async (req, res) => {
     fuelType,
     lastServiceMileage,
     customerID,
+    currentMileage,
   } = req.body;
   if (
     !registerNumber ||
@@ -134,6 +138,7 @@ const createVehicle = async (req, res) => {
       fuelType,
       lastServiceMileage,
       customerID,
+      currentMileage,
     });
   }
 
@@ -147,6 +152,7 @@ const createVehicle = async (req, res) => {
       fuelType,
       lastServiceMileage,
       customerID,
+      currentMileage,
     });
     res.status(201).json(vehicle);
   } catch {
