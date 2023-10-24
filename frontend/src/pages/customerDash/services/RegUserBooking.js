@@ -80,6 +80,15 @@ const RegUserBooking = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [preferredTime, setPreferredTime] = useState("");
   const [customerID, setCustomerID] = useState("");
+  const [timeSlots, setTimeSlots] = useState([
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "14:00",
+    "15:00",
+  ]);
+  const [bookingData, setBookingData] = useState([]);
 
   //get current logged in user data
   const token = localStorage.getItem("token");
@@ -107,6 +116,65 @@ const RegUserBooking = () => {
       setRegistrationNumber(selectedVehicle.registerNumber);
     }
   }, [selectedVehicle]);
+
+  function fetchData() {
+    const apiUrl5 = `/api/components/scheduledate/`;
+
+    fetch(apiUrl5)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setBookingData(data.bookingData);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+  function resetTimeSlots() {
+    setTimeSlots(["09:00", "10:00", "11:00", "12:00", "14:00", "15:00"]);
+    console.log("called",timeSlots);
+  }
+  //update available time slots when date selected
+  useEffect(() => {
+    if (selectedDate !== "") {
+      resetTimeSlots();
+      function getPreferredTimesForDate(appointments, selectedDate) {
+        const preferredTimes = [];
+        for (const appointment of appointments) {
+          if (appointment.selectedDate === selectedDate) {
+            preferredTimes.push(appointment.preferredTime);
+          }
+        }
+        return preferredTimes;
+      }
+
+      const timesForSelectedDate = getPreferredTimesForDate(
+        bookingData,
+        selectedDate
+      );
+      console.log("selected times", timesForSelectedDate);
+
+      // Create a new array of available time slots
+      const updatedTimeSlots = timeSlots.filter(
+        (timeSlot) => !timesForSelectedDate.includes(timeSlot)
+      );
+
+      if (updatedTimeSlots.length === 0) {
+        updatedTimeSlots.push("");
+      }
+
+      setTimeSlots(updatedTimeSlots);
+      console.log("updated time slots", timeSlots);
+    }
+  }, [selectedDate]);
 
   const resetForm = () => {
     // Reset the form fields
@@ -467,11 +535,12 @@ const RegUserBooking = () => {
                         value={preferredTime}
                         onChange={(e) => setPreferredTime(e.target.value)}
                       >
-                        {/* available time slots to be granted from database dynamicaly */}
                         <option value="">Select preferred time</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {timeSlots.map((timeSlot) => (
+                          <option key={timeSlot} value={timeSlot}>
+                            {timeSlot}
+                          </option>
+                        ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         *Please select the preferred date
