@@ -95,6 +95,7 @@ const RegUserBooking = () => {
   const currentCustomer = jwtDecode(token);
   //Set current customer data
 
+  // Update available time slots when date selected
   useEffect(() => {
     // Set current customer data
     const fullName = currentCustomer.username;
@@ -102,11 +103,48 @@ const RegUserBooking = () => {
     if (names.length === 2) {
       setFirstName(names[0]);
       setLastName(names[1]);
+      setEmail(currentCustomer.email);
+      setMobileNumber(currentCustomer.phone);
+      setCustomerID(currentCustomer.id);
     }
-    setEmail(currentCustomer.email);
-    setMobileNumber(currentCustomer.phone);
-    setCustomerID(currentCustomer.id);
-  }, []);
+    if (selectedDate !== "") {
+      const originalArray = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "14:00",
+        "15:00",
+      ];
+
+      function getPreferredTimesForDate(appointments, selectedDate) {
+        const preferredTimes = [];
+        for (const appointment of appointments) {
+          if (appointment.selectedDate === selectedDate) {
+            preferredTimes.push(appointment.preferredTime);
+          }
+        }
+        return preferredTimes;
+      }
+
+      const timesForSelectedDate = getPreferredTimesForDate(
+        bookingData,
+        selectedDate
+      );
+      console.log("selected times", timesForSelectedDate);
+
+      // Create a new array of available time slots
+      const updatedTimeSlots = originalArray.filter(
+        (timeSlot) => !timesForSelectedDate.includes(timeSlot)
+      );
+
+      if (updatedTimeSlots.length === 0) {
+        updatedTimeSlots.push("");
+      }
+
+      setTimeSlots(updatedTimeSlots);
+    }
+  }, [selectedDate]);
 
   useEffect(() => {
     //vehicle data based on selected vehicle
@@ -134,18 +172,22 @@ const RegUserBooking = () => {
         console.error("There was a problem with the fetch operation:", error);
       });
   }
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
-  function resetTimeSlots() {
-    setTimeSlots(["09:00", "10:00", "11:00", "12:00", "14:00", "15:00"]);
-    console.log("called",timeSlots);
-  }
-  //update available time slots when date selected
+  // Update available time slots when date selected
   useEffect(() => {
     if (selectedDate !== "") {
-      resetTimeSlots();
+      const originalArray = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "14:00",
+        "15:00",
+      ];
+
       function getPreferredTimesForDate(appointments, selectedDate) {
         const preferredTimes = [];
         for (const appointment of appointments) {
@@ -163,7 +205,7 @@ const RegUserBooking = () => {
       console.log("selected times", timesForSelectedDate);
 
       // Create a new array of available time slots
-      const updatedTimeSlots = timeSlots.filter(
+      const updatedTimeSlots = originalArray.filter(
         (timeSlot) => !timesForSelectedDate.includes(timeSlot)
       );
 
@@ -171,8 +213,10 @@ const RegUserBooking = () => {
         updatedTimeSlots.push("");
       }
 
-      setTimeSlots(updatedTimeSlots);
-      console.log("updated time slots", timeSlots);
+      setTimeSlots(updatedTimeSlots, () => {
+        // Move your log statements here, after the state has been updated
+        console.log("updated time slots", updatedTimeSlots);
+      });
     }
   }, [selectedDate]);
 
