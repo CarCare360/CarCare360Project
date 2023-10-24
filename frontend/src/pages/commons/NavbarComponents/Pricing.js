@@ -1,4 +1,5 @@
 import React from "react";
+import Card from 'react-bootstrap/Card';
 
 const pricingContainerStyle = {
   maxWidth: "800px",
@@ -29,6 +30,15 @@ const paragraphStyle = {
   lineHeight: "1.6",
 };
 
+const PricingCard = ({ title, content }) => (
+  <Card style={{ marginBottom: "20px" }}>
+    <Card.Body>
+      <Card.Title>{title}</Card.Title>
+      <Card.Text>{content}</Card.Text>
+    </Card.Body>
+  </Card>
+);
+
 function Pricing() {
   return (
     <div style={pricingContainerStyle}>
@@ -36,28 +46,42 @@ function Pricing() {
       <p style={paragraphStyle}>At Car Care 360, we believe in providing transparent pricing for our services and packages. Explore our competitive rates and choose the options that best suit your vehicle's needs.</p>
 
       <div>
-        <h3 style={sectionTitleStyle}>Service Packages</h3>
-        <p style={paragraphStyle}>We offer a variety of service packages designed to meet the different needs of our customers. Whether it's routine maintenance or specific repairs, our packages are crafted to provide value for your investment.</p>
+        <PricingCard
+          title="Service Packages"
+          content="We offer a variety of service packages designed to meet the different needs of our customers. Whether it's routine maintenance or specific repairs, our packages are crafted to provide value for your investment."
+        />
 
-        <h4 style={subSectionTitleStyle}>Basic Maintenance Package</h4>
-        <p style={paragraphStyle}>Oil Change, Brake Inspection, Tire Rotation</p>
+        <PricingCard
+          title="Basic Maintenance Package"
+          content="Oil Change, Brake Inspection, Tire Rotation"
+        />
 
-        <h4 style={subSectionTitleStyle}>Comprehensive Service Package</h4>
-        <p style={paragraphStyle}>Engine Tune-up, Brake Pad Replacement, Fluid Flushes, Diagnostic Check</p>
+        <PricingCard
+          title="Comprehensive Service Package"
+          content="Engine Tune-up, Brake Pad Replacement, Fluid Flushes, Diagnostic Check"
+        />
       </div>
 
       <div>
-        <h3 style={sectionTitleStyle}>Individual Services</h3>
-        <p style={paragraphStyle}>For those who prefer individual services, we provide a detailed breakdown of pricing for each service. Our competitive rates ensure you get quality service without breaking the bank.</p>
+        <PricingCard
+          title="Individual Services"
+          content="For those who prefer individual services, we provide a detailed breakdown of pricing for each service. Our competitive rates ensure you get quality service without breaking the bank."
+        />
 
-        <h3 style={sectionTitleStyle}>Special Offers and Discounts</h3>
-        <p style={paragraphStyle}>Keep an eye out for our special offers and discounts on select services. We frequently update our promotions to provide additional value to our customers.</p>
+        <PricingCard
+          title="Special Offers and Discounts"
+          content="Keep an eye out for our special offers and discounts on select services. We frequently update our promotions to provide additional value to our customers."
+        />
 
-        <h3 style={sectionTitleStyle}>Customized Quotes</h3>
-        <p style={paragraphStyle}>If you have specific needs or require a customized service package, feel free to reach out to us. We can provide personalized quotes based on your vehicle's requirements.</p>
+        <PricingCard
+          title="Customized Quotes"
+          content="If you have specific needs or require a customized service package, feel free to reach out to us. We can provide personalized quotes based on your vehicle's requirements."
+        />
 
-        <h3 style={sectionTitleStyle}>Contact Us for a Quote</h3>
-        <p style={paragraphStyle}>For a detailed quote or to inquire about our current promotions, contact our service team. We're here to assist you and provide the best service at affordable prices.</p>
+        <PricingCard
+          title="Contact Us for a Quote"
+          content="For a detailed quote or to inquire about our current promotions, contact our service team. We're here to assist you and provide the best service at affordable prices."
+        />
       </div>
 
       {/* Add more content as needed */}
