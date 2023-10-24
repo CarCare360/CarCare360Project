@@ -236,7 +236,7 @@ const RegUserBooking = () => {
       })
         .then((response) => {
           console.log("this is the result", response.status);
-          if (response.status === 201) {
+          if (response.status === 201 || response.status === 200) {
             e.target.reset();
             resetForm(); // Clear user entered form data
             swal("Booked!", "We are waiting for you!", "success"); // Show success message
