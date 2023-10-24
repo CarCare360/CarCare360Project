@@ -1,23 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import Sidebar from "./marketing/SideBar";
 import Navbar from "./dashboard/components/Navbar";
 import styled from "styled-components";
+import CustomerTable from "../components/CustomerTable";
 
 const CreateNewGroup = () => {
   const [groupName, setGroupName] = useState("");
   const [groupEmails, setGroupEmails] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleCreateGroup = (e) => {
     e.preventDefault();
-    if (groupName && groupEmails) {
+    if (groupName) {
       const newGroup = {
         name: groupName,
-        emailAddresses: groupEmails.split(",").map((email) => email.trim()),
+        emailAddresses: [
+          ...(groupEmails
+            ? groupEmails.split(",").map((email) => email.trim())
+            : []),
+          ...(selectedUsers.length > 0
+            ? selectedUsers.map((user) => user.email)
+            : []),
+        ],
       };
 
       axios
@@ -25,9 +32,14 @@ const CreateNewGroup = () => {
         .then((response) => {
           if (response.status === 201) {
             swal("Group Created!", "", "success");
-            console.log(response.data);
             setGroupName("");
             setGroupEmails("");
+            setSelectedUsers([]); // Clear selected users after creating the group
+          } else if (response.status) {
+            swal("Emails were added to the group", "", "success");
+            setGroupName("");
+            setGroupEmails("");
+            setSelectedUsers([]); // Clear selected users after adding emails to the group
           }
         })
         .catch((error) => {
@@ -41,27 +53,34 @@ const CreateNewGroup = () => {
       <Navbar />
       <Row>
         <Col md={3}>
-          <Sidebar />{" "}
+          <Sidebar />
         </Col>
         <Col md={9}>
           <CreateGroups>
-            <h2 style={{ textAlign: "center" }}>Create new Groups</h2>
+            <h2 style={{ textAlign: "center" }}>Manage Groups</h2>
             <div className="form-container">
               <form onSubmit={handleCreateGroup}>
                 <div className="form-group">
-                  <label>Group Name</label>
+                  <h5>Group Name</h5>
                   <input
                     name="name"
                     type="text"
                     className="form-control"
-                    placeholder="Enter the new group name"
+                    placeholder="Enter the group name"
                     value={groupName || ""}
                     onChange={(e) => setGroupName(e.target.value)}
                   />
                 </div>
+                <div>
+                  <h5>Select Users to Add:</h5>
+                  <CustomerTable
+                    selectedUsers={selectedUsers}
+                    setSelectedUsers={setSelectedUsers}
+                  />
+                </div>
                 <div className="form-group">
-                  <label>Email Addresses</label>
-
+                  <br />
+                  <h5>Additional Email Addresses</h5>
                   <textarea
                     name="emails"
                     className="form-control"
@@ -71,9 +90,10 @@ const CreateNewGroup = () => {
                     onChange={(e) => setGroupEmails(e.target.value)}
                   ></textarea>
                 </div>
+
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <button type="submit" className="btn btn-primary">
-                    Create Group
+                    Save Group
                   </button>
                 </div>
               </form>

@@ -12,14 +12,33 @@ exports.createMailingList = async (req, res) => {
         .json({ message: "Name and at least one email address are required." });
     }
 
-    const newMailingList = await MailingList.create({
-      name,
-      emailAddresses,
-    });
-    res.status(201).json(newMailingList);
+    // Search for an existing mailing list by name
+    const existingMailingList = await MailingList.findOne({ name });
+
+    if (existingMailingList) {
+      // Filter out duplicate email addresses
+      const uniqueEmailAddresses = emailAddresses.filter(
+        (email) => !existingMailingList.emailAddresses.includes(email)
+      );
+
+      // Append only the unique email addresses
+      existingMailingList.emailAddresses.push(...uniqueEmailAddresses);
+
+      const updatedMailingList = await existingMailingList.save();
+      res.status(200).json(updatedMailingList);
+    } else {
+      // Create a new mailing list
+      const newMailingList = await MailingList.create({
+        name,
+        emailAddresses,
+      });
+      res.status(201).json(newMailingList);
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error creating the mailing list." });
+    res
+      .status(500)
+      .json({ message: "Error creating or updating the mailing list." });
   }
 };
 
@@ -78,11 +97,9 @@ exports.sendEmail = async (req, res) => {
       for (const mailingListId of mailingListIds) {
         const mailingList = await MailingList.findById(mailingListId);
         if (!mailingList) {
-          return res
-            .status(404)
-            .json({
-              message: `Mailing list with ID ${mailingListId} not found.`,
-            });
+          return res.status(404).json({
+            message: `Mailing list with ID ${mailingListId} not found.`,
+          });
         }
 
         for (const email of mailingList.emailAddresses) {

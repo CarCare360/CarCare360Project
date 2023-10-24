@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import Sidebar from "./marketing/SideBar";
 import Navbar from "./dashboard/components/Navbar";
+import Footer from "../pages/commons/Footer";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -44,6 +45,21 @@ const SendEmail = () => {
   const sendEmail = (e) => {
     e.preventDefault();
 
+    // Show loading spinner while sending emails
+    swal({
+      title: "Sending Emails",
+      text: "Please wait...",
+      buttons: false,
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+      showConfirmButton: false,
+      showCancelButton: false,
+      allowOutsideClick: false,
+      onOpen: () => {
+        swal.showLoading(); // Display a loading spinner
+      },
+    });
+
     // Validate and filter the additional email addresses
     const validEmails = additionalEmails
       .split(",")
@@ -67,6 +83,7 @@ const SendEmail = () => {
       .post("http://localhost:4000/api/mailing/sendEmail", emailData)
       .then((response) => {
         // After sending emails
+        swal.close(); // Close the loading dialog
         swal(
           "Emails Sent",
           "All emails have been sent successfully.",
@@ -82,6 +99,7 @@ const SendEmail = () => {
         swal("Error", "An error occurred while sending emails.", "error");
       });
   };
+
   // Create customerGroups from mailingLists
   const customerGroups = mailingLists.map((list) => {
     return { name: list.name, id: list._id };

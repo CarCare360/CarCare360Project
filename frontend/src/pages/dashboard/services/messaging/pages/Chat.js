@@ -186,8 +186,9 @@ const Container = styled.div`
   width: 100vw;
 
   padding-bottom: 40px;
-  margin-left: 100px;
-  padding-left: 200px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -205,7 +206,7 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
-      grid-template-columns: 35% 65%;
+      grid-template-columns: 40% 60%;
     }
     @media screen and (max-width: 720px) {
       grid-template-columns: 0% 100%;

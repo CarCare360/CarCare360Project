@@ -130,7 +130,7 @@ export default function Sidebar() {
                 <GroupIcon style={{ fontSize: 40 }} />
               </ListItemIcon>
               <ListItemText
-                primary="Create User Groups"
+                primary="Manage Groups"
                 sx={{ opacity: open ? 1 : 0 }}
               />
             </ListItemButton>

@@ -5,15 +5,19 @@ import Textarea from "@mui/joy/Textarea";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Sidebar from "../../components/Sidebar";
+import CustomerSidebar from "../../../customerDash/components/Sidebar";
+
 import TopBar from "../../components/Navbar";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../../../../hooks/useAuth";
 
 function DiscussionPage({ match }) {
   const url = useLocation();
   const discussionId = url.pathname.split("/")[3];
   const discussionDetails = localStorage.getItem("discussion_details");
   let currentDiscussion = JSON.parse(discussionDetails);
+  const { role } = useAuth();
 
   useEffect(() => {
     const getPosts = async () => {
@@ -98,7 +102,7 @@ function DiscussionPage({ match }) {
     <Container>
       <TopBar />
       <SidebarContainer>
-        <Sidebar />
+        {role === "maintenancemanager" ? <Sidebar /> : <CustomerSidebar />}
       </SidebarContainer>
       <DiscussionWrapper>
         <DiscussionInfo>

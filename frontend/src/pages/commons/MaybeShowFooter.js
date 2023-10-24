@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const MaybeShowFooter = ({ children }) => {
   const location = useLocation();
@@ -10,6 +10,8 @@ const MaybeShowFooter = ({ children }) => {
       /^\/CustomerDashboard(\/|$)/,
       /^\/AdminDashboard(\/|$)/,
       /^\/MaintananceManagerDashboard(\/|$)/,
+      /^\/sendEmail(\/|$)/,
+      /^\/createMailGroups(\/|$)/,
     ];
 
     for (const path of hideFooterPaths) {
