@@ -8,7 +8,7 @@ const MaybeShowFooter = ({ children }) => {
   useEffect(() => {
     const hideFooterPaths = [
       /^\/CustomerDashboard(\/|$)/,
-      /^\/AdminDashboard(\/|$)/,
+      /^\/Admindashboard(\/|$)/,
       /^\/MaintananceManagerDashboard(\/|$)/,
       /^\/sendEmail(\/|$)/,
       /^\/createMailGroups(\/|$)/,

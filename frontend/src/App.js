@@ -39,6 +39,7 @@ import ManufacturerRecommendationView from "./pages/customerDash/services/Manufa
 import SendEmail from "./pages/SendEmail";
 import Unauthorized from "./pages/Unauthorized";
 import CreateGroups from "./pages/CreateGroups";
+import AdminDashboard from "./pages/adminDash/index";
 
 library.add(faEnvelope, faKey);
 
@@ -174,7 +175,7 @@ function App() {
               />
               <Route
                 path="/Admindashboard"
-                element={<CustomerDashboard />}
+                element={<AdminDashboard />}
               />
               <Route
                 path="/Admindashboard/register-vehicle"

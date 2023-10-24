@@ -60,7 +60,7 @@ exports.scheduledetails = async (req, res, next) => {
 exports.recentschedule = async (req, res, next) => {
   try {
     const recentBookingData = await bookingModel
-      .find({}, '_id firstName lastName serviceType status lastUpdate')
+      .find({}, '_id firstName lastName serviceType status lastUpdate preferredTime')
       .sort({ lastUpdate: -1 })
       .limit(5);
 
