@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 const pathPatternsToHideNavbar = [
   /^\/CustomerDashboard(\/|$)/,
-  /^\/AdminDashboard(\/|$)/,
+  /^\/Admindashboard(\/|$)/,
   /^\/MaintananceManagerDashboard(\/|$)/,
 ];
 

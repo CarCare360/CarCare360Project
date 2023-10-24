@@ -49,7 +49,11 @@ const CustomerDashboard = () => {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        setVehicles(data);
+        if (Array.isArray(data)) {
+          setVehicles(data);
+        } else {
+          setVehicles([]); // Initialize vehicles as an empty array
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

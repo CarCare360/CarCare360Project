@@ -23,6 +23,9 @@ import MessageIcon from '@mui/icons-material/Message';
 import ForumIcon from '@mui/icons-material/Forum';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import SendIcon from "@mui/icons-material/Send";
+import GroupIcon from "@mui/icons-material/Group";
+
 const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
