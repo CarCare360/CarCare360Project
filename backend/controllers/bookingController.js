@@ -72,34 +72,27 @@ const bookAService = async (req, res) => {
 
     // Sending appointment confirmation email to customer
     const msgBody = `
-  <h2> Welcome to Car Care 360 </h2>
-  <p>Hello ${firstName} ${lastName},</p>
-  <p><strong>Service Appointment Confirmed! 🎉</strong></p>
-  <p> 🚗 Vehicle: ${make} ${model} </p>
-  <p> 🔍 RegNum: ${registrationNumber} </p>
-  <p> 📅 Date: ${selectedDate} </p>
-  <p> ⏰ Time: ${preferredTime} </p>
-  <p>Thank you! We are waiting for you! 🤝</p>
-`;
+                    <h2> Welcome to Car Care 360 </h2>
+                    <p>Hello ${firstName} ${lastName},</p>
+                    <p><strong>Service Appointment Confirmed! 🎉</strong></p>
+                    <p> 🚗 Vehicle: ${make} ${model} </p>
+                    <p> 🔍 RegNum: ${registrationNumber} </p>
+                    <p> 📅 Date: ${selectedDate} </p>
+                    <p> ⏰ Time: ${preferredTime} </p>
+                    <p>Thank you! We are waiting for you! 🤝</p>
+                  `;
+    await sendEmail({
+      to: email, 
+      subject: 'Service Appointment Confirmed!',
+      text: msgBody,
+    });
 
-    try {
-      await sendEmail({
-        to: email, // Use the customer's email, not bookingModel.email
-        subject: 'Service Appointment Confirmed!',
-        text: msgBody,
-      });
+    // Send WhatsApp message
+    // whatsappController.sendWAppMsg(mobileNumber, msgBody);
 
-      // Send WhatsApp message
-      // whatsappController.sendWAppMsg(mobileNumber, msgBody);
-
-      res.status(200).json({ success: true, data: 'Email Sent' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Email could not be sent' });
-    }
+    res.status(200).json({ success: true, data: 'Email Sent' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'While creating the document' });
+    res.status(500).json({ error: 'Email could not be sent' });
   }
 };
 
