@@ -57,12 +57,14 @@ const Booking = () => {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
-    } else if (!recaptchaValue) {
-      // Handle the case where reCAPTCHA is not filled
-      alert('Please complete the reCAPTCHA.');
-      e.preventDefault();
-      e.stopPropagation();
-    } else {
+    } 
+    // else if (!recaptchaValue) {
+    //   // Handle the case where reCAPTCHA is not filled
+    //   alert('Please complete the reCAPTCHA.');
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // } 
+    else {
       setValidated(false);
 
       e.preventDefault();
@@ -392,9 +394,11 @@ const Booking = () => {
                 >
                   {/* available time slots to be granted from database dynamicaly */}
                   <option value=''>Select preferred time</option>
-                  <option value='1'>One</option>
-                  <option value='2'>Two</option>
-                  <option value='3'>Three</option>
+                  <option value='1'>10.00</option>
+                  <option value='2'>11.00</option>
+                  <option value='3'>12.00</option>
+                  <option value='4'>13.00</option>
+                  <option value='5'>14.00</option>
                 </Form.Select>
                 <Form.Control.Feedback type='invalid'>
                   *Please select the preferred date

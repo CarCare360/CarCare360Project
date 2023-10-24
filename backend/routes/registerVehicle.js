@@ -2,8 +2,9 @@ const express = require("express");
 
 const {
   getVehicles,
-  getVehicleById,
+  getVehiclesByCustomerID,
   createVehicle,
+  updateVehicle,
 } = require("../controllers/vehicleController");
 
 const router = express.Router();
@@ -12,9 +13,12 @@ const router = express.Router();
 router.get("/", getVehicles);
 
 // GET vehicle by ID
-router.get("/:id", getVehicleById);
+router.get("/:customerID", getVehiclesByCustomerID);
 
 // POST a new vehicle
 router.post("/", createVehicle);
+
+//update vehicle by ID
+router.patch("/:id",updateVehicle);
 
 module.exports = router;

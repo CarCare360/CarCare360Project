@@ -81,7 +81,8 @@ const Booking = () => {
         selectedDate,
         preferredTime,
       };
-
+      
+      console.log('Request Body:', requestBody);
       // Create the fetch request
       fetch('/api/booking/', {
         method: 'POST',
