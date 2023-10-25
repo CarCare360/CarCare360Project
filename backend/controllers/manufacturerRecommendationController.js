@@ -7,11 +7,12 @@ const getManufacturerRecommendations = async (req, res) => {
     const manufacturerRecommendations = await ManufacturerRecommendation.find(
       {}
     );
-    res.status(200).json(manufacturerRecommendations);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log({ error: "Internal Server Error" });
   }
 };
+
+
 
 // Get a single manufacturer recommendation by ID
 const getManufacturerRecommendationById = async (req, res) => {

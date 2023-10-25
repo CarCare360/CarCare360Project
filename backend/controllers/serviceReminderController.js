@@ -1,18 +1,18 @@
 const ManufacturerRecommendation = require("../models/manufacturerRecommendationModel");
 const mongoose = require("mongoose");
-const sendEmail = require('../utils/sendEmail');
+const sendEmail = require("../utils/sendEmail");
 
 // Get all manufacturer recommendations and store in an array
-const getAllManufacturerRecommendations = async () => {
+let manufacturerRecommendations = [];
+
+// Get all manufacturer recommendations
+const getManufacturerRecommendations = async (req, res) => {
   try {
-    const manufacturerRecommendations = await ManufacturerRecommendation.find(
-      {}
-    );
-    return manufacturerRecommendations;
+    manufacturerRecommendations = await ManufacturerRecommendation.find({});
+    //console.log(manufacturerRecommendations);
+    res.status(200).json(manufacturerRecommendations);
   } catch (error) {
-    throw new Error(
-      "Error fetching manufacturer recommendations: " + error.message
-    );
+    console.log({ error: "Internal Server Error" });
   }
 };
 
@@ -20,40 +20,77 @@ const getAllManufacturerRecommendations = async () => {
 
 // Function to find a vehicle by make and model
 async function findVehicleByMakeAndModel(make, model) {
-    const manufacturerRecommendationsArray = await getAllManufacturerRecommendations();
-    for (const v of manufacturerRecommendationsArray) {
-      if (v.make.toLowerCase() === make.toLowerCase() && v.model.toLowerCase() === model.toLowerCase()) {
-        //console.log(v);
-        return v; // Return the recommendation if found
-      }
+  await getManufacturerRecommendations();
+  for (const v of manufacturerRecommendations) {
+    if (
+      v.make.toLowerCase() === make.toLowerCase() &&
+      v.model.toLowerCase() === model.toLowerCase()
+    ) {
+      //console.log(v);
+      return v; // Return the recommendation if found
     }
-    return null; // Return null if not found after checking all recommendations
   }
-  
+  return null; // Return null if not found after checking all recommendations
+}
 
 module.exports = {
-  sendServiceReminder: (vehicle,customer) => {
+  sendServiceReminder: async (vehicle, customer) => {
     //console.log(vehicle,customer);
-    const foundVehicle = findVehicleByMakeAndModel(vehicle.make, vehicle.model);
+    const foundVehicle = await findVehicleByMakeAndModel(
+      vehicle.make,
+      vehicle.model
+    );
     //const oilchangeInterval = foundVehicle.
     //console.log(allRecommendations);
-    console.log(foundVehicle);
-
-    // const msgBody = `
-    //                 <h2> Welcome to Car Care 360 </h2>
-    //                 <p>Hello ${firstName} ${lastName},</p>
-    //                 <p><strong>Service Appointment Confirmed! 🎉</strong></p>
-    //                 <p> 🚗 Vehicle: ${make} ${model} </p>
-    //                 <p> 🔍 RegNum: ${registrationNumber} </p>
-    //                 <p> 📅 Date: ${selectedDate} </p>
-    //                 <p> ⏰ Time: ${preferredTime} </p>
-    //                 <p>Thank you! We are waiting for you! 🤝</p>
-    //               `;
-    // console.log(msgBody);
-    // sendEmail({
-    //   to: email, 
-    //   subject: 'Service Appointment Confirmed!',
-    //   text: msgBody,
-    // });
+    console.log("founded recomendations", foundVehicle);
+    const currentMileage = parseInt(vehicle.currentMileage);
+    const oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
+    const overDueMileage =
+      currentMileage - parseInt(vehicle.lastServiceMileage) - oilchangeInterval;
+    let msgBody = null;
+    if (overDueMileage > 0) {
+      msgBody = `
+ 
+                    <p>Dear Customer,</p>
+                    <p>Your ${vehicle.make} ${vehicle.model} with the registration number ${vehicle.registerNumber} is overdue for service by ${overDueMileage} kilometers. </p>
+                    <p> To keep your vehicle running smoothly, please schedule an appointment with us now.</p>
+                    <p> Thank you for choosing CarCare360.\n
+                    Best regards,\n
+                    CarCare360</p>
+                  `;
+      sendEmail({
+        to: customer.email,
+        subject: " Urgent: Your Vehicle's Service is Overdue",
+        text: msgBody,
+      });
+      console.log(msgBody);
+    } else if (overDueMileage > -1000) {
+      msgBody = `           
+      <p>Dear Customer,</p>
+      <p>At CarCare360, your vehicle's maintenance and safety are our top priorities. We wanted to remind you that your ${
+        vehicle.make
+      } ${vehicle.model} with the registration number ${
+        vehicle.registerNumber
+      } is running closer for its upcoming service.</p>
+      <p><strong>Last Service Date:</strong> ${vehicle.lastServiceDate}</p>
+      <p><strong>Last Service Mileage:</strong> ${
+        vehicle.lastServiceMileage
+      }</p>
+      <p><strong>Current Mileage:</strong> ${vehicle.currentMileage}</p>
+      <p><strong>Kilometers Left Until Next Service:</strong> ${Math.abs(
+        overDueMileage
+      )}</p>
+      <p> To keep your vehicle running smoothly, please schedule an appointment with us now.</p>
+      <p> Thank you for choosing CarCare360.\n
+      Best regards,\n
+      CarCare360</p>
+    `;
+      sendEmail({
+        to: customer.email,
+        subject: "Reminder: Upcoming Service",
+        text: msgBody,
+      });
+      console.log(msgBody);
+    }
   },
 };
