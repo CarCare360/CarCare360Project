@@ -20,7 +20,7 @@ function Forum() {
   const handleCreateDiscussion = () => {
     try {
       const response = axios.post(
-        "http://localhost:4000/api/forum/createDiscussion",
+        "https://car-care-360.onrender.com/api/forum/createDiscussion",
         {
           title: discussionTitle.trim(),
           creatorToken: token,

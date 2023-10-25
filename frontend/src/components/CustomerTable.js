@@ -39,7 +39,7 @@ const CustomerTable = ({ selectedUsers, setSelectedUsers }) => {
   useEffect(() => {
     // Fetch customers from the backend when the component mounts
     axios
-      .get("http://localhost:4000/api/registercustomer/")
+      .get("https://car-care-360.onrender.com/api/registercustomer/")
       .then((response) => {
         // Filter customers with the "customer" role and select specific fields
         const customerData = response.data
