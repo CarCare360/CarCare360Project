@@ -4,8 +4,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const socket = require("socket.io");
 
 const ManufacturerRecommendationRoutes = require("./routes/manufacturerRecommendation");
@@ -25,7 +23,6 @@ const forumRoute = require("./routes/forumRoute");
 const authentication = require("./routes/authRoutes");
 const errorHandler = require("./middleware/error");
 const e = require("express");
-// const sendEmail = require("./routes/sendEmail")
 
 const whatsappController = require("./controllers/whatsappController");
 
