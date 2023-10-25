@@ -30,6 +30,7 @@ const CustomerDashboard = () => {
   const [vehicles, setVehicles] = useState([]);
   const [userData, setUserData] = useState(useAuth()); //getting current loggedin user data
   const [customerID, setCustomerID] = useState(userData.id);
+  const [customerEmail,setCustomerEmail]= useState(userData.email);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showVehicleForm, setShowVehicleForm] = useState(false);
   const [currentMileage, setCurrentMileage] = useState();
@@ -172,6 +173,7 @@ const CustomerDashboard = () => {
     console.log("bookings", bookings);
     const vehicle = {
       currentMileage,
+      userData,
     };
 
     try {

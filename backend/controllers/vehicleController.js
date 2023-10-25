@@ -1,5 +1,8 @@
 const Vehicle = require("../models/vehicleModel");
 const mongoose = require("mongoose");
+const {
+  sendServiceReminder,
+} = require("../controllers/serviceReminderController");
 
 // Get All Vehicles
 
@@ -42,9 +45,11 @@ const getVehiclesByCustomerID = async (req, res) => {
   //console.log("CID:",customerID);
 
   try {
-    const vehicles = await Vehicle.find({ customerID }); 
+    const vehicles = await Vehicle.find({ customerID });
     if (vehicles.length === 0) {
-      return res.status(404).json({ error: "No vehicles found for the specified customer" });
+      return res
+        .status(404)
+        .json({ error: "No vehicles found for the specified customer" });
     }
 
     res.status(200).json(vehicles);
@@ -53,11 +58,13 @@ const getVehiclesByCustomerID = async (req, res) => {
   }
 };
 
-
 //patch vehicle
 const updateVehicle = async (req, res) => {
-  const { id } = req.params; 
-  const updates = req.body;
+  const { id } = req.params;
+  const { currentMileage, userData } = req.body; // Destructure the properties directly from req.body
+
+  // console.log("Current Mileage:", currentMileage);
+  // console.log("User Data:", userData);
 
   try {
     const vehicle = await Vehicle.findById(id);
@@ -67,43 +74,43 @@ const updateVehicle = async (req, res) => {
     }
 
     // Update specific fields of the vehicle
-    if (updates.registerNumber) {
-      vehicle.registerNumber = updates.registerNumber;
+    // if (updatedVehicle.registerNumber) {
+    //   vehicle.registerNumber = updatedVehicle.registerNumber;
+    // }
+    // if (updatedVehicle.chassisFirstCode) {
+    //   vehicle.chassisFirstCode = updatedVehicle.chassisFirstCode;
+    // }
+    // if (updatedVehicle.make) {
+    //   vehicle.make = updatedVehicle.make;
+    // }
+    // if (updatedVehicle.model) {
+    //   vehicle.model = updatedVehicle.model;
+    // }
+    // if (updatedVehicle.lastServiceDate) {
+    //   vehicle.lastServiceDate = updatedVehicle.lastServiceDate;
+    // }
+    // if (updatedVehicle.fuelType) {
+    //   vehicle.fuelType = updatedVehicle.fuelType;
+    // }
+    // if (updatedVehicle.lastServiceMileage) {
+    //   vehicle.lastServiceMileage = updatedVehicle.lastServiceMileage;
+    // }
+    // if (updatedVehicle.customerID) {
+    //   vehicle.customerID = updatedVehicle.customerID;
+    // }
+    if (currentMileage) {
+      vehicle.currentMileage = currentMileage;
     }
-    if (updates.chassisFirstCode) {
-      vehicle.chassisFirstCode = updates.chassisFirstCode;
-    }
-    if (updates.make) {
-      vehicle.make = updates.make;
-    }
-    if (updates.model) {
-      vehicle.model = updates.model;
-    }
-    if (updates.lastServiceDate) {
-      vehicle.lastServiceDate = updates.lastServiceDate;
-    }
-    if (updates.fuelType) {
-      vehicle.fuelType = updates.fuelType;
-    }
-    if (updates.lastServiceMileage) {
-      vehicle.lastServiceMileage = updates.lastServiceMileage;
-    }
-    if (updates.customerID) {
-      vehicle.customerID = updates.customerID;
-    }
-    if (updates.currentMileage){
-      vehicle.currentMileage=updates.currentMileage;
-    }
+
     await vehicle.save();
+    await sendServiceReminder(vehicle, userData);
 
     res.status(200).json(vehicle);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
+    console.log(error);
   }
 };
-
-
-
 
 // Create a new vehicle
 
@@ -159,8 +166,6 @@ const createVehicle = async (req, res) => {
     res.status(500).json({ error: "While creating the document" });
   }
 };
-
-
 
 module.exports = {
   getVehicles,

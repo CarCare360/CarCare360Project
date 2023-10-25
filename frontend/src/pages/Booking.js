@@ -44,6 +44,49 @@ const Booking = () => {
   ]);
   const [bookingData, setBookingData] = useState([]);
 
+  
+   // Update available time slots when date selected
+  useEffect(() => {
+    if (selectedDate !== "") {
+      const originalArray = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "14:00",
+        "15:00",
+      ];
+
+      function getPreferredTimesForDate(appointments, selectedDate) {
+        const preferredTimes = [];
+        for (const appointment of appointments) {
+          if (appointment.selectedDate === selectedDate) {
+            preferredTimes.push(appointment.preferredTime);
+          }
+        }
+        return preferredTimes;
+      }
+
+      const timesForSelectedDate = getPreferredTimesForDate(
+        bookingData,
+        selectedDate
+      );
+      console.log("selected times", timesForSelectedDate);
+
+      // Create a new array of available time slots
+      const updatedTimeSlots = originalArray.filter(
+        (timeSlot) => !timesForSelectedDate.includes(timeSlot)
+      );
+
+      if (updatedTimeSlots.length === 0) {
+        updatedTimeSlots.push("");
+      }
+
+      setTimeSlots(updatedTimeSlots);
+    }
+  }, [selectedDate]);
+
+
   function fetchData() {
     const apiUrl5 = `/api/components/scheduledate/`;
 
@@ -65,14 +108,18 @@ const Booking = () => {
     fetchData();
   }, []);
 
-  function resetTimeSlots() {
-    setTimeSlots(["09:00", "10:00", "11:00", "12:00", "14:00", "15:00"]);
-    console.log("called", timeSlots);
-  }
-  //update available time slots when date selected
-  useEffect(() => {
+  // Update available time slots when date selected
+    useEffect(() => {
     if (selectedDate !== "") {
-      resetTimeSlots();
+      const originalArray = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "14:00",
+        "15:00",
+      ];
+
       function getPreferredTimesForDate(appointments, selectedDate) {
         const preferredTimes = [];
         for (const appointment of appointments) {
@@ -90,7 +137,7 @@ const Booking = () => {
       console.log("selected times", timesForSelectedDate);
 
       // Create a new array of available time slots
-      const updatedTimeSlots = timeSlots.filter(
+      const updatedTimeSlots = originalArray.filter(
         (timeSlot) => !timesForSelectedDate.includes(timeSlot)
       );
 
@@ -98,8 +145,10 @@ const Booking = () => {
         updatedTimeSlots.push("");
       }
 
-      setTimeSlots(updatedTimeSlots);
-      console.log("updated time slots", timeSlots);
+      setTimeSlots(updatedTimeSlots, () => {
+        // Move your log statements here, after the state has been updated
+        console.log("updated time slots", updatedTimeSlots);
+      });
     }
   }, [selectedDate]);
 
@@ -126,12 +175,12 @@ const Booking = () => {
       e.stopPropagation();
       setValidated(true);
     }
-    // else if (!recaptchaValue) {
-    //   // Handle the case where reCAPTCHA is not filled
-    //   alert('Please complete the reCAPTCHA.');
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // }
+    else if (!recaptchaValue) {
+      // Handle the case where reCAPTCHA is not filled
+      alert('Please complete the reCAPTCHA.');
+      e.preventDefault();
+      e.stopPropagation();
+    }
     else {
       setValidated(false);
 
@@ -167,6 +216,8 @@ const Booking = () => {
             e.target.reset();
             resetForm(); // Clear user entered form data
             swal("Booked!", "We are waiting for you!", "success"); // Show success message
+            fetchData();
+
           } else {
             throw new Error("Request failed");
           }
@@ -236,7 +287,7 @@ const Booking = () => {
         )}
       </>
 
-      <Container className="shadow p-3 mb-5 bg-body rounded">
+      <Container className="shadow p-3 mb-5 mt-5 bg-body rounded">
         <h2>Book a service</h2>
         <div className=" pl-4 pr-4 pt-2 pb-2">
           <Form
