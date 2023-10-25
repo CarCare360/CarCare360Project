@@ -23,7 +23,7 @@ function DiscussionPage({ match }) {
     const getPosts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/forum/getPosts/${discussionId}`
+          `https://car-care-360.onrender.com/api/forum/getPosts/${discussionId}`
         );
         setPosts(response.data);
       } catch (error) {
@@ -48,7 +48,7 @@ function DiscussionPage({ match }) {
     const createPost = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:4000/api/forum/createPost`,
+          `https://car-care-360.onrender.com/api/forum/createPost`,
           {
             content: replyText,
             discussionId: discussionId,
