@@ -34,7 +34,7 @@ export default function Chat() {
         // navigate("/chat-login");
         const token = localStorage.getItem("token");
         const result = await axios.get(
-          "http://localhost:4000/api/messages/getme" + "/" + token
+          "https://car-care-360.onrender.com/api/messages/getme" + "/" + token
         );
         console.log(result.data);
         const username = result.data.username;
@@ -85,7 +85,7 @@ export default function Chat() {
       try {
         const token = localStorage.getItem("token");
         const result = await axios.get(
-          "http://localhost:4000/api/messages/getme" + "/" + token
+          "https://car-care-360.onrender.com/api/messages/getme" + "/" + token
         );
         setMe(result.data.username);
       } catch (error) {}

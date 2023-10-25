@@ -174,7 +174,7 @@ export default function EnhancedTable() {
 
   async function fetchDiscussions() {
     const response = await axios.get(
-      "http://localhost:4000/api/forum/getDiscussions"
+      "https://car-care-360.onrender.com/api/forum/getDiscussions"
     );
     const reversedData = response.data.reverse();
 

@@ -1,18 +1,18 @@
-import * as React from 'react';
-import dayjs from 'dayjs';
-import Badge from '@mui/material/Badge';
-import Tooltip from '@mui/material/Tooltip';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
+import * as React from "react";
+import dayjs from "dayjs";
+import Badge from "@mui/material/Badge";
+import Tooltip from "@mui/material/Tooltip";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { PickersDay } from "@mui/x-date-pickers/PickersDay";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { DayCalendarSkeleton } from "@mui/x-date-pickers/DayCalendarSkeleton";
 
 function ServerDay(props) {
   const { bookingData = [], day, outsideCurrentMonth, ...other } = props;
 
   const isScheduled = bookingData.some((booking) =>
-    dayjs(booking.selectedDate).isSame(day, 'day')
+    dayjs(booking.selectedDate).isSame(day, "day")
   );
 
   return (
@@ -22,16 +22,20 @@ function ServerDay(props) {
         overlap="circular"
         badgeContent={undefined}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         style={{
-          borderRadius: isScheduled ? '100%' : '0', // Round the scheduled date
-          backgroundColor: isScheduled ? '#1E88E5' : 'transparent', // Blue color for scheduled dates
-          cursor: 'default',
+          borderRadius: isScheduled ? "100%" : "0", // Round the scheduled date
+          backgroundColor: isScheduled ? "#1E88E5" : "transparent", // Blue color for scheduled dates
+          cursor: "default",
         }}
       >
-        <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        <PickersDay
+          {...other}
+          outsideCurrentMonth={outsideCurrentMonth}
+          day={day}
+        />
       </Badge>
     </Tooltip>
   );
@@ -39,16 +43,16 @@ function ServerDay(props) {
 
 function getTooltipContent(selectedDay, bookingData) {
   const daySchedules = bookingData.filter((booking) =>
-    dayjs(booking.selectedDate).isSame(selectedDay, 'day')
+    dayjs(booking.selectedDate).isSame(selectedDay, "day")
   );
 
   if (daySchedules.length === 0) {
-    return dayjs(selectedDay).format('MMMM YYYY'); // Show only month and year when no schedule
+    return dayjs(selectedDay).format("MMMM YYYY"); // Show only month and year when no schedule
   }
 
   return (
     <div>
-      <p>Date: {dayjs(selectedDay).format('YYYY-MM-DD')}</p>
+      <p>Date: {dayjs(selectedDay).format("YYYY-MM-DD")}</p>
       <h3>Schedule Details</h3>
       <ul>
         {daySchedules.map((schedule) => (
@@ -72,8 +76,8 @@ export default function DateCalendarServerRequest() {
   const fetchHighlightedDays = () => {
     const controller = new AbortController();
 
-    fetch('http://localhost:4000/api/components/scheduledate', {
-      method: 'GET',
+    fetch("https://car-care-360.onrender.com/api/components/scheduledate", {
+      method: "GET",
       signal: controller.signal,
     })
       .then((response) => {
@@ -87,7 +91,7 @@ export default function DateCalendarServerRequest() {
         setIsLoading(false);
       })
       .catch((error) => {
-        if (error.name !== 'AbortError') {
+        if (error.name !== "AbortError") {
           throw error;
         }
       });
@@ -117,7 +121,9 @@ export default function DateCalendarServerRequest() {
         onMonthChange={handleMonthChange}
         renderLoading={() => <DayCalendarSkeleton />}
         slots={{
-          day: (props) => <ServerDay {...props} bookingData={highlightedDays} />,
+          day: (props) => (
+            <ServerDay {...props} bookingData={highlightedDays} />
+          ),
         }}
         slotProps={{
           day: {

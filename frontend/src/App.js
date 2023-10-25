@@ -6,7 +6,7 @@ import RequireAuth from "./utils/RequireAuth";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Footer from "./pages/commons/Footer";
 import NavbarComp from "./pages/commons/NavbarComp";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, HashRouter as Router } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { library } from "@fortawesome/fontawesome-svg-core";

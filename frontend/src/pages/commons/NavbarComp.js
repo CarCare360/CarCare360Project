@@ -22,20 +22,19 @@ function NavbarComp() {
       fixed="top"
     >
       <Container className="mt-0">
-        <Navbar.Brand href="/" style={brandStyle}>
+        <Navbar.Brand as={Link} to="/" style={brandStyle}>
           Car Care 360
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/services">Services</Nav.Link>
+            <Nav.Link as={Link} to="/services">Services</Nav.Link>
             <NavDropdown title="Vehicle Systems" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="/engine">Engine</NavDropdown.Item>
-              <NavDropdown.Item href="/brakes">Brakes</NavDropdown.Item>
-              {/* Add more items if needed */}
+              <NavDropdown.Item as={Link} to="/engine">Engine</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/brakes">Brakes</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/pricing">Pricing</Nav.Link>
-            <Nav.Link href="/service-booking">Appointments</Nav.Link>
+            <Nav.Link as={Link} to="/pricing">Pricing</Nav.Link>
+            <Nav.Link as={Link} to="/service-booking">Appointments</Nav.Link>
           </Nav>
           <Nav className="ml-auto">
             <Link to="/login">

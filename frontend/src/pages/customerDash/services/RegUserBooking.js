@@ -285,7 +285,6 @@ const RegUserBooking = () => {
             resetForm(); // Clear user entered form data
             swal("Booked!", "We are waiting for you!", "success"); // Show success message
             fetchData();
-
           } else {
             throw new Error("Request failed");
           }
