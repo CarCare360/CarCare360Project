@@ -97,6 +97,16 @@ const RegUserBooking = () => {
 
   // Update available time slots when date selected
   useEffect(() => {
+    // Set current customer data
+    const fullName = currentCustomer.username;
+    const names = fullName.split(" ");
+    if (names.length === 2) {
+      setFirstName(names[0]);
+      setLastName(names[1]);
+      setEmail(currentCustomer.email);
+      setMobileNumber(currentCustomer.phone);
+      setCustomerID(currentCustomer.id);
+    }
     if (selectedDate !== "") {
       const originalArray = [
         "09:00",
@@ -274,6 +284,7 @@ const RegUserBooking = () => {
             e.target.reset();
             resetForm(); // Clear user entered form data
             swal("Booked!", "We are waiting for you!", "success"); // Show success message
+            fetchData();
           } else {
             throw new Error("Request failed");
           }
