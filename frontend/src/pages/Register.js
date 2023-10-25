@@ -5,9 +5,18 @@ import '../styles/register.css';
 import register from '../components/images/register.jpeg';
 import swal from 'sweetalert';
 import { GoogleLogin } from 'react-google-login';
-import { Container, Row, Col, Form, Grid, Button, InputGroup } from 'react-bootstrap';
-
-const clientId = '610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Grid,
+  Button,
+  InputGroup,
+  Modal,
+} from 'react-bootstrap';
+const clientId =
+  '610163124901-aqk5761tb2nsqq35mjid80lu4047elnt.apps.googleusercontent.com';
 
 const Register = () => {
   const [validated, setValidated] = useState(false);
@@ -20,20 +29,17 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const checkPasswordStrength = () => {
-    const requirements = [
-      password.length >= 8,
-      /[a-z]/.test(password),
-      /[A-Z]/.test(password),
-      /\d/.test(password),
-      /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    ];
-    return requirements;
-  };
+  // useEffect(() => {
+  //   // fetchUsers();
+  // },[]);
 
-  const getPasswordRequirementClassName = (index) => {
-    return checkPasswordStrength()[index] ? 'hidden' : '';
-  };
+  // // const fetchUsers = () => {
+  // //   axios
+  // //   .get('http://localhost:4000/api/authentication/register')
+  // //   .then((response) => {
+  // //     console.log(response.data);
+  // //   })
+  // };
 
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
@@ -56,7 +62,7 @@ const Register = () => {
           password,
         })
         .then(() => {
-          swal('Registered!', '', 'success');
+          swal('Registered!', '', 'success'); // Show success message
           setFname('');
           setLname('');
           setAddress('');
@@ -66,7 +72,7 @@ const Register = () => {
           navigate('/login');
         })
         .catch((error) => {
-          swal('Email is already exist!', '', 'error');
+          swal('Email  is already exist!', '', 'error'); // Show success message
           setFname('');
           setLname('');
           setAddress('');
@@ -77,21 +83,35 @@ const Register = () => {
     }
   };
 
+  const onSuccess = (res) => {
+    console.log('LOGIN SUCCESS! Current user: ', res.profileobj);
+  };
+
+  const onFailure = (res) => {
+    console.log('LOGIN FAILED! res: ', res);
+  };
+
   return (
     <Container>
       <div className='register__customer__container '>
         <Row container spacing={2}>
+          {/* Left side with register customer image */}
           <Col item xs={12} md={6}>
             <div className='register__customer__topic'>
+              
               <div className='register__customer__img'>
-                <img src={register} alt='register' />
+                <img src={register}></img>
               </div>
             </div>
           </Col>
 
+          {/* Right side with form components */}
           <Col item xs={12} md={6}>
+            {/* Form */}
             <div className='register__customer__form'>
-              <h2 className='register__customer__heading'>Customer Registration</h2>
+            <h2 data-testid="cypress-title" className='register__customer__heading'>
+                Customer Registration
+              </h2>
               <Form
                 noValidate
                 validated={validated}
@@ -103,9 +123,10 @@ const Register = () => {
                     <Form.Label className='d-flex justify-content-start'>
                       First Name
                     </Form.Label>
+
                     <Form.Control
                       type='text'
-                      placeholder='EX: John'
+                      placeholder='EX:John'
                       maxLength={25}
                       required
                       value={fName}
@@ -115,13 +136,19 @@ const Register = () => {
                       *Please enter your name
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <Form.Group as={Col} controlId='formGridPassword' item xs={12} md={6}>
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridPassword'
+                    item
+                    xs={12}
+                    md={6}
+                  >
                     <Form.Label className='d-flex justify-content-start'>
                       Last Name
                     </Form.Label>
                     <Form.Control
                       type='text'
-                      placeholder='EX: Smith'
+                      placeholder='EX:Smith'
                       maxLength={25}
                       required
                       value={lName}
@@ -133,10 +160,17 @@ const Register = () => {
                   </Form.Group>
                 </Row>
                 <Row className=' pb-2'>
-                  <Form.Group as={Col} controlId='formGridAddress' item xs={12} md={6}>
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridAddress'
+                    item
+                    xs={12}
+                    md={6}
+                  >
                     <Form.Label className='d-flex justify-content-start'>
                       Address
                     </Form.Label>
+
                     <Form.Control
                       type='text'
                       placeholder='EX: No:77/C, Colombo 7'
@@ -146,12 +180,22 @@ const Register = () => {
                       onChange={(e) => setAddress(e.target.value)}
                     />
                     <Form.Control.Feedback type='invalid'>
-                      *Please enter a valid address
+                      *Please enter valiad address
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Form.Group as={Col} controlId='formGridPassword' item xs={12} md={6}>
-                    <Form.Label htmlFor='inlineFormInputGroup' visuallyHidden className='d-flex justify-content-start'>
+                  <Form.Group
+                    as={Col}
+                    controlId='formGridPassword'
+                    item
+                    xs={12}
+                    md={6}
+                  >
+                    <Form.Label
+                      htmlFor='inlineFormInputGroup'
+                      visuallyHidden
+                      className='d-flex justify-content-start'
+                    >
                       Mobile Number
                     </Form.Label>
                     <InputGroup className='mb-2'>
@@ -185,12 +229,13 @@ const Register = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                    />
+                    />{' '}
                     <Form.Control.Feedback type='invalid'>
                       *Please enter a valid E-mail
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
+
                 <Row className=' pb-2'>
                   <Form.Group as={Col} controlId='formGridpassword'>
                     <Form.Label className='d-flex justify-content-start'>
@@ -199,29 +244,28 @@ const Register = () => {
                     <Form.Control
                       type='password'
                       required
-                      minLength={8}
-                      pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$'
+                      minLength={6}
+                      maxLength={20}
                       value={password}
                       placeholder='Enter Password'
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <Form.Control.Feedback type='invalid'>
-                      *Password must be at least 8 characters long and contain at least one:
-                      <ul>
-                        <li className={getPasswordRequirementClassName(0)}>8 characters</li>
-                        <li className={getPasswordRequirementClassName(1)}>lowercase letter</li>
-                        <li className={getPasswordRequirementClassName(2)}>uppercase letter</li>
-                        <li className={getPasswordRequirementClassName(3)}>digit</li>
-                        <li className={getPasswordRequirementClassName(4)}>special character</li>
-                      </ul>
+                      *Please enter valid password above 6 characters
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
-                <div className='container d-flex justify-content-center'>
-                  <Button variant='primary' type='submit' className=' mt-2 justify-content-center'>
+
+                <div class='container d-flex justify-content-center'>
+                  <Button
+                    variant='primary'
+                    type='submit'
+                    className=' mt-2 justify-content-center'
+                  >
                     SIGN UP
                   </Button>
                 </div>
+                {/* move to login */}
                 <div className='already__have__an__account'>
                   <p>
                     Already Have an Account <Link to='/login'>Login</Link>
