@@ -72,7 +72,7 @@ export default function DateCalendarServerRequest() {
   const fetchHighlightedDays = () => {
     const controller = new AbortController();
 
-    fetch('http://localhost:4000/api/components/scheduledate', {
+    fetch('https://car-care-360.onrender.com/api/components/scheduledate', {
       method: 'GET',
       signal: controller.signal,
     })

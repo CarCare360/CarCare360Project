@@ -53,7 +53,7 @@ const Register = () => {
       e.preventDefault();
 
       axios
-        .post('http://localhost:4000/api/authentication/register', {
+        .post('https://car-care-360.onrender.com/api/authentication/register', {
           fName,
           lName,
           address,

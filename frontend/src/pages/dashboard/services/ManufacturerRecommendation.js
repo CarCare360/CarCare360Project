@@ -74,7 +74,7 @@ const ManufacturerRecommendation = () => {
     };
 
     const response = await fetch(
-      "http://localhost:3000/api/manufacturerrecommendations/",
+      "https://car-care-360.onrender.com/api/manufacturerrecommendations/",
       {
         method: "POST",
         body: JSON.stringify(manufacturerecommendation),

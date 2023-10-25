@@ -15,7 +15,7 @@ export default function BarChart() {
   }, []); 
 
   const fetchDataFromBackend = async () => {
-    const response = await fetch('http://localhost:4000/api/components/barchart');
+    const response = await fetch('https://car-care-360.onrender.com/api/components/barchart');
     const data = await response.json();
     return data;
   };

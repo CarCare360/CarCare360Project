@@ -52,7 +52,7 @@ const UserRegVehicle = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/registervehicle",
+        "https://car-care-360.onrender.com/api/registervehicle",
         vehicle,
         {
           headers: {
