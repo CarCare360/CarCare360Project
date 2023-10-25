@@ -80,7 +80,7 @@ const SendEmail = () => {
 
     // Send the emailData to the backend using Axios
     axios
-      .post("http://localhost:4000/api/mailing/sendEmail", emailData)
+      .post("https://car-care-360.onrender.com/api/mailing/sendEmail", emailData)
       .then((response) => {
         // After sending emails
         swal.close(); // Close the loading dialog

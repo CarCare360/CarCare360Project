@@ -31,7 +31,7 @@ const Login = () => {
       e.preventDefault();
       try {
         const response = await axios.post(
-          'http://localhost:4000/api/authentication/forgotpassword',
+          'https://car-care-360.onrender.com/api/authentication/forgotpassword',
           {
             email,
           }

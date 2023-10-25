@@ -28,7 +28,7 @@ const CreateNewGroup = () => {
       };
 
       axios
-        .post("http://localhost:4000/api/mailing/createList", newGroup)
+        .post("https://car-care-360.onrender.com/api/mailing/createList", newGroup)
         .then((response) => {
           if (response.status === 201) {
             swal("Group Created!", "", "success");

@@ -35,7 +35,7 @@ function RecentServiceTable() {
 
   useEffect(() => {
     // Fetch data from your backend API
-    fetch('http://localhost:4000/api/components/recentschedule')  // Replace with your actual backend endpoint
+    fetch('https://car-care-360.onrender.com/api/components/recentschedule')  // Replace with your actual backend endpoint
       .then((response) => response.json())
       .then((data) => {
         // Assuming your backend returns an array of recent bookings under the 'recentBookingData' key
@@ -48,7 +48,7 @@ function RecentServiceTable() {
 
   const handleSave = (id, field, value) => {
     // Send the updated data to the backend for modification
-    fetch(`http://localhost:4000/api/components/update/${id}`, {
+    fetch(`https://car-care-360.onrender.com/api/components/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
