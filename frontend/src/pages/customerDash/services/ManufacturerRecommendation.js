@@ -73,7 +73,7 @@ const ManufacturerRecommendationView = () => {
   const [models, setModels] = useState([]);
   const [chassisCodes, setChassisCodes] = useState([]);
   useEffect(() => {
-    fetch('/api/manufacturerrecommendations/')
+    fetch('https://car-care-360.onrender.com/api/manufacturerrecommendations/')
       .then(response => response.json())
       .then(data => {
         setDataArray(data);

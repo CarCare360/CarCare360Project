@@ -44,7 +44,7 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     // Define the URL of your API endpoint
-    const apiUrl = "/api/registervehicle/" + customerID; // Replace with the actual URL
+    const apiUrl = "https://car-care-360.onrender.com/api/registervehicle/" + customerID; // Replace with the actual URL
 
     // Make a GET request to the API
     fetch(apiUrl)
@@ -86,7 +86,7 @@ const CustomerDashboard = () => {
   ];
 
   const handleDeleteRow = (rowId) => {
-    fetch(`/api/booking/${rowId}`, {
+    fetch(`https://car-care-360.onrender.com/api/booking/${rowId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     // Define the URL of your API endpoint
-    const apiUrl3 = "/api/booking/" + customerID; // Replace with the actual URL
+    const apiUrl3 = "https://car-care-360.onrender.com/api/booking/" + customerID; // Replace with the actual URL
 
     // Make a GET request to the API
     fetch(apiUrl3)

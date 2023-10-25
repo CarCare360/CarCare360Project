@@ -27,7 +27,7 @@ const RegUserBooking = () => {
 
   useEffect(() => {
     // Define the URL of your API endpoint
-    const apiUrl = "/api/registervehicle/" + currentCustomer.id; // Replace with the actual URL
+    const apiUrl = "https://car-care-360.onrender.com/api/registervehicle/" + currentCustomer.id; // Replace with the actual URL
 
     // Make a GET request to the API
     fetch(apiUrl)
@@ -156,7 +156,7 @@ const RegUserBooking = () => {
   }, [selectedVehicle]);
 
   function fetchData() {
-    const apiUrl5 = `/api/components/scheduledate/`;
+    const apiUrl5 = `https://car-care-360.onrender.com/api/components/scheduledate/`;
 
     fetch(apiUrl5)
       .then((response) => {
@@ -271,7 +271,7 @@ const RegUserBooking = () => {
       };
 
       // Create the fetch request
-      fetch("/api/booking/", {
+      fetch("https://car-care-360.onrender.com/api/booking/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
