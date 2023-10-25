@@ -81,6 +81,7 @@ const bookAService = async (req, res) => {
                     <p> ⏰ Time: ${preferredTime} </p>
                     <p>Thank you! We are waiting for you! 🤝</p>
                   `;
+    console.log(msgBody);
     await sendEmail({
       to: email, 
       subject: 'Service Appointment Confirmed!',

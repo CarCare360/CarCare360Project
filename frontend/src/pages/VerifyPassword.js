@@ -27,7 +27,7 @@ const VerifyPassword = () => {
     try {
       if(password === confirm_password){
         console.log(email, password);
-        const response = await axios.put(`http://localhost:4000/api/authentication/resetpassword/${match.params.resetToken}`, {
+        const response = await axios.put(`https://car-care-360.onrender.com/api/authentication/resetpassword/${match.params.resetToken}`, {
           password,
         });
       if (response.data) {

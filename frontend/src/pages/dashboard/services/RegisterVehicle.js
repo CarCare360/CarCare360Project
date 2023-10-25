@@ -50,7 +50,7 @@ const RegisterVehicle = () => {
       fuelType,
       lastServiceMileage,
     };
-    const response = await fetch("http://localhost:3000/api/registervehicle/", {
+    const response = await fetch("https://car-care-360.onrender.com/api/registervehicle/", {
       method: "POST",
       body: JSON.stringify(vehicle),
       headers: {
