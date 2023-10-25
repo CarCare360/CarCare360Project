@@ -335,7 +335,16 @@ const CustomerDashboard = () => {
                     </Form.Group>
                   </Col>
                   <Col>
-                    <Form.Group>
+                  <Form.Group>
+                      <Form.Label>Last Recorded Mileage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={selectedVehicle.currentMileage}
+                        readOnly
+                        onChange={(e) => setCurrentMileage(e.target.value)}
+                      />
+                    </Form.Group>
+                  <Form.Group>
                       <Form.Label>Current Mileage</Form.Label>
                       <Form.Control
                         type="number"
@@ -350,6 +359,7 @@ const CustomerDashboard = () => {
                         onChange={(e) => setCurrentMileage(e.target.value)}
                       />
                     </Form.Group>
+                    
                   </Col>
                 </Row>
                 <Button
