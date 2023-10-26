@@ -89,7 +89,6 @@ function RecentServiceTable() {
             <StyledTableCell align="left">Customer</StyledTableCell>
             <StyledTableCell align="left">Service Description</StyledTableCell>
             <StyledTableCell align="left">Status</StyledTableCell>
-            <StyledTableCell align="left">Last Update</StyledTableCell>
             <StyledTableCell align="left">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -108,7 +107,6 @@ function RecentServiceTable() {
               <StyledTableCell align="left" contentEditable onBlur={(e) => handleSubmit(row._id, 'status', e.target.innerText)} style={{ borderBottom: '1px solid #ddd', padding: '8px', outline: 'none' }}>
                 {row.status}
               </StyledTableCell>
-              <StyledTableCell align="left">{row.lastUpdate}</StyledTableCell>
               <StyledTableCell align="left">
                 <button onClick={() => handleButtonClick(row._id)} style={{ backgroundColor: '#1E88E5', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
                   Submit
