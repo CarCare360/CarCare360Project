@@ -26,6 +26,7 @@ export default function Chat() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isContactsLoaded, setIsContactsLoaded] = useState(false);
   const [renderedContacts, setRenderedContacts] = useState(null);
+  const [mySocket, setMySocket] = useState(useRef());
   const navigate = useNavigate();
   const isMobile = window.innerWidth < 768;
 
@@ -37,7 +38,6 @@ export default function Chat() {
         const result = await axios.get(
           "https://car-care-360.onrender.com/api/messages/getme" + "/" + token
         );
-        console.log(result.data);
         const username = result.data.username;
         const email = result.data.email;
         const password = "123456";
@@ -101,8 +101,9 @@ export default function Chat() {
       socket.current = io(host);
       console.log("socket is", socket.current);
       socket.current.emit("add-user", currentUser._id);
+      setMySocket(socket);
     }
-  }, [currentChat, currentUser]);
+  });
 
   useEffect(() => {
     const tempFn = async () => {
@@ -168,7 +169,7 @@ export default function Chat() {
                 <ChatContainer
                   currentChat={currentChat}
                   currentUser={currentUser}
-                  socket={socket}
+                  socket={mySocket}
                 />
               )}
             </div>
