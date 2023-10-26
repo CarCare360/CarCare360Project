@@ -1,5 +1,5 @@
-const ManufacturerRecommendation = require("../models/manufacturerRecommendationModel");
-const sendEmail = require("../utils/sendEmail");
+const ManufacturerRecommendation = require('../models/manufacturerRecommendationModel');
+const sendEmail = require('../utils/sendEmail');
 
 // Get all manufacturer recommendations and store in an array
 let manufacturerRecommendations = [];
@@ -11,7 +11,7 @@ const getManufacturerRecommendations = async (req, res) => {
     //console.log(manufacturerRecommendations);
     res.status(200).json(manufacturerRecommendations);
   } catch (error) {
-    console.log({ error: "Internal Server Error" });
+    console.log({ error: 'Internal Server Error' });
   }
 };
 
@@ -39,14 +39,14 @@ module.exports = {
     foundVehicle = await findVehicleByMakeAndModel(vehicle.make, vehicle.model);
     //const oilchangeInterval = foundVehicle.
     //console.log(allRecommendations);
-    console.log("founded recomendations", foundVehicle);
+    console.log('founded recomendations', foundVehicle);
     const currentMileage = parseInt(vehicle.currentMileage);
-
+    
     let oilchangeInterval = 5000; //default oil change interval
     if (foundVehicle) {
       oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
     }
-    const nextServiceAt = parseInt(vehicle.currentMileage) + oilchangeInterval;
+    const nextServiceAt = parseInt(vehicle.currentMileage)+oilchangeInterval;
 
     const overDueMileage =
       currentMileage - parseInt(vehicle.lastServiceMileage) - oilchangeInterval;
@@ -90,26 +90,33 @@ module.exports = {
     `;
       sendEmail({
         to: customer.email,
-        subject: "Reminder: Upcoming Service",
+        subject: 'Reminder: Upcoming Service',
         text: msgBody,
       });
       console.log(msgBody);
-    } else {
+    }
+    else{
       msgBody = `           
       <p>Dear Customer,</p>
-      <p>At CarCare360, your vehicle's maintenance and safety are our top priorities. Your ${vehicle.make} ${vehicle.model} with the registration number ${vehicle.registerNumber} is upto date with services.</p>
+      <p>At CarCare360, your vehicle's maintenance and safety are our top priorities. Your ${
+        vehicle.make
+      } ${vehicle.model} with the registration number ${
+        vehicle.registerNumber
+      } is upto date with services.</p>
       <p><strong>Last Service Date:</strong> ${vehicle.lastServiceDate}</p>
-      <p><strong>Last Service Mileage:</strong> ${vehicle.lastServiceMileage}</p>
+      <p><strong>Last Service Mileage:</strong> ${
+        vehicle.lastServiceMileage
+      }</p>
       <p><strong>Current Mileage:</strong> ${vehicle.currentMileage}</p>
       <p><strong>Next Service on: </strong> ${nextServiceAt}</p>
-      <p> To keep your vehicle running smoothly, please schedule an appointment with us on time now.</p>
+      <p> To keep your vehicle running smoothly, please schedule an appointment with us on time.</p>
       <p> Thank you for choosing CarCare360.\n
       Best regards,\n
       CarCare360</p>
     `;
       sendEmail({
         to: customer.email,
-        subject: "Reminder: Upcoming Service",
+        subject: 'Reminder: Upcoming Service',
         text: msgBody,
       });
     }
