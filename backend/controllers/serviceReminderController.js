@@ -41,10 +41,12 @@ module.exports = {
     //console.log(allRecommendations);
     console.log('founded recomendations', foundVehicle);
     const currentMileage = parseInt(vehicle.currentMileage);
+    
     let oilchangeInterval = 5000; //default oil change interval
     if (foundVehicle) {
       oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
     }
+    const nextServiceAt = parseInt(vehicle.currentMileage)+oilchangeInterval;
 
     const overDueMileage =
       currentMileage - parseInt(vehicle.lastServiceMileage) - oilchangeInterval;
@@ -60,7 +62,7 @@ module.exports = {
                     CarCare360</p>
                   `;
       sendEmail({
-        to: "praguna327@gmail.com",//customer.email,
+        to: customer.email,
         subject: " Urgent: Your Vehicle's Service is Overdue",
         text: msgBody,
       });
@@ -92,6 +94,31 @@ module.exports = {
         text: msgBody,
       });
       console.log(msgBody);
+    }
+    else{
+      msgBody = `           
+      <p>Dear Customer,</p>
+      <p>At CarCare360, your vehicle's maintenance and safety are our top priorities. Your ${
+        vehicle.make
+      } ${vehicle.model} with the registration number ${
+        vehicle.registerNumber
+      } is upto date with services.</p>
+      <p><strong>Last Service Date:</strong> ${vehicle.lastServiceDate}</p>
+      <p><strong>Last Service Mileage:</strong> ${
+        vehicle.lastServiceMileage
+      }</p>
+      <p><strong>Current Mileage:</strong> ${vehicle.currentMileage}</p>
+      <p><strong>Next Service on: </strong> ${nextServiceAt}</p>
+      <p> To keep your vehicle running smoothly, please schedule an appointment with us on time.</p>
+      <p> Thank you for choosing CarCare360.\n
+      Best regards,\n
+      CarCare360</p>
+    `;
+      sendEmail({
+        to: customer.email,
+        subject: 'Reminder: Upcoming Service',
+        text: msgBody,
+      });
     }
   },
 };
