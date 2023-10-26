@@ -110,7 +110,7 @@ const Register = () => {
             {/* Form */}
             <div className='register__customer__form'>
             <h2 data-testid="cypress-title" className='register__customer__heading'>
-                Customer Registration
+                Sign Up
               </h2>
               <Form
                 noValidate
