@@ -186,9 +186,9 @@ const Container = styled.div`
   width: 100vw;
 
   padding-bottom: 40px;
-  margin-left: 100px;
+  margin-left: 50px;
   margin-right: 20px;
-  padding-left: 600px;
+  padding-left: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
