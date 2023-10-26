@@ -188,7 +188,7 @@ const Container = styled.div`
   padding-bottom: 40px;
   margin-left: 100px;
   margin-right: 20px;
-  padding-left: 20px;
+  padding-left: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
