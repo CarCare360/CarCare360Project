@@ -185,7 +185,7 @@ const SidebarWrapper = styled.div`
 `;
 
 const ChatWrapper = styled.div`
-  flex: 8;
+  flex: 3;
   margin-left: 20px;
 `;
 
