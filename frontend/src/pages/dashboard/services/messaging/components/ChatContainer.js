@@ -33,7 +33,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
       to: currentChat._id,
       message: msg,
     });
-    console.log("send socket", socket);
+
     socket.current.emit("send-msg", {
       to: currentChat._id,
       from: currentUser._id,
