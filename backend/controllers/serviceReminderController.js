@@ -1,6 +1,5 @@
-const ManufacturerRecommendation = require("../models/manufacturerRecommendationModel");
-const mongoose = require("mongoose");
-const sendEmail = require("../utils/sendEmail");
+const ManufacturerRecommendation = require('../models/manufacturerRecommendationModel');
+const sendEmail = require('../utils/sendEmail');
 
 // Get all manufacturer recommendations and store in an array
 let manufacturerRecommendations = [];
@@ -12,7 +11,7 @@ const getManufacturerRecommendations = async (req, res) => {
     //console.log(manufacturerRecommendations);
     res.status(200).json(manufacturerRecommendations);
   } catch (error) {
-    console.log({ error: "Internal Server Error" });
+    console.log({ error: 'Internal Server Error' });
   }
 };
 
@@ -40,12 +39,11 @@ module.exports = {
     foundVehicle = await findVehicleByMakeAndModel(vehicle.make, vehicle.model);
     //const oilchangeInterval = foundVehicle.
     //console.log(allRecommendations);
-    console.log("founded recomendations", foundVehicle);
+    console.log('founded recomendations', foundVehicle);
     const currentMileage = parseInt(vehicle.currentMileage);
+    let oilchangeInterval = 5000; //default oil change interval
     if (foundVehicle) {
-      const oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
-    } else {
-      const oilchangeInterval = 5000; //default oil change interval
+      oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
     }
 
     const overDueMileage =
@@ -62,7 +60,7 @@ module.exports = {
                     CarCare360</p>
                   `;
       sendEmail({
-        to: customer.email,
+        to: "praguna327@gmail.com",//customer.email,
         subject: " Urgent: Your Vehicle's Service is Overdue",
         text: msgBody,
       });
@@ -90,7 +88,7 @@ module.exports = {
     `;
       sendEmail({
         to: customer.email,
-        subject: "Reminder: Upcoming Service",
+        subject: 'Reminder: Upcoming Service',
         text: msgBody,
       });
       console.log(msgBody);
