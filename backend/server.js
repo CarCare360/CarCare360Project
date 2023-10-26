@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://car-care-360-jl9d.onrender.com",
-    methods: ["GET", "POST", "PUT"],
+    methods: ["GET", "POST", "PUT","PATCH"],
     credentials: true,
   })
 );
