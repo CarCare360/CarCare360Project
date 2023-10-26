@@ -190,7 +190,7 @@ const SidebarWrapper = styled.div`
 
 const ChatWrapper = styled.div`
   flex: 3;
-  margin-left: 20px;
+  margin-top: 10px;
 `;
 
 const Container = styled.div`
