@@ -104,7 +104,7 @@ const updateVehicle = async (req, res) => {
 
     await vehicle.save();
     await sendServiceReminder(vehicle, userData);
-
+    console.log("vehicle api callled");
     res.status(200).json(vehicle);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
