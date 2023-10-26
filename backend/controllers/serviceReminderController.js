@@ -1,5 +1,4 @@
 const ManufacturerRecommendation = require('../models/manufacturerRecommendationModel');
-const mongoose = require('mongoose');
 const sendEmail = require('../utils/sendEmail');
 
 // Get all manufacturer recommendations and store in an array
@@ -61,7 +60,7 @@ module.exports = {
                     CarCare360</p>
                   `;
       sendEmail({
-        to: customer.email,
+        to: "praguna327@gmail.com",//customer.email,
         subject: " Urgent: Your Vehicle's Service is Overdue",
         text: msgBody,
       });
