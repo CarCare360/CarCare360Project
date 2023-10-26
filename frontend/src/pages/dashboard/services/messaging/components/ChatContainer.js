@@ -49,6 +49,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
     if (socket.current) {
       console.log("socket is connected");
       socket.current.on("msg-receive", (msg) => {
+        console.log("msg received");
         console.log({ msg });
         setArrivalMessage({ fromSelf: false, message: msg });
       });
