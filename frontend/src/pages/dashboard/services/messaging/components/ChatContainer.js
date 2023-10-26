@@ -11,7 +11,6 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
   const [messages, setMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const scrollRef = useRef();
-  console.log("Passed socket: ", socket);
 
   // Load messages related to the selected contact from thedatabase
   useEffect(() => {
@@ -25,6 +24,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
       }
     };
     fn();
+    console.log("Passed socket: ", socket);
   }, [currentChat, currentUser]);
 
   // Handling message sending
