@@ -178,7 +178,7 @@ const CustomerDashboard = () => {
 
     try {
       const response = await axios.patch(
-        "/api/registervehicle/" + selectedVehicle._id,
+        "https://car-care-360.onrender.com/api/registervehicle/" + selectedVehicle._id,
         vehicle,
         {
           headers: {
