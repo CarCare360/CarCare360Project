@@ -88,7 +88,7 @@ const Booking = () => {
 
 
   function fetchData() {
-    const apiUrl5 = `/api/components/scheduledate/`;
+    const apiUrl5 = `https://car-care-360.onrender.com/api/components/scheduledate/`;
 
     fetch(apiUrl5)
       .then((response) => {
@@ -203,7 +203,7 @@ const Booking = () => {
       };
 
       // Create the fetch request
-      fetch("/api/booking/", {
+      fetch("https://car-care-360.onrender.com/api/booking/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

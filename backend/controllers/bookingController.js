@@ -67,7 +67,7 @@ const bookAService = async (req, res) => {
       selectedDate,
       preferredTime,
       customerID,
-      status: 'scheduled',
+      status: 'Scheduled',
     });
 
     // Sending appointment confirmation email to customer
