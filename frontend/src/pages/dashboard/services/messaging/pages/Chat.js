@@ -99,6 +99,7 @@ export default function Chat() {
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
+      console.log("socket is", socket.current);
       socket.current.emit("add-user", currentUser._id);
     }
   });

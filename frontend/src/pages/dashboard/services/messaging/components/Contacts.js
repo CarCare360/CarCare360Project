@@ -29,7 +29,6 @@ function Contacts({ contacts, currentUser, changeChat }) {
   }, [selectedContacts, currentSelected]);
 
   const changeCurrentChat = (index, contact) => {
-    console.log(contacts);
     setCurrentSelected(index);
     changeChat(contact);
     setCurrentContact(contact);
@@ -55,7 +54,6 @@ function Contacts({ contacts, currentUser, changeChat }) {
 
   const renderContacts = () => {
     const reverse = [...selectedContacts].reverse();
-    console.log(reverse);
     return reverse.map((contact, index) => {
       return (
         <div
