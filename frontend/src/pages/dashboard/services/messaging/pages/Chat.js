@@ -14,6 +14,7 @@ import { registerRoute, loginRoute } from "../utils/APIRoutes";
 
 import { io } from "socket.io-client";
 import useAuth from "../../../../../hooks/useAuth";
+import { Box } from "@mui/material";
 
 export default function Chat() {
   const { role } = useAuth();
@@ -138,8 +139,9 @@ export default function Chat() {
   return (
     <Container>
       <Topbar />
+      <Box height={50} />
 
-      <GridContainer>
+      <Box sx={{ display: "flex" }}>
         <SidebarWrapper>
           {role === "maintenancemanager" ? (
             <MaintenanceManagerSidebar />
@@ -148,28 +150,30 @@ export default function Chat() {
           )}
         </SidebarWrapper>
 
-        <ChatWrapper>
-          <div className="container">
-            {isContactsLoaded && (
-              <Contacts
-                contacts={contacts}
-                currentUser={currentUser}
-                changeChat={handleChatChange}
-              />
-            )}
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <ChatWrapper>
+            <div className="container">
+              {isContactsLoaded && (
+                <Contacts
+                  contacts={contacts}
+                  currentUser={currentUser}
+                  changeChat={handleChatChange}
+                />
+              )}
 
-            {isContactsLoaded && isLoaded && currentChat === undefined ? (
-              <Welcome currentUser={me} />
-            ) : (
-              <ChatContainer
-                currentChat={currentChat}
-                currentUser={currentUser}
-                socket={socket}
-              />
-            )}
-          </div>
-        </ChatWrapper>
-      </GridContainer>
+              {isContactsLoaded && isLoaded && currentChat === undefined ? (
+                <Welcome currentUser={me} />
+              ) : (
+                <ChatContainer
+                  currentChat={currentChat}
+                  currentUser={currentUser}
+                  socket={socket}
+                />
+              )}
+            </div>
+          </ChatWrapper>
+        </Box>
+      </Box>
     </Container>
   );
 }
