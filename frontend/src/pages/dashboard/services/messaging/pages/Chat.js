@@ -190,17 +190,16 @@ const SidebarWrapper = styled.div`
 
 const ChatWrapper = styled.div`
   flex: 3;
-  margin-top: 10px;
+  margin-top: 40px;
 `;
 
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
 
-  padding-bottom: 40px;
-  margin-left: 50px;
+  margin-left: 20px;
   margin-right: 20px;
-  padding-left: 50px;
+  padding-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
