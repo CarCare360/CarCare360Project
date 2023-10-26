@@ -44,7 +44,7 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     // Define the URL of your API endpoint
-    const apiUrl = "/api/registervehicle/" + customerID; // Replace with the actual URL
+    const apiUrl = "https://car-care-360.onrender.com/api/registervehicle/" + customerID; // Replace with the actual URL
 
     // Make a GET request to the API
     fetch(apiUrl)
@@ -86,7 +86,7 @@ const CustomerDashboard = () => {
   ];
 
   const handleDeleteRow = (rowId) => {
-    fetch(`/api/booking/${rowId}`, {
+    fetch(`https://car-care-360.onrender.com/api/booking/${rowId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     // Define the URL of your API endpoint
-    const apiUrl3 = "/api/booking/" + customerID; // Replace with the actual URL
+    const apiUrl3 = "https://car-care-360.onrender.com/api/booking/" + customerID; // Replace with the actual URL
 
     // Make a GET request to the API
     fetch(apiUrl3)
@@ -335,7 +335,16 @@ const CustomerDashboard = () => {
                     </Form.Group>
                   </Col>
                   <Col>
-                    <Form.Group>
+                  <Form.Group>
+                      <Form.Label>Last Recorded Mileage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={selectedVehicle.currentMileage}
+                        readOnly
+                        onChange={(e) => setCurrentMileage(e.target.value)}
+                      />
+                    </Form.Group>
+                  <Form.Group>
                       <Form.Label>Current Mileage</Form.Label>
                       <Form.Control
                         type="number"
@@ -350,6 +359,7 @@ const CustomerDashboard = () => {
                         onChange={(e) => setCurrentMileage(e.target.value)}
                       />
                     </Form.Group>
+                    
                   </Col>
                 </Row>
                 <Button

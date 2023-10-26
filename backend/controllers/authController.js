@@ -58,7 +58,7 @@ exports.forgotpassword = async (req, res, next) => {
     }
     const resetToken = customer.getResetPasswordToken();
     await customer.save();
-    const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`;
+    const resetUrl = `https://car-care-360-jl9d.onrender.com/#/passwordreset/${resetToken}`;
     console.log(resetUrl);
     const message = `
             <h1>Hello, Welcome to Car Care 360 </h1>

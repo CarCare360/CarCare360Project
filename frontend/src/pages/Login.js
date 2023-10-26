@@ -91,12 +91,12 @@ const Login = () => {
             }
           }
         } else {
-          swal("Invalid Credential!", "", "error"); // Show error message
+          swal("Invalid Credential!", "", "error"); 
           setEmail("");
           setPassword("");
         }
       } catch (error) {
-        swal("Invalid Credential!", "", "error"); // Show error message
+        swal("Invalid Credential!", "", "error"); 
         setEmail("");
         setPassword("");
       }
