@@ -136,7 +136,7 @@ const Login = () => {
               className="login__customer__heading"
             >
               {" "}
-              Customer Login{" "}
+              Login{" "}
             </h2>
 
             {/* Form */}
