@@ -196,6 +196,7 @@ const ChatWrapper = styled.div`
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  margin-top: 20px;
 
   margin-left: 20px;
   margin-right: 20px;
