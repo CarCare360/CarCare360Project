@@ -60,7 +60,7 @@ const Login = () => {
       e.preventDefault();
       try {
         const response = await axios.post(
-          "https://car-care-360.onrender.com/api/authentication/login",
+          `${process.env.BACKEND}/api/authentication/login`,
           {
             email: email,
             password: password,
@@ -91,12 +91,12 @@ const Login = () => {
             }
           }
         } else {
-          swal("Invalid Credential!", "", "error"); 
+          swal("Invalid Credential!", "", "error");
           setEmail("");
           setPassword("");
         }
       } catch (error) {
-        swal("Invalid Credential!", "", "error"); 
+        swal("Invalid Credential!", "", "error");
         setEmail("");
         setPassword("");
       }
