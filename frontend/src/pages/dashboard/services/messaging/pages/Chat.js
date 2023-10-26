@@ -139,38 +139,46 @@ export default function Chat() {
     <Container>
       <Topbar />
 
-      <SidebarWrapper>
-        {role === "maintenancemanager" ? (
-          <MaintenanceManagerSidebar />
-        ) : (
-          <CustomerSidebar />
-        )}
-      </SidebarWrapper>
-
-      <ChatWrapper>
-        <div className="container">
-          {isContactsLoaded && (
-            <Contacts
-              contacts={contacts}
-              currentUser={currentUser}
-              changeChat={handleChatChange}
-            />
-          )}
-
-          {isContactsLoaded && isLoaded && currentChat === undefined ? (
-            <Welcome currentUser={me} />
+      <GridContainer>
+        <SidebarWrapper>
+          {role === "maintenancemanager" ? (
+            <MaintenanceManagerSidebar />
           ) : (
-            <ChatContainer
-              currentChat={currentChat}
-              currentUser={currentUser}
-              socket={socket}
-            />
+            <CustomerSidebar />
           )}
-        </div>
-      </ChatWrapper>
+        </SidebarWrapper>
+
+        <ChatWrapper>
+          <div className="container">
+            {isContactsLoaded && (
+              <Contacts
+                contacts={contacts}
+                currentUser={currentUser}
+                changeChat={handleChatChange}
+              />
+            )}
+
+            {isContactsLoaded && isLoaded && currentChat === undefined ? (
+              <Welcome currentUser={me} />
+            ) : (
+              <ChatContainer
+                currentChat={currentChat}
+                currentUser={currentUser}
+                socket={socket}
+              />
+            )}
+          </div>
+        </ChatWrapper>
+      </GridContainer>
     </Container>
   );
 }
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Adjust column sizes as needed */
+  gap: 20px; /* Adjust gap as needed */
+`;
 
 const SidebarWrapper = styled.div`
   flex: 1;
