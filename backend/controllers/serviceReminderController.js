@@ -36,15 +36,18 @@ async function findVehicleByMakeAndModel(make, model) {
 module.exports = {
   sendServiceReminder: async (vehicle, customer) => {
     //console.log(vehicle,customer);
-    const foundVehicle = await findVehicleByMakeAndModel(
-      vehicle.make,
-      vehicle.model
-    );
+    let foundVehicle = null;
+    foundVehicle = await findVehicleByMakeAndModel(vehicle.make, vehicle.model);
     //const oilchangeInterval = foundVehicle.
     //console.log(allRecommendations);
     console.log("founded recomendations", foundVehicle);
     const currentMileage = parseInt(vehicle.currentMileage);
-    const oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
+    if (foundVehicle) {
+      const oilchangeInterval = parseInt(foundVehicle.engineOilServiceInterval);
+    } else {
+      const oilchangeInterval = 5000; //default oil change interval
+    }
+
     const overDueMileage =
       currentMileage - parseInt(vehicle.lastServiceMileage) - oilchangeInterval;
     let msgBody = null;
