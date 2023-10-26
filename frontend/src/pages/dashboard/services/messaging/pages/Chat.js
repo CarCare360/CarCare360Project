@@ -102,7 +102,7 @@ export default function Chat() {
       console.log("socket is", socket.current);
       socket.current.emit("add-user", currentUser._id);
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     const tempFn = async () => {
