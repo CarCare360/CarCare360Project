@@ -91,12 +91,12 @@ const Login = () => {
             }
           }
         } else {
-          swal("Invalid Credential!", "", "error"); 
+          swal("Invalid Credential!", "", "error");
           setEmail("");
           setPassword("");
         }
       } catch (error) {
-        swal("Invalid Credential!", "", "error"); 
+        swal("Invalid Credential!", "", "error");
         setEmail("");
         setPassword("");
       }
@@ -136,7 +136,7 @@ const Login = () => {
               className="login__customer__heading"
             >
               {" "}
-              Customer Login{" "}
+              Login{" "}
             </h2>
 
             {/* Form */}

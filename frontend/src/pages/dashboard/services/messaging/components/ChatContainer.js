@@ -20,11 +20,11 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
           from: currentUser._id,
           to: currentChat._id,
         });
-        console.log(response.data);
         setMessages(response.data);
       }
     };
     fn();
+    console.log("Passed socket: ", socket);
   }, [currentChat, currentUser]);
 
   // Handling message sending
@@ -48,7 +48,9 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
   // handle receiving a message
   useEffect(() => {
     if (socket.current) {
+      console.log("socket is connected");
       socket.current.on("msg-receive", (msg) => {
+        console.log("msg received");
         console.log({ msg });
         setArrivalMessage({ fromSelf: false, message: msg });
       });
