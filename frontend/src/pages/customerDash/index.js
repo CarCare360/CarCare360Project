@@ -69,20 +69,20 @@ const CustomerDashboard = () => {
     { field: "Time", headerName: "Time", width: 150 },
     { field: "Vehicle", headerName: "Vehicle", width: 150 },
     { field: "CurrentStatus", headerName: "Current status", width: 150 },
-    {
-      field: "delete",
-      headerName: "Cancel",
-      width: 100,
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => handleDeleteRow(params.row.id)}
-        >
-          Cancel
-        </Button>
-      ),
-    },
+    // {
+    //   field: "delete",
+    //   headerName: "Cancel",
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Button
+    //       variant="outlined"
+    //       color="secondary"
+    //       onClick={() => handleDeleteRow(params.row.id)}
+    //     >
+    //       Cancel
+    //     </Button>
+    //   ),
+    // },
   ];
 
   const handleDeleteRow = (rowId) => {
