@@ -141,7 +141,7 @@ export default function Sidebar() {
             disablePadding
             sx={{ display: "block" }}
             onClick={() => {
-              // Log out (You can add logout logic here)
+              localStorage.clear();
               navigate("/login");
             }}
           >
