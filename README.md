@@ -1,7 +1,6 @@
 # CarCare360CRMSyestem
 # CRM for Vehicle Maintenance Centre
 
-
 ![logo](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/9fb554f1-e7f6-4553-8e02-4561e53b60d2)
 
 ## Introduction 
@@ -18,39 +17,20 @@
     and reporting to make data-driven business decisions.
 
 ## Features
-  * Customer Registration: Allows individual customer registration or registration through service centers.
+   * Customer Registration: Allows individual customer registration or registration through service centers.
   * Maintenance Manager: Provides an interface for maintenance managers to record customer and vehicle details.
   * Sales Team: Offers tools for managing leads, tracking deals, and monitoring the sales pipeline.
   * Marketing Team: Enables targeted marketing campaigns, such as email marketing and lead nurturing.
   * Customer Service: Empowers customer service representatives to access customer data, view interaction history, and provide personalized assistance.
   * Top Management: Offers data visualization for making informed, data-driven business decisions.
   * Maintenance Notifications: Sends reminders to customers based on mileage or scheduled maintenance tasks.
-  
- ## Getting Started
-    ### Prerequisites
+
+## Getting Started
+     ### Prerequisites
         This subsection lists the prerequisites that users need before they can install and run your project. For instance:
           * Node.js: Ensure that you have Node.js installed on your system.
           * MongoDB: Make sure MongoDB is installed and running.
-    
-  ## Installation
-    1.Clone the repository:
-      https://github.com/kgchinthana/CarCare360CRMSyestem.git
-    2.Navigate to the project directory:
-      cd CarCare360CRMSyestem
-    3.Navigate to the project backend directory:
-      cd backend
-    4.Install project dependencies:
-      npm install
-    5.Configure environment variables by creating a .env file in the root directory.
-    6.Start the application:
-      npm run dev
-    7.Navigate to the project frontend directory:
-      cd frontend
-    8.Install project dependencies:
-      npm install
-    6.Start the application:
-      npm start
-    
+
 ## Technology Stack
     ### Frontend (Client-Side):
       * React: The frontend of our CRM system is built using React, a popular JavaScript library for building user interfaces. React enables us to create dynamic and responsive web pages.
@@ -73,4 +53,44 @@
       * React Native: For the mobile application, we utilize React Native, a framework for building native mobile apps using React. This enables us to share code between web and mobile versions.
       * Nodemailer: Nodemailer is used to send automated emails and manage email marketing campaigns, enhancing customer communication.
 
+## Project Structure
+    - Explain the organization of your project's directories and files.
 
+## Usage
+    - Provide examples or code snippets on how to use your CRM system.
+    - Include common commands, API endpoints, or any other essential usage information.
+
+## Contributing
+    - **Kavindu Gayan Chinthana**
+    - **Praguna Chandrasekara**
+    - **Pamudu Chathunka**
+
+## Testing
+    - ### Jest
+      - We use Jest, a delightful JavaScript testing framework, for unit testing.
+      - To run tests, use the following command:
+        ```bash
+        npm run test
+        ```
+
+    - ### Cypress
+      - Cypress is our end-to-end testing framework for ensuring the functionality of the entire application.
+      - To run Cypress tests, use the following command:
+        ```bash
+        npm run cypress
+        ```
+
+## Libraries Used
+    - ### Backend
+      - #### nodemailer
+        - Nodemailer is used for sending automated emails and managing email marketing campaigns, enhancing customer communication.
+      - #### socket.io
+        - Socket.io facilitates real-time communication, enabling features like live updates and instant messaging.
+
+    - ### Frontend
+      - #### React Libraries
+        - **Bootstrap**: Used for styling and creating a responsive user interface.
+        - **Material-UI (mui)**: A popular React UI framework for building consistent and aesthetically pleasing interfaces.
+
+## Demo/Gif/Images
+  - ##### Demo video: https://youtu.be/mPFCJQychcc
