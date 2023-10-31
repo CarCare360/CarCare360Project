@@ -1,5 +1,5 @@
-# CarCare360CRMSyestem
-# CRM for Vehicle Maintenance Centre
+# CarCare360
+## CRM for Vehicle Maintenance Centre
 
 ![logo](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/9fb554f1-e7f6-4553-8e02-4561e53b60d2)
 
