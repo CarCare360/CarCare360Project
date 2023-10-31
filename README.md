@@ -92,5 +92,5 @@
         - **Bootstrap**: Used for styling and creating a responsive user interface.
         - **Material-UI (mui)**: A popular React UI framework for building consistent and aesthetically pleasing interfaces.
 
-## Demo/Gif/Images
+## Demo
   - ##### Demo video: https://youtu.be/mPFCJQychcc
