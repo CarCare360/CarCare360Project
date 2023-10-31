@@ -54,12 +54,12 @@
       * Nodemailer: Nodemailer is used to send automated emails and manage email marketing campaigns, enhancing customer communication.
 
 ## Project Structure
-    - Explain the organization of your project's directories and files.
+    - **Here's an overview of the project's file structure:
+        ![Screenshot 2023-10-31 095504](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/98ba61f5-7563-47d2-92a1-4e48607f937b)
+        ![Screenshot 2023-10-31 095542](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/157b89f2-4441-465f-b767-9da82b1395a1)
+        ![Screenshot 2023-10-31 095555](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/1c4099a7-7f09-4322-b6f2-994c5979ea9c)
 
-## Usage
-    - Provide examples or code snippets on how to use your CRM system.
-    - Include common commands, API endpoints, or any other essential usage information.
-
+        
 ## Contributing
     - **Kavindu Gayan Chinthana**
     - **Praguna Chandrasekara**
