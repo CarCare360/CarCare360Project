@@ -5,7 +5,7 @@
 
 ## Introduction 
     This project aims to develop a CRM system for a vehicle maintenance centre. This system
-    will provide a mobile and web-based system in order to make customer relationship
+    will provide a web-based system in order to make customer relationship
     management (CRM) easier and attract more customers.
     The proposed system will make the following tasks easier: Customer Data
     Management, Sales Management, Marketing Automation, Customer Service and
