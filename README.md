@@ -2,8 +2,7 @@
 # CRM for Vehicle Maintenance Centre
 
 
-![logo](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/9d846420-8485-43eb-92b8-d5c2339026bf)
-
+![logo](https://github.com/kgchinthana/CarCare360CRMSyestem/assets/119396480/9fb554f1-e7f6-4553-8e02-4561e53b60d2)
 
 ## Introduction 
     This project aims to develop a CRM system for a vehicle maintenance centre. This system
